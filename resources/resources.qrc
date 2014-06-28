@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="res">
+    <file>checkmark.png</file>
+    <file>octocats/original.png</file>
+  </qresource>
+</RCC>
