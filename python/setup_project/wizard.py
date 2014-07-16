@@ -1,0 +1,55 @@
+# Copyright (c) 2013 Shotgun Software Inc.
+#
+# CONFIDENTIAL AND PROPRIETARY
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
+# Source Code License included in this distribution package. See LICENSE.
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
+# not expressly granted therein are reserved by Shotgun Software Inc.
+
+from sgtk.platform.qt import QtGui
+
+from ..ui import setup_project
+
+
+class SetupProjectWizard(QtGui.QWizard):
+    """
+    A GUI wizard to setup a project for toolkit.
+
+    This wraps the setup_project core command.
+    """
+    def __init__(self, parent=None):
+        QtGui.QWizard.__init__(self, parent)
+
+        self.ui = setup_project.Ui_Wizard()
+        self.ui.setupUi(self)
+
+        # Let each page set itself up
+        for page_id in self.pageIds():
+            self.page(page_id).setup_ui(page_id)
+
+        # Setup Page Order
+        self.ui.setup_type_page.set_project_page(self.ui.project_config_page)
+        self.ui.setup_type_page.set_github_page(self.ui.github_config_page)
+        self.ui.setup_type_page.set_disk_page(self.ui.disk_config_page)
+
+        self.ui.setup_type_page.set_next_page(self.ui.project_name_page)
+        self.ui.project_config_page.set_next_page(self.ui.project_name_page)
+        self.ui.github_config_page.set_next_page(self.ui.project_name_page)
+        self.ui.disk_config_page.set_next_page(self.ui.project_name_page)
+
+        self.ui.config_location_page.setCommitPage(True)
+
+        # Setup fields
+        self.ui.github_config_page.registerField("github_url*", self.ui.github_url)
+        self.ui.disk_config_page.registerField("disk_path*", self.ui.path)
+        self.ui.project_name_page.registerField("project_name*", self.ui.project_name)
+        self.ui.config_location_page.registerField("config_path_mac", self.ui.mac_path)
+        self.ui.config_location_page.registerField("config_path_win", self.ui.windows_path)
+        self.ui.config_location_page.registerField("config_path_linux", self.ui.linux_path)
+
+        # Override button formatting
+        self.setButtonText(self.NextButton, "Continue")
+        self.setButtonText(self.BackButton, "Back")
+        self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")

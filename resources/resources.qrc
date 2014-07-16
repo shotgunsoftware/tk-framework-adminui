@@ -1,6 +1,8 @@
 <RCC>
   <qresource prefix="res">
+    <file>missing_thumbnail_project.png</file>
     <file>checkmark.png</file>
     <file>octocats/original.png</file>
+    <file>shotgun_logo.png</file>
   </qresource>
 </RCC>
