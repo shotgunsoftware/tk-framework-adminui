@@ -17,6 +17,7 @@ ShotgunModel = shotgun_model.ShotgunModel
 
 
 class ProjectModel(ShotgunModel):
+    """ Simple Project model to pull down Toolkit projects and their thumbnails """
     DISPLAY_NAME_ROLE = QtCore.Qt.UserRole + 101
     PROJECT_ID_ROLE = QtCore.Qt.UserRole + 102
 
@@ -24,12 +25,20 @@ class ProjectModel(ShotgunModel):
         ShotgunModel.__init__(self, parent, download_thumbs=True)
 
         # load the missing project thumbnail
-        self._missing_thumbnail_project = QtGui.QPixmap(":/res/missing_thumbnail_project.png")
+        self._missing_thumbnail_project = \
+            QtGui.QPixmap(":/tk-framework-adminui/setup_project/missing_thumbnail_project.png")
+
+        # and load the data from Shotgun
+        filters = [
+            ["archived", "is_not", True],
+            ["tank_name", "is_not", None],
+            ["name", "is_not", "Template Project"],
+        ]
 
         ShotgunModel._load_data(
             self,
             entity_type="Project",
-            filters=[['tank_name', 'is_not', None]],
+            filters=filters,
             hierarchy=["name"],
             fields=["name", "id"],
             order=[{"field_name": "name", "direction": "asc"}],

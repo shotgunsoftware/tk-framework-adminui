@@ -24,6 +24,9 @@ class ProjectWidget(QtGui.QFrame):
 
     def __init__(self, parent=None):
         QtGui.QFrame.__init__(self, parent)
+
+        # initialize the UI
+        # simple frame with a thumbnail and a label
         self.setObjectName("frame")
         self.setFrameStyle(self.NoFrame)
         self.setContentsMargins(self.MARGIN, self.MARGIN, self.MARGIN, self.MARGIN)
@@ -56,13 +59,16 @@ class ProjectWidget(QtGui.QFrame):
         self.setToolTip(label)
 
     def set_selected(self, selected):
-        p = QtGui.QPalette()
-        highlight_col = p.color(QtGui.QPalette.Active, QtGui.QPalette.Highlight)
-
-        transp_highlight_str = "rgba(%s, %s, %s, 25%%)" % (highlight_col.red(), highlight_col.green(), highlight_col.blue())
-        highlight_str = "rgb(%s, %s, %s)" % (highlight_col.red(), highlight_col.green(), highlight_col.blue())
-
+        """ Update the styling to reflect if the widget is selected or not """
         if selected:
+            p = QtGui.QPalette()
+            highlight_col = p.color(QtGui.QPalette.Active, QtGui.QPalette.Highlight)
+
+            transp_highlight_str = "rgba(%s, %s, %s, 25%%)" % \
+                (highlight_col.red(), highlight_col.green(), highlight_col.blue())
+            highlight_str = "rgb(%s, %s, %s)" % \
+                (highlight_col.red(), highlight_col.green(), highlight_col.blue())
+
             # make a border around the cell
             self.setStyleSheet(
                 """#frame {
@@ -81,8 +87,8 @@ class ProjectWidget(QtGui.QFrame):
                 }""")
 
 
-
 class ProjectDelegate(shotgun_view.WidgetDelegate):
+    """ Wrapper around the ProjectWidget for delegate use """
     def __init__(self, view):
         shotgun_view.WidgetDelegate.__init__(self, view)
 

@@ -1,5 +1,6 @@
 <RCC>
-  <qresource prefix="res">
+  <qresource prefix="tk-framework-adminui/setup_project">
+    <file>error.png</file>
     <file>missing_thumbnail_project.png</file>
     <file>checkmark.png</file>
     <file>octocats/original.png</file>
