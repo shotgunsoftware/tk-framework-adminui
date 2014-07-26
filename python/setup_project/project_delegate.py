@@ -19,6 +19,7 @@ shotgun_view = sgtk.platform.import_framework("tk-framework-qtwidgets", "shotgun
 
 
 class ProjectWidget(QtGui.QFrame):
+    """ Simple widget that shows a project's thumbnail and name. """
     MARGIN = 5
     ICON_SIZE = QtCore.QSize(32, 32)
 

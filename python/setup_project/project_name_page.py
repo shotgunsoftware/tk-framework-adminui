@@ -27,6 +27,7 @@ class ProjectNamePage(BasePage):
         self.setField("project_name", name)
 
     def on_name_changed(self, name):
+        """ react to the name changing.  Update the paths that will be used. """
         name = self.field("project_name")
         wiz = self.wizard()
         try:
@@ -36,14 +37,15 @@ class ProjectNamePage(BasePage):
             paths = []
             for platform in ["darwin", "linux2", "win32"]:
                 for root in project_paths_dict:
-                    paths.append(project_paths_dict[root][platform])
+                    if project_paths_dict[root][platform]:
+                        paths.append(project_paths_dict[root][platform])
             formatted_paths = """
                 <html><head/><body>
-                <p><span style="font-size:large;">Project Directories will be:</span></p>
+                <p><span style="font-size:18px;">Project Directories will be:</span></p>
                 <p>
                 %s
                 </p></body></html>
-            """ % "<br/>\n".join(paths)
+            """ % "<br/><br/>\n".join(paths)
             wiz.ui.project_directories.setText(formatted_paths)
             wiz.ui.project_name_errors.setText("")
             self.name_valid = True

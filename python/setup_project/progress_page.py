@@ -26,7 +26,7 @@ class RunSetupThread(QtCore.QThread):
     def run(self):
         try:
             self._wizard.execute()
-            self.sucess.emit()
+            self.success.emit()
         except Exception, e:
             self.failure.emit(str(e))
 
@@ -65,6 +65,8 @@ class ProgressPage(BasePage):
         self.execute_thread.start()
 
     def _on_run_finished(self):
+        # thread has finished
+        # clean up the page state
         wiz = self.wizard()
         wiz.ui.complete_icon.setVisible(True)
         QtGui.QApplication.restoreOverrideCursor()
@@ -72,6 +74,7 @@ class ProgressPage(BasePage):
         button.setEnabled(True)
 
     def _on_run_succeeded(self):
+        # thread finished successfully
         self._on_run_finished()
         wiz = self.wizard()
 
@@ -85,6 +88,7 @@ class ProgressPage(BasePage):
         """)
 
     def _on_run_failed(self, message):
+        # thread failed
         self._on_run_finished()
         wiz = self.wizard()
 

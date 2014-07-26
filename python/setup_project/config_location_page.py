@@ -8,7 +8,9 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import os
 import sys
+
 from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
@@ -59,22 +61,52 @@ class ConfigLocationPage(BasePage):
         self.wizard().ui.mac_path.setText(default_locations["darwin"])
 
     def validatePage(self):
-        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-
+        # grab the os paths
         macosx_path = self.field("config_path_mac")
         linux_path = self.field("config_path_linux")
         windows_path = self.field("config_path_win")
 
-        # pass the paths to the wizard and make sure they are ok
+        if sys.platform == "darwin":
+            current_os_path = macosx_path
+        elif sys.platform == "win32":
+            current_os_path = windows_path
+        elif sys.platform.startswith("linux2"):
+            current_os_path = linux_path
+
+        # check if the path for the current os passes basic validation
         wiz = self.wizard()
+        if not current_os_path or not os.path.isabs(current_os_path):
+            wiz.ui.config_location_errors.setText("Path must be an absolute path.")
+            return False
+
+        # prompt to create the path if it does not exist
+        if not os.path.exists(current_os_path):
+            # prompt for permission
+            message = "Path does not exist. Try to create it?\n\n %s" % current_os_path
+            response = QtGui.QMessageBox.warning(
+                self, "Create paths", message,
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.Yes)
+            if response == QtGui.QMessageBox.No:
+                return False
+
+            try:
+                os.makedirs(current_os_path)
+            except Exception, e:
+                # could not create the directories, report and bail
+                message = "Got the following error creating the directory:\n %s" % str(e)
+                QtGui.QMessageBox.critical(self, "Error creating directories.", message)
+                return False
+
+        # pass the paths to the wizard and make sure they are ok
         try:
+            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            wiz.core_wizard.validate_configuration_location(linux_path, windows_path, macosx_path)
             wiz.core_wizard.set_configuration_location(linux_path, windows_path, macosx_path)
-            wiz.core_wizard._params.validate_config_io()
             wiz.ui.config_location_errors.setText("")
-            QtGui.QApplication.restoreOverrideCursor()
         except Exception, e:
             wiz.ui.config_location_errors.setText(str(e))
-            QtGui.QApplication.restoreOverrideCursor()
             return False
+        finally:
+            QtGui.QApplication.restoreOverrideCursor()
 
         return True

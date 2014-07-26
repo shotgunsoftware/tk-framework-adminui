@@ -435,6 +435,45 @@ QLabel {
     </item>
    </layout>
   </widget>
+  <widget class="StorageLocationsPage" name="storage_locations_page">
+   <property name="title">
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select Data Locations&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+   </property>
+   <property name="subTitle">
+    <string>Lorem ispum dolor sitLorm ispum dolor sit Lorem</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="1" column="0">
+     <widget class="QLabel" name="storage_note">
+      <property name="text">
+       <string>* Note: For toolkit to work enable linking to local files must be enabled in the File Management section of your Shotgun Preferences.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="openExternalLinks">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="storage_errors">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(231, 109, 125);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="ProjectNamePage" name="project_name_page">
    <property name="title">
     <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Enter Project Name &lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
@@ -793,6 +832,12 @@ QLabel {
    <class>ProgressPage</class>
    <extends>QWizardPage</extends>
    <header>..setup_project.progress_page.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StorageLocationsPage</class>
+   <extends>QWizardPage</extends>
+   <header>..setup_project.storage_locations_page.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -157,6 +157,23 @@ class Ui_Wizard(object):
         spacerItem6 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_2.addItem(spacerItem6, 1, 0, 1, 1)
         Wizard.addPage(self.disk_config_page)
+        self.storage_locations_page = StorageLocationsPage()
+        self.storage_locations_page.setObjectName("storage_locations_page")
+        self.gridLayout_4 = QtGui.QGridLayout(self.storage_locations_page)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.storage_note = QtGui.QLabel(self.storage_locations_page)
+        self.storage_note.setWordWrap(True)
+        self.storage_note.setOpenExternalLinks(True)
+        self.storage_note.setObjectName("storage_note")
+        self.gridLayout_4.addWidget(self.storage_note, 1, 0, 1, 1)
+        self.storage_errors = QtGui.QLabel(self.storage_locations_page)
+        self.storage_errors.setStyleSheet("color: rgb(231, 109, 125);")
+        self.storage_errors.setText("")
+        self.storage_errors.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.storage_errors.setWordWrap(True)
+        self.storage_errors.setObjectName("storage_errors")
+        self.gridLayout_4.addWidget(self.storage_errors, 0, 0, 1, 1)
+        Wizard.addPage(self.storage_locations_page)
         self.project_name_page = ProjectNamePage()
         self.project_name_page.setObjectName("project_name_page")
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.project_name_page)
@@ -323,6 +340,9 @@ class Ui_Wizard(object):
         self.path.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.path.setPlaceholderText(QtGui.QApplication.translate("Wizard", "/Path/To/Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.disk_browse_button.setText(QtGui.QApplication.translate("Wizard", "&Browse...", None, QtGui.QApplication.UnicodeUTF8))
+        self.storage_locations_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>Select Data Locations</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.storage_locations_page.setSubTitle(QtGui.QApplication.translate("Wizard", "Lorem ispum dolor sitLorm ispum dolor sit Lorem", None, QtGui.QApplication.UnicodeUTF8))
+        self.storage_note.setText(QtGui.QApplication.translate("Wizard", "* Note: For toolkit to work enable linking to local files must be enabled in the File Management section of your Shotgun Preferences.", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>Enter Project Name </font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name_page.setSubTitle(QtGui.QApplication.translate("Wizard", "Lorem ispum dolor sitLorm ispum dolor sit Lorem", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Enter a valid project name.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
@@ -348,6 +368,7 @@ from ..setup_project.setup_type_page import SetupTypePage
 from ..setup_project.config_location_page import ConfigLocationPage
 from ..setup_project.project_config_page import ProjectConfigPage
 from ..setup_project.github_config_page import GithubConfigPage
+from ..setup_project.storage_locations_page import StorageLocationsPage
 from ..setup_project.disk_config_page import DiskConfigPage
 from ..setup_project.project_name_page import ProjectNamePage
 from ..setup_project.progress_page import ProgressPage

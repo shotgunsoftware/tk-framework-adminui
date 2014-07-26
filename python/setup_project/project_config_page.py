@@ -20,17 +20,17 @@ from sgtk.platform import constants
 from .project_model import ProjectModel
 from .project_delegate import ProjectDelegate
 
-from .base_page import BasePage
+from .base_page import UriSelectionPage
 
 
-class ProjectConfigPage(BasePage):
+class ProjectConfigPage(UriSelectionPage):
     """ Page to base a configuration on that of another project's. """
     def __init__(self, parent=None):
-        BasePage.__init__(self, parent)
-        self._valid_selection = False
+        UriSelectionPage.__init__(self, parent)
+        self._project_config_path = None
 
     def setup_ui(self, page_id):
-        BasePage.setup_ui(self, page_id)
+        UriSelectionPage.setup_ui(self, page_id)
 
         # setup the model and delegate for the list view
         wiz = self.wizard()
@@ -44,59 +44,61 @@ class ProjectConfigPage(BasePage):
         selection.selectionChanged.connect(self._on_selection_changed)
 
     def _on_selection_changed(self, selected, deselected):
+        """ Get the path to the config for the project that was just selected. """
         # turn on wait cursor
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
-        wiz = self.wizard()
-        indexes = selected.indexes()
-        if len(indexes) == 0:
-            # selection has been cleared, reset the config uri
-            self._valid_selection = False
-            wiz.core_wizard.set_config_uri(None)
-        else:
-            # get the primary config path from Shotgun for the selected project
-            project_id = indexes[0].data(ProjectModel.PROJECT_ID_ROLE)
-            sg = shotgun.create_sg_connection()
+        try:
+            self._project_config_path = None
+            indexes = selected.indexes()
+            if indexes:
+                # get the primary config path from Shotgun for the selected project
+                project_id = indexes[0].data(ProjectModel.PROJECT_ID_ROLE)
+                sg = shotgun.create_sg_connection()
 
-            filters = [
-                ["code", "is", constants.PRIMARY_PIPELINE_CONFIG_NAME],
-                ["project", "is", {"type": "Project", "id": project_id}],
-            ]
-            fields = ["code", "mac_path", "windows_path", "linux_path"]
-            configuration = sg.find_one(
-                constants.PIPELINE_CONFIGURATION_ENTITY, filters, fields=fields)
+                filters = [
+                    ["code", "is", constants.PRIMARY_PIPELINE_CONFIG_NAME],
+                    ["project", "is", {"type": "Project", "id": project_id}],
+                ]
+                fields = ["code", "mac_path", "windows_path", "linux_path"]
+                configuration = sg.find_one(
+                    constants.PIPELINE_CONFIGURATION_ENTITY, filters, fields=fields)
 
-            config_uri = None
-            if configuration is not None:
-                if sys.platform == "win32":
-                    config_uri = configuration.get("windows_path")
-                elif sys.platform == "darwin":
-                    config_uri = configuration.get("mac_path")
-                elif sys.platform.startswith("linux"):
-                    config_uri = configuration.get("linux_path")
+                if configuration is not None:
+                    if sys.platform == "win32":
+                        self._project_config_path = configuration.get("windows_path")
+                    elif sys.platform == "darwin":
+                        self._project_config_path = configuration.get("mac_path")
+                    elif sys.platform.startswith("linux"):
+                        self._project_config_path = configuration.get("linux_path")
 
-            if config_uri:
-                # got back a value, validate it
-                config_uri = os.path.join(config_uri, "config")
-                try:
-                    # test the config and clear errors on success
-                    wiz.core_wizard.set_config_uri(config_uri)
-                    self._valid_selection = True
-                    wiz.ui.project_errors.setText("")
-                except Exception, e:
-                    self._valid_selection = False
-                    wiz.ui.project_errors.setText(str(e))
-            else:
-                # did not get a valid configuration
-                self._valid_selection = False
+            if not self._project_config_path:
+                wiz = self.wizard()
                 project_name = indexes[0].data(ProjectModel.DISPLAY_NAME_ROLE)
                 wiz.ui.project_errors.setText("Could not load configuration for '%s'" % project_name)
-
-        # restore the regular cursor
-        QtGui.QApplication.restoreOverrideCursor()
+        finally:
+            # restore the regular cursor
+            QtGui.QApplication.restoreOverrideCursor()
 
         # signal the wizard that the Next button's state may have changed
         self.completeChanged.emit()
 
+    def validatePage(self):
+        if not self._project_config_path:
+            return False
+
+        # got back a value, validate it
+        wiz = self.wizard()
+        config_uri = os.path.join(self._project_config_path, "config")
+        try:
+            # test the config and clear errors on success
+            self._storage_locations_page.set_uri(config_uri)
+            wiz.ui.project_errors.setText("")
+            return True
+        except Exception, e:
+            self._valid_selection = False
+            wiz.ui.project_errors.setText(str(e))
+            return False
+
     def isComplete(self):
-        return self._valid_selection
+        return bool(self._project_config_path)

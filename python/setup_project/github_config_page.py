@@ -8,16 +8,19 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import random
+
 from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
-from .base_page import BasePage
+from .base_page import UriSelectionPage
+from ..ui import resources_rc
 
 
-class GithubConfigPage(BasePage):
+class GithubConfigPage(UriSelectionPage):
     """ Page to base a configuration on a github repo. """
     def setup_ui(self, page_id):
-        BasePage.setup_ui(self, page_id)
+        UriSelectionPage.setup_ui(self, page_id)
         wiz = self.wizard()
 
         # set the default text
@@ -25,23 +28,34 @@ class GithubConfigPage(BasePage):
         wiz.ui.github_url.setText(default_text)
         wiz.ui.github_url.setSelection(0, len(default_text))
 
-    def validatePage(self):
-        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+    def initializePage(self):
+        # pick a random octocat
+        cats = []
+        dir_iter = QtCore.QDirIterator(
+            ":tk-framework-adminui/setup_project/octocats", QtCore.QDirIterator.Subdirectories)
 
+        cat = dir_iter.next()
+        while cat:
+            cats.append(cat)
+            cat = dir_iter.next()
+
+        if cats:
+            selected = random.choice(cats)
+            wiz = self.wizard()
+            wiz.ui.octocat.setPixmap(selected)
+
+    def validatePage(self):
         wiz = self.wizard()
         uri = self.field("github_url")
         if not uri.endswith(".git"):
             wiz.ui.github_errors.setText("Error, the url does not end in '.git'")
-            QtGui.QApplication.restoreOverrideCursor()
             return False
 
         try:
-            wiz.core_wizard.set_config_uri(uri)
+            self._storage_locations_page.set_uri(uri)
             wiz.ui.github_errors.setText("")
-            QtGui.QApplication.restoreOverrideCursor()
         except Exception, e:
             wiz.ui.github_errors.setText(str(e))
-            QtGui.QApplication.restoreOverrideCursor()
             return False
 
         return True
