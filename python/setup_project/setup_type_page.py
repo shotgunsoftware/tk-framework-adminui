@@ -9,12 +9,11 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 from sgtk.platform.qt import QtGui
-from sgtk.platform import constants
 
-from .base_page import UriSelectionPage
+from .base_page import BasePage
 
 
-class SetupTypePage(UriSelectionPage):
+class SetupTypePage(BasePage):
     """ Page to choose what configuration type to use. """
     STANDARD_ID = 0
     PROJECT_ID = 1
@@ -22,13 +21,14 @@ class SetupTypePage(UriSelectionPage):
     DISK_ID = 3
 
     def __init__(self, parent=None):
-        UriSelectionPage.__init__(self, parent)
+        BasePage.__init__(self, parent)
         self._disk_page_id = None
         self._github_page_id = None
         self._project_page_id = None
+        self._default_configs_page_id = None
 
     def setup_ui(self, page_id):
-        UriSelectionPage.setup_ui(self, page_id)
+        BasePage.setup_ui(self, page_id)
 
         # Setup buttongroup by hand since in PySide it breaks the ui compilation
         wiz = self.wizard()
@@ -50,26 +50,15 @@ class SetupTypePage(UriSelectionPage):
         """ Set the page to switch to if disk location is selected. """
         self._disk_page_id = page.page_id()
 
-    def validatePage(self):
-        selected_id = self._config_type_button_group.checkedId()
-        if selected_id != self.STANDARD_ID:
-            # everything other than standard id goes through more steps to figure out the config uri
-            return True
-
-        # need to validate the standard config
-        try:
-            self._storage_locations_page.set_uri(constants.DEFAULT_CFG)
-        except Exception, e:
-            QtGui.QMessageBox.critical(
-                None, "Error validating the default configuration.",
-                "Could not use the default configuration.\n%s\nEmail support for help." % str(e))
-            return False
-
-        return True
+    def set_default_configs_page(self, page):
+        """ Set the page to switch to if default config is selected. """
+        self._default_configs_page_id = page.page_id()
 
     def nextId(self):
         # return the appropriate id for the current selection
         selection = self._config_type_button_group.checkedId()
+        if (selection == 0) and self._default_configs_page_id is not None:
+            return self._default_configs_page_id
         if (selection == 1) and self._project_page_id is not None:
             return self._project_page_id
         elif (selection == 2) and self._github_page_id is not None:
@@ -77,4 +66,4 @@ class SetupTypePage(UriSelectionPage):
         elif (selection == 3) and self._disk_page_id is not None:
             return self._disk_page_id
 
-        return UriSelectionPage.nextId(self)
+        return BasePage.nextId(self)

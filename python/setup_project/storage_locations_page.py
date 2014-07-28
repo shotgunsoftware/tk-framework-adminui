@@ -65,12 +65,10 @@ class StorageLocationsPage(BasePage):
             # pass exceptions from this up so each page can deal with them in a page specific way
             wiz = self.wizard()
             self._storage_info = wiz.core_wizard.validate_config_uri(uri)
+            self._setup_widgets()
 
-            if self.show_page():
-                # going to show the page, set up the gui
-                self._setup_widgets()
-            else:
-                # everything is all setup, actually set the uri
+            if not self.show_page():
+                # everything is all setup and this page will be skipped, actually set the uri
                 wiz.core_wizard.set_config_uri(self._uri)
         finally:
             QtGui.QApplication.restoreOverrideCursor()
@@ -84,17 +82,22 @@ class StorageLocationsPage(BasePage):
         # clear the layout
         layout = self.layout()
         layout.setColumnStretch(1, 1)
-        for i in range(layout.count()):
-            w = layout.takeAt(0)
-            if w not in designer_widgets:
-                del w
+        item = layout.takeAt(0)
+        while item:
+            widget = item.widget()
+            if widget and widget not in designer_widgets:
+                widget.hide()
+                del widget
+            del item
+            item = layout.takeAt(0)
+
         self._store_path_widgets = {}
 
         # Setup a group of line edits per storage
         os_specifics = [
             ("Mac", "darwin", sys.platform == "darwin"),
-            ("Windows", "win32", sys.platform == "win32"),
             ("Linux", "linux2", sys.platform.startswith("linux")),
+            ("Windows", "win32", sys.platform == "win32"),
         ]
 
         row = 0
@@ -104,11 +107,17 @@ class StorageLocationsPage(BasePage):
                 continue
 
             # setup title and subtitle
-            store_title = QtGui.QLabel("<big>%s</big>" % store_name.title(), self)
+            store_title = QtGui.QLabel("<p style='font-size: 16px'>%s</p>" % store_name.title(), self)
             layout.addWidget(store_title, row, 0, 1, 3)
-            store_subtitle = QtGui.QLabel(store_info["description"], self)
+            store_subtitle = QtGui.QLabel(
+                "<p style='color: rgb(160, 160, 160);'>%s</p>" % store_info["description"], self)
             layout.addWidget(store_subtitle, row+1, 0, 1, 3)
             row += 2
+
+            # add a spacer between storages
+            spacer = QtGui.QSpacerItem(10, 10, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+            layout.addItem(spacer, row, 0, 1, 3)
+            row += 1
 
             # setup the operating systems
             self._store_path_widgets[store_name] = {}
@@ -160,6 +169,11 @@ class StorageLocationsPage(BasePage):
                     layout.addWidget(os_path, row, 1, 1, 2)
                 row += 1
 
+            # add a spacer between storages
+            spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+            layout.addItem(spacer, row, 0, 1, 3)
+            row += 1
+
         # add a spacer since PySide uic compilation doesn't track spacers in a code accessible way
         spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         layout.addItem(spacer, row, 0, 1, 3)
@@ -206,8 +220,10 @@ class StorageLocationsPage(BasePage):
                         (windows_path, "win32", "windows_path"),
                         (linux_path, "linux2", "linux_path")]:
                     if os_path and os_path != store_info[os_key]:
-                        if os.path.isabs(os_path):
-                            # path was defined, changed, and valid.  Add it to the update data
+                        if not (os_key == current_os) or os.path.isabs(os_path):
+                            # path is changed
+                            # check that it is an absolute path for the current os
+                            # if so, then update
                             update_data[sg_key] = os_path
                         else:
                             # path is not valid, add it to the list of invalids

@@ -34,6 +34,7 @@ class ProjectNamePage(BasePage):
             # update where the project folders will be for the given name
             wiz.core_wizard.set_project_disk_name(name)
             project_paths_dict = wiz.core_wizard.preview_project_paths(name)
+            print project_paths_dict
             paths = []
             for platform in ["darwin", "linux2", "win32"]:
                 for root in project_paths_dict:
@@ -41,11 +42,11 @@ class ProjectNamePage(BasePage):
                         paths.append(project_paths_dict[root][platform])
             formatted_paths = """
                 <html><head/><body>
-                <p><span style="font-size:18px;">Project Directories will be:</span></p>
-                <p>
+                <p><span style="font-size:18px;">Preview:</span></p>
+                <p style="line-height: 130%%">
                 %s
                 </p></body></html>
-            """ % "<br/><br/>\n".join(paths)
+            """ % "<br/>\n".join(paths)
             wiz.ui.project_directories.setText(formatted_paths)
             wiz.ui.project_name_errors.setText("")
             self.name_valid = True
