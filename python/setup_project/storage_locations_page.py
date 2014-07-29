@@ -20,174 +20,114 @@ from .base_page import BasePage
 
 class StorageLocationsPage(BasePage):
     """ Page to collect the needed storages for the selected config. """
-    def __init__(self, parent=None):
+    def __init__(self, store_name, store_info, uri, parent=None):
         BasePage.__init__(self, parent)
 
-        self._uri = None
-        self._storage_info = None
-        self._store_path_widgets = {}
+        # initialize member variables
+        self._uri = uri
+        self._store_name = store_name
+        self._store_info = store_info
+        self._last_page = False
 
-    def _is_store_valid(self, store_info):
-        """ returns True if the store should be valid.  False otherwise """
-        return store_info["exists_on_disk"] and store_info["defined_in_shotgun"]
+        # setup the UI
+        layout = QtGui.QGridLayout(self)
+        layout.setContentsMargins(25, 20, 25, 20)
+        self.setTitle("<p></p><font size=18>Define %s Storage</font><p></p>" % store_name.title())
+        self.setSubTitle(
+            """<p style=\"line-height: 130%\">Specify where you want Shotgun to store files on disk.</p>""")
 
-    def show_page(self):
-        """ Returns true if the config needs primary storages setup. """
-        if self._storage_info is None:
-            # no storages set, don't show the page
-            return False
+        # setup a label to describe the storage
+        description = QtGui.QLabel(self)
+        description.setWordWrap(True)
+        description.setText("%s: %s" % (store_name.title(), store_info["description"]))
+        layout.addWidget(description, 0, 0, 1, 3)
 
-        # see if any of the storages need to be created or if the paths are invalid
-        for info in self._storage_info.values():
-            if not self._is_store_valid(info):
-                return True
-
-        # everything is valid, no need to show the page
-        return False
-
-    def set_uri(self, uri):
-        """
-        Set the uri for the wizard.
-
-        This will validate the uri and if it is valid and all the storages are
-        valid then it will set the uri.
-
-        If the uri is not valid, then the exception that validation raises is passed up.
-
-        If the uri is valid, but the storages are not, then the uri is cached and this
-        page signals that it needs to be shown.  The uri will be set upon successful
-        configuration of all of the needed storages.
-        """
-        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-        try:
-            self._uri = uri
-
-            # pass exceptions from this up so each page can deal with them in a page specific way
-            wiz = self.wizard()
-            self._storage_info = wiz.core_wizard.validate_config_uri(uri)
-            self._setup_widgets()
-
-            if not self.show_page():
-                # everything is all setup and this page will be skipped, actually set the uri
-                wiz.core_wizard.set_config_uri(self._uri)
-        finally:
-            QtGui.QApplication.restoreOverrideCursor()
-
-    def _setup_widgets(self):
-        """ clear and setup the widgets on the page to reflect the current storage info """
-        # widgets that are static, created from designer
-        wiz = self.wizard()
-        designer_widgets = [wiz.ui.storage_errors, wiz.ui.storage_note]
-
-        # clear the layout
-        layout = self.layout()
-        layout.setColumnStretch(1, 1)
-        item = layout.takeAt(0)
-        while item:
-            widget = item.widget()
-            if widget and widget not in designer_widgets:
-                widget.hide()
-                del widget
-            del item
-            item = layout.takeAt(0)
-
-        self._store_path_widgets = {}
+        # add a spacer between storages
+        spacer = QtGui.QSpacerItem(10, 10, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        layout.addItem(spacer, 1, 0, 1, 3)
 
         # Setup a group of line edits per storage
         os_specifics = [
+            # (Label, info_key, current_os)
             ("Mac", "darwin", sys.platform == "darwin"),
             ("Linux", "linux2", sys.platform.startswith("linux")),
             ("Windows", "win32", sys.platform == "win32"),
         ]
 
-        row = 0
-        for (store_name, store_info) in self._storage_info.iteritems():
-            # see if we don't need to do anything for this storage
-            if self._is_store_valid(store_info):
-                continue
+        self._store_path_widgets = {}
+        for (i, (os_display, os_key, os_current)) in enumerate(os_specifics):
+            # setup the os widgets
+            os_label = QtGui.QLabel("%s:" % os_display, self)
+            os_path = QtGui.QLineEdit(self)
 
-            # setup title and subtitle
-            store_title = QtGui.QLabel("<p style='font-size: 16px'>%s</p>" % store_name.title(), self)
-            layout.addWidget(store_title, row, 0, 1, 3)
-            store_subtitle = QtGui.QLabel(
-                "<p style='color: rgb(160, 160, 160);'>%s</p>" % store_info["description"], self)
-            layout.addWidget(store_subtitle, row+1, 0, 1, 3)
-            row += 2
+            # populate with existing paths
+            if store_info[os_key]:
+                os_path.setText(store_info[os_key])
 
-            # add a spacer between storages
-            spacer = QtGui.QSpacerItem(10, 10, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-            layout.addItem(spacer, row, 0, 1, 3)
-            row += 1
+            # don't allow editing data from Shotgun, too dangerous
+            if store_info["defined_in_shotgun"] and store_info[os_key]:
+                os_path.setReadOnly(True)
+                os_path.setEnabled(False)
+                os_path.setToolTip(
+                    "Can not edit paths defined Shotgun. This has to be changed in Shotgun's preferences.")
 
-            # setup the operating systems
-            self._store_path_widgets[store_name] = {}
-            for (os_display, os_key, os_current) in os_specifics:
-                # setup the os widgets
-                os_label = QtGui.QLabel("%s:" % os_display, self)
-                os_path = QtGui.QLineEdit(self)
+            # keep around the line edits for validation
+            self._store_path_widgets[os_key] = os_path
 
-                # populate with existing paths
-                if store_info[os_key]:
-                    os_path.setText(store_info[os_key])
+            # only create the browse button for the current os if
+            #  the storage is not in Shotgun or
+            #  the storage is blank in Shotgun
+            create_browse = os_current and (
+                not store_info["defined_in_shotgun"] or
+                (store_info["defined_in_shotgun"] and not store_info[os_key]))
+            if create_browse:
+                os_button = QtGui.QPushButton("Browse...", self)
 
-                # don't allow editing data from Shotgun, too dangerous
-                if store_info["defined_in_shotgun"] and store_info[os_key]:
-                    os_path.setReadOnly(True)
-                    os_path.setEnabled(False)
+                # connect the button to populate the os specific path
+                def generate_on_browse_clicked(path_widget):
+                    # generate the slot as a closure to capture the current widget
+                    def ret():
+                        storage_dir = QtGui.QFileDialog.getExistingDirectory(
+                            self, "Choose storage root", None,
+                            QtGui.QFileDialog.ShowDirsOnly |
+                            QtGui.QFileDialog.DontConfirmOverwrite)
+                        path_widget.setText(storage_dir)
+                    return ret
+                os_button.pressed.connect(generate_on_browse_clicked(os_path))
 
-                # keep around the line edits for validation
-                self._store_path_widgets[store_name][os_key] = os_path
-
-                # only create the browse button for the current os if
-                #  the storage is not in Shotgun or
-                #  the storage is blank in Shotgun
-                create_browse = os_current and (
-                    not store_info["defined_in_shotgun"] or
-                    (store_info["defined_in_shotgun"] and not store_info[os_key])
-                )
-                if create_browse:
-                    os_button = QtGui.QPushButton("Browse...", self)
-
-                    # connect the button to populate the os specific path
-                    def generate_on_browse_clicked(path_widget):
-                        # generate the slot as a closure to capture the current widget
-                        def ret():
-                            storage_dir = QtGui.QFileDialog.getExistingDirectory(
-                                self, "Choose storage root", None,
-                                QtGui.QFileDialog.ShowDirsOnly |
-                                QtGui.QFileDialog.DontConfirmOverwrite)
-                            path_widget.setText(storage_dir)
-                        return ret
-                    os_button.pressed.connect(generate_on_browse_clicked(os_path))
-
-                # add the widgets to the layout
-                layout.addWidget(os_label, row, 0, 1, 1)
-                if create_browse:
-                    layout.addWidget(os_path, row, 1, 1, 1)
-                    layout.addWidget(os_button, row, 2, 1, 1)
-                else:
-                    layout.addWidget(os_path, row, 1, 1, 2)
-                row += 1
-
-            # add a spacer between storages
-            spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-            layout.addItem(spacer, row, 0, 1, 3)
-            row += 1
+            # add the widgets to the layout
+            layout.addWidget(os_label, 2+i, 0, 1, 1)
+            if create_browse:
+                layout.addWidget(os_path, 2+i, 1, 1, 1)
+                layout.addWidget(os_button, 2+i, 2, 1, 1)
+            else:
+                layout.addWidget(os_path, 2+i, 1, 1, 2)
 
         # add a spacer since PySide uic compilation doesn't track spacers in a code accessible way
         spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        layout.addItem(spacer, row, 0, 1, 3)
-        row += 1
+        layout.addItem(spacer, 5, 0, 1, 3)
 
-        # reset the designer widgets so they are placed correctly
-        for w in designer_widgets:
-            layout.addWidget(w, row, 0, 1, 3)
-            row += 1
+        # setup a place to report errors
+        self.storage_errors = QtGui.QLabel(self)
+        self.storage_errors.setWordWrap(True)
+        self.storage_errors.setStyleSheet("color: rgb(231, 109, 125);")
+        self.storage_errors.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        layout.addWidget(self.storage_errors, 6, 0, 1, 3)
+
+        # add a note to the bottom of the UI
+        storage_note = QtGui.QLabel(self)
+        storage_note.setWordWrap(True)
+        storage_note.setText("*Linking to local files must be enabled in your Shotgun Preferences.")
+        layout.addWidget(storage_note, 7, 0, 1, 3)
+
+    def set_next_page(self, page, last_page=False):
+        """ Override which page comes next """
+        BasePage.set_next_page(self, page)
+        self._last_page = last_page
 
     def validatePage(self):
         # clear any errors
-        wiz = self.wizard()
-        wiz.ui.storage_errors.setText("")
+        self.storage_errors.setText("")
 
         # get the os key for the current platform
         current_os = sys.platform
@@ -195,87 +135,77 @@ class StorageLocationsPage(BasePage):
             current_os = "linux2"
 
         # gather the different kinds of operations we might have to do
-        invalid = []
-        not_on_disk = []
-        update_in_shotgun = []
-        create_in_shotgun = []
-        invalid_in_shotgun = []
-        for (store_name, store_info) in self._storage_info.iteritems():
-            # only do work for invalid stores
-            if self._is_store_valid(store_info):
-                continue
+        invalid = False
+        not_on_disk = None
+        update_in_shotgun = {}
+        create_in_shotgun = {}
+        invalid_in_shotgun = False
 
-            # grab the path for the operating systems
-            current_os_path = str(self._store_path_widgets[store_name][current_os].text())
-            mac_path = str(self._store_path_widgets[store_name]["darwin"].text())
-            windows_path = str(self._store_path_widgets[store_name]["win32"].text())
-            linux_path = str(self._store_path_widgets[store_name]["linux2"].text())
+        # grab the path for the operating systems
+        current_os_path = str(self._store_path_widgets[current_os].text())
+        mac_path = str(self._store_path_widgets["darwin"].text())
+        windows_path = str(self._store_path_widgets["win32"].text())
+        linux_path = str(self._store_path_widgets["linux2"].text())
 
-            if store_info["defined_in_shotgun"]:
-                # see if any shotgun values have changed
-                # only values that started blank were set to read/write
-                update_data = {}
-                for (os_path, os_key, sg_key) in [
-                        (mac_path, "darwin", "mac_path"),
-                        (windows_path, "win32", "windows_path"),
-                        (linux_path, "linux2", "linux_path")]:
-                    if os_path and os_path != store_info[os_key]:
-                        if not (os_key == current_os) or os.path.isabs(os_path):
-                            # path is changed
-                            # check that it is an absolute path for the current os
-                            # if so, then update
-                            update_data[sg_key] = os_path
-                        else:
-                            # path is not valid, add it to the list of invalids
-                            invalid.append(store_name)
+        if self._store_info["defined_in_shotgun"]:
+            # see if any shotgun values have changed
+            # only values that started blank were set to read/write
+            for (os_path, os_key, sg_key) in [
+                    (mac_path, "darwin", "mac_path"),
+                    (windows_path, "win32", "windows_path"),
+                    (linux_path, "linux2", "linux_path")]:
+                if os_path and os_path != self._store_info[os_key]:
+                    if not (os_key == current_os) or os.path.isabs(os_path):
+                        # path is changed
+                        # check that it is an absolute path for the current os
+                        # if so, then update
+                        update_in_shotgun[sg_key] = os_path
+                    else:
+                        # path is not valid, add it to the list of invalids
+                        invalid = True
 
-                # if there were changes, add them to the update list
-                if update_data:
-                    update_data["code"] = store_name
-                    update_in_shotgun.append(update_data)
+            # if there were changes, add them to the update list
+            if update_in_shotgun:
+                update_in_shotgun["code"] = self._store_name
 
-                # special checks for current operating system
-                if current_os_path and os.path.isabs(current_os_path):
-                    if not os.path.exists(current_os_path):
-                        not_on_disk.append(current_os_path)
-                elif store_info[current_os] and current_os_path == store_info[current_os]:
-                    # path is invalid in Shotgun
-                    # (if it were changed and invalid it would be picked up above)
-                    invalid_in_shotgun.append((store_name, current_os_path))
+            # special checks for current operating system
+            if current_os_path and os.path.isabs(current_os_path):
+                if not os.path.exists(current_os_path):
+                    not_on_disk = current_os_path
+            elif self._store_info[current_os] and current_os_path == self._store_info[current_os]:
+                # path is invalid in Shotgun
+                # (if it were changed and invalid it would be picked up above)
+                invalid_in_shotgun = True
+        else:
+            # not in shotgun need to make sure the path is filled out and valid
+            if not current_os_path or not os.path.isabs(current_os_path):
+                invalid = True
             else:
-                # not in shotgun need to make sure the path is filled out and valid
-                if not current_os_path or not os.path.isabs(current_os_path):
-                    invalid.append(store_name)
-                else:
-                    # valid path, add to the create list
-                    create_in_shotgun.append({
-                        "code": store_name,
-                        "mac_path": mac_path,
-                        "windows_path": windows_path,
-                        "linux_path": linux_path,
-                    })
+                # valid path, add to the create list
+                create_in_shotgun = {
+                    "code": self._store_name,
+                    "mac_path": mac_path,
+                    "windows_path": windows_path,
+                    "linux_path": linux_path,
+                }
 
-                    # and see if we are going to have to create the path
-                    if not os.path.exists(current_os_path):
-                        not_on_disk.append(current_os_path)
+                # and see if we are going to have to create the path
+                if not os.path.exists(current_os_path):
+                    not_on_disk = current_os_path
 
-        # if anything is invalid in Shotgun, then we aren't going to be able to continue
+        # if the current path is invalid in Shotgun, then we aren't going to be able to continue
         if invalid_in_shotgun:
             # display a message about the invalid paths
-            message = "There are invalid paths in Shotgun.  Please correct the following in the " \
+            message = "The path for the current os is invalid in Shotgun.  Please correct it in the " \
                 "File Management section of your Shotgun preferences and then try setting up the " \
-                "project again:\n\n"
-            for (store_name, path) in invalid_in_shotgun:
-                message += "   %s - '%s'\n" % (store_name, path)
-            wiz.ui.storage_errors.setText(message)
+                "project again:\n\n%s" % current_os_path
+            self.storage_errors.setText(message)
             return False
 
         # if local paths don't exist see if we can create them
         if not_on_disk:
             # prompt for permission
-            message = "There are paths that do not exist.  Try to create them?\n\n"
-            for path in not_on_disk:
-                message += "  %s\n" % path
+            message = "The local path does not exist. Try to create it?\n\n%s" % not_on_disk
             response = QtGui.QMessageBox.warning(
                 self, "Create paths", message,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.Yes)
@@ -283,68 +213,49 @@ class StorageLocationsPage(BasePage):
                 return False
 
             # got the go ahead, try to create the directories
-            error_paths = []
-            for path in not_on_disk:
-                try:
-                    os.makedirs(path)
-                except Exception, e:
-                    error_paths.append((path, e))
-            if error_paths:
+            try:
+                os.makedirs(not_on_disk)
+            except Exception, e:
                 # could not create all the directories, report and bail
-                message = "Got the following errors creating the directories:\n"
-                for (path, error) in error_paths:
-                    message += "  %s - %s\n" % (path, str(error))
+                message = "Got the following errors creating the directory:\n%s" % str(e)
                 QtGui.QMessageBox.critical(self, "Error creating directories.", message)
                 return False
 
         # report if invalid paths were entered
         if invalid:
             error = "All paths must be filled out with absolute paths."
-            wiz.ui.storage_errors.setText(error)
+            self.storage_errors.setText(error)
             return False
 
-        # do creates and updates in shotgun
-        batch = []
+        # do create
         sg = shotgun.create_sg_connection()
-        batch.extend([{
-            "request_type": "create",
-            "entity_type": "LocalStorage",
-            "data": data,
-        } for data in create_in_shotgun])
+        if create_in_shotgun:
+            try:
+                sg.create("LocalStorage", create_in_shotgun)
+            except Exception, e:
+                self.storage_errors.setText("Error creating Storage in Shotgun:\n%s" % str(e))
+                return False
 
         # grab the ids for the local storages from Shotgun
         # NOTE: this is temporary until the store_info dictionary includes the id
         if update_in_shotgun:
-            local_stores = sg.find("LocalStorage", [], fields=["code", "id"])
-            local_store_map = dict([(s["code"], s["id"]) for s in local_stores])
-
-        batch.extend([{
-            "request_type": "update",
-            "entity_type": "LocalStorage",
-            "entity_id": local_store_map[data["code"]],
-            "data": data,
-        } for data in update_in_shotgun])
-
-        if batch:
             try:
-                sg.batch(batch)
+                local_stores = sg.find("LocalStorage", [], fields=["code", "id"])
+                local_store_map = dict([(s["code"], s["id"]) for s in local_stores])
+                sg.update("LocalStorage", local_store_map[update_in_shotgun["code"]], update_in_shotgun)
             except Exception, e:
-                if create_in_shotgun and update_in_shotgun:
-                    error = "Error creating and updating LocalStorage entities in Shotgun:\n%s" % str(e)
-                elif update_in_shotgun:
-                    error = "Error updating LocalStorage entities in Shotgun:\n%s" % str(e)
-                else:
-                    error = "Error creating LocalStorage entities in Shotgun:\n%s" % str(e)
-                wiz.ui.storage_errors.setText(error)
+                self.storage_errors.setText("Error updating Storage in Shotgun:\n%s" % str(e))
                 return False
 
         # if we made it here, then we should be all valid.  Try to set the config
-        try:
-            wiz.core_wizard.set_config_uri(self._uri)
-        except Exception, e:
-            error = "Unknown error when setting the configuration uri:\n%s" % str(e)
-            wiz.ui.storage_errors.setText(error)
-            return False
+        if self._last_page:
+            try:
+                wiz = self.wizard()
+                wiz.core_wizard.set_config_uri(self._uri)
+            except Exception, e:
+                error = "Unknown error when setting the configuration uri:\n%s" % str(e)
+                self.storage_errors.setText(error)
+                return False
 
         # uri all set and all storages now valid
         return True

@@ -11,9 +11,11 @@
 import logging
 
 from sgtk.platform.qt import QtGui
+from sgtk.platform.qt import QtCore
 
 from ..ui import setup_project
 from .emitting_handler import EmittingHandler
+from .storage_locations_page import StorageLocationsPage
 
 import sgtk
 
@@ -29,6 +31,9 @@ class SetupProjectWizard(QtGui.QWizard):
 
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
+
+        # initialize storage setup pages
+        self._storage_location_page_ids = []
 
         # setup logging
         self._logger = logging.getLogger("tk-framework-adminui.setup_project")
@@ -66,12 +71,6 @@ class SetupProjectWizard(QtGui.QWizard):
         self.ui.setup_type_page.set_github_page(self.ui.github_config_page)
         self.ui.setup_type_page.set_disk_page(self.ui.disk_config_page)
 
-        self.ui.default_configs_page.set_storage_locations_page(self.ui.storage_locations_page)
-        self.ui.project_config_page.set_storage_locations_page(self.ui.storage_locations_page)
-        self.ui.github_config_page.set_storage_locations_page(self.ui.storage_locations_page)
-        self.ui.disk_config_page.set_storage_locations_page(self.ui.storage_locations_page)
-
-        self.ui.storage_locations_page.set_next_page(self.ui.project_name_page)
         self.ui.project_name_page.set_next_page(self.ui.config_location_page)
         self.ui.config_location_page.set_next_page(self.ui.progress_page)
 
@@ -83,3 +82,48 @@ class SetupProjectWizard(QtGui.QWizard):
         self.setButtonText(self.FinishButton, "Done")
         self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
+
+    def _is_store_valid(self, store_info):
+        """ returns True if the store should be valid.  False otherwise """
+        return store_info["exists_on_disk"] and store_info["defined_in_shotgun"]
+
+    def set_config_uri(self, uri):
+        """ set the config uri and adjust the state of the wizard to reflect needed pages """
+        # clear the current storage pages
+        for storage_page_id in self._storage_location_page_ids:
+            self.removePage(storage_page_id)
+        self._storage_location_page_ids = []
+
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        try:
+            # validate the uri and get the required storages
+            # let any exceptions propagate up to the calling page to be handled
+            storage_info = self.core_wizard.validate_config_uri(uri)
+            for (store_name, store_info) in storage_info.iteritems():
+                if not self._is_store_valid(store_info):
+                    # storage is not available, show the page for it
+                    page = StorageLocationsPage(store_name, store_info, uri)
+                    page_id = self.addPage(page)
+                    self._storage_location_page_ids.append(page_id)
+                    page.setup_ui(page_id)
+
+                    # set the page flow if this is not the first page
+                    if len(self._storage_location_page_ids) > 1:
+                        previous_page = self.page(self._storage_location_page_ids[-2])
+                        previous_page.set_next_page(page, last_page=False)
+
+            current_page = self.currentPage()
+            if self._storage_location_page_ids:
+                # have storage pages
+                # let the last one know to set the uri on exit
+                last_page = self.page(self._storage_location_page_ids[-1])
+                last_page.set_next_page(self.ui.project_name_page, last_page=True)
+
+                # set the first storage page as the next page
+                first_page = self.page(self._storage_location_page_ids[0])
+                current_page.set_next_page(first_page)
+            else:
+                # no storage pages set the right next page
+                current_page.set_next_page(self.ui.project_name_page)
+        finally:
+            QtGui.QApplication.restoreOverrideCursor()

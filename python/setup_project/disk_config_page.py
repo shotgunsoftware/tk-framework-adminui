@@ -9,15 +9,14 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 from sgtk.platform.qt import QtGui
-from sgtk.platform.qt import QtCore
 
-from .base_page import UriSelectionPage
+from .base_page import BasePage
 
 
-class DiskConfigPage(UriSelectionPage):
+class DiskConfigPage(BasePage):
     """ Page to base a configuration on a disk location. """
     def setup_ui(self, page_id):
-        UriSelectionPage.setup_ui(self, page_id)
+        BasePage.setup_ui(self, page_id)
 
         wiz = self.wizard()
         wiz.ui.disk_browse_button.pressed.connect(self._on_browse_pressed)
@@ -34,7 +33,7 @@ class DiskConfigPage(UriSelectionPage):
         uri = self.field("disk_path")
         wiz = self.wizard()
         try:
-            self._storage_locations_page.set_uri(uri)
+            wiz.set_config_uri(uri)
             wiz.ui.disk_errors.setText("")
         except Exception, e:
             wiz.ui.disk_errors.setText(str(e))

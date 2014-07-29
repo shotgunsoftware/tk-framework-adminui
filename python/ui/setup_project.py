@@ -17,7 +17,7 @@ class Ui_Wizard(object):
         Wizard.setWindowIcon(icon)
         Wizard.setModal(True)
         Wizard.setWizardStyle(QtGui.QWizard.ModernStyle)
-        Wizard.setOptions(QtGui.QWizard.CancelButtonOnLeft|QtGui.QWizard.DisabledBackButtonOnLastPage|QtGui.QWizard.IndependentPages)
+        Wizard.setOptions(QtGui.QWizard.CancelButtonOnLeft|QtGui.QWizard.NoBackButtonOnLastPage)
         Wizard.setTitleFormat(QtCore.Qt.RichText)
         self.setup_type_page = SetupTypePage()
         self.setup_type_page.setStyleSheet("QRadioButton {\n"
@@ -221,24 +221,6 @@ class Ui_Wizard(object):
         spacerItem8 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_2.addItem(spacerItem8, 1, 0, 1, 1)
         Wizard.addPage(self.disk_config_page)
-        self.storage_locations_page = StorageLocationsPage()
-        self.storage_locations_page.setObjectName("storage_locations_page")
-        self.gridLayout_4 = QtGui.QGridLayout(self.storage_locations_page)
-        self.gridLayout_4.setContentsMargins(25, 20, 25, 20)
-        self.gridLayout_4.setObjectName("gridLayout_4")
-        self.storage_note = QtGui.QLabel(self.storage_locations_page)
-        self.storage_note.setWordWrap(True)
-        self.storage_note.setOpenExternalLinks(True)
-        self.storage_note.setObjectName("storage_note")
-        self.gridLayout_4.addWidget(self.storage_note, 1, 0, 1, 1)
-        self.storage_errors = QtGui.QLabel(self.storage_locations_page)
-        self.storage_errors.setStyleSheet("color: rgb(231, 109, 125);")
-        self.storage_errors.setText("")
-        self.storage_errors.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.storage_errors.setWordWrap(True)
-        self.storage_errors.setObjectName("storage_errors")
-        self.gridLayout_4.addWidget(self.storage_errors, 0, 0, 1, 1)
-        Wizard.addPage(self.storage_locations_page)
         self.project_name_page = ProjectNamePage()
         self.project_name_page.setObjectName("project_name_page")
         self.gridLayout_5 = QtGui.QGridLayout(self.project_name_page)
@@ -418,9 +400,6 @@ class Ui_Wizard(object):
         self.path.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.path.setPlaceholderText(QtGui.QApplication.translate("Wizard", "/Path/To/Configuration", None, QtGui.QApplication.UnicodeUTF8))
         self.disk_browse_button.setText(QtGui.QApplication.translate("Wizard", "&Browse...", None, QtGui.QApplication.UnicodeUTF8))
-        self.storage_locations_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>Define Storages</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
-        self.storage_locations_page.setSubTitle(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Specify where you want Shotgun to store files on disk.  If you use multiple operaing systems, enter the equivalent path for each.</p>", None, QtGui.QApplication.UnicodeUTF8))
-        self.storage_note.setText(QtGui.QApplication.translate("Wizard", "*Linking to local files must be enabled in your Shotgun Preferences.", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>Project Folder Name</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name_page.setSubTitle(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Enter the name you want to use for the Project folder on disk.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Enter a valid project name.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
@@ -428,7 +407,7 @@ class Ui_Wizard(object):
         self.project_name_label.setText(QtGui.QApplication.translate("Wizard", "Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.project_directories.setText(QtGui.QApplication.translate("Wizard", "<html><head/><body><p><span style=\" font-size:large;\">Preview:</span></p><p>/mnt/foo/bar</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.config_location_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>Select Pipeline Configuration Location</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
-        self.config_location_page.setSubTitle(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Specify where you want Shotgun to install your Project\'s pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.  This should be a place that everyone working on the Project can access.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.config_location_page.setSubTitle(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Specify where you want Shotgun to install your Project\'s pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_browse.setText(QtGui.QApplication.translate("Wizard", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_browse.setText(QtGui.QApplication.translate("Wizard", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_label.setText(QtGui.QApplication.translate("Wizard", "Mac:", None, QtGui.QApplication.UnicodeUTF8))
@@ -448,7 +427,6 @@ from ..setup_project.config_location_page import ConfigLocationPage
 from ..setup_project.project_config_page import ProjectConfigPage
 from ..setup_project.github_config_page import GithubConfigPage
 from ..setup_project.default_config_page import DefaultConfigPage
-from ..setup_project.storage_locations_page import StorageLocationsPage
 from ..setup_project.disk_config_page import DiskConfigPage
 from ..setup_project.project_name_page import ProjectNamePage
 from ..setup_project.progress_page import ProgressPage

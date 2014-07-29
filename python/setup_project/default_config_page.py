@@ -10,10 +10,10 @@
 
 from sgtk.platform.qt import QtGui
 
-from .base_page import UriSelectionPage
+from .base_page import BasePage
 
 
-class DefaultConfigPage(UriSelectionPage):
+class DefaultConfigPage(BasePage):
     """ Page to choose which default configuration to use. """
     DEFAULT_ID = 0
     MULTIROOT_ID = 1
@@ -26,10 +26,10 @@ class DefaultConfigPage(UriSelectionPage):
     }
 
     def __init__(self, parent=None):
-        UriSelectionPage.__init__(self, parent)
+        BasePage.__init__(self, parent)
 
     def setup_ui(self, page_id):
-        UriSelectionPage.setup_ui(self, page_id)
+        BasePage.setup_ui(self, page_id)
 
         # Setup buttongroup by hand since in PySide it breaks the ui compilation
         wiz = self.wizard()
@@ -44,7 +44,7 @@ class DefaultConfigPage(UriSelectionPage):
         wiz = self.wizard()
 
         try:
-            self._storage_locations_page.set_uri(uri)
+            wiz.set_config_uri(uri)
             wiz.ui.github_errors.setText("")
         except Exception, e:
             wiz.ui.default_configs_errors.setText(str(e))

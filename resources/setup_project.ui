@@ -24,7 +24,7 @@
    <enum>QWizard::ModernStyle</enum>
   </property>
   <property name="options">
-   <set>QWizard::CancelButtonOnLeft|QWizard::DisabledBackButtonOnLastPage|QWizard::IndependentPages</set>
+   <set>QWizard::CancelButtonOnLeft|QWizard::NoBackButtonOnLastPage</set>
   </property>
   <property name="titleFormat">
    <enum>Qt::RichText</enum>
@@ -646,57 +646,6 @@ QLabel {
     </item>
    </layout>
   </widget>
-  <widget class="StorageLocationsPage" name="storage_locations_page">
-   <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Define Storages&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
-   </property>
-   <property name="subTitle">
-    <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to store files on disk.  If you use multiple operaing systems, enter the equivalent path for each.&lt;/p&gt;</string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_4">
-    <property name="leftMargin">
-     <number>25</number>
-    </property>
-    <property name="topMargin">
-     <number>20</number>
-    </property>
-    <property name="rightMargin">
-     <number>25</number>
-    </property>
-    <property name="bottomMargin">
-     <number>20</number>
-    </property>
-    <item row="1" column="0">
-     <widget class="QLabel" name="storage_note">
-      <property name="text">
-       <string>*Linking to local files must be enabled in your Shotgun Preferences.</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-      <property name="openExternalLinks">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="storage_errors">
-      <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="ProjectNamePage" name="project_name_page">
    <property name="title">
     <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Project Folder Name&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
@@ -795,7 +744,7 @@ QLabel {
     <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select Pipeline Configuration Location&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.  This should be a place that everyone working on the Project can access.&lt;/p&gt;</string>
+    <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
     <property name="leftMargin">
@@ -1086,12 +1035,6 @@ QLabel {
    <class>ProgressPage</class>
    <extends>QWizardPage</extends>
    <header>..setup_project.progress_page.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>StorageLocationsPage</class>
-   <extends>QWizardPage</extends>
-   <header>..setup_project.storage_locations_page.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

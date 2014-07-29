@@ -34,7 +34,6 @@ class ProjectNamePage(BasePage):
             # update where the project folders will be for the given name
             wiz.core_wizard.set_project_disk_name(name)
             project_paths_dict = wiz.core_wizard.preview_project_paths(name)
-            print project_paths_dict
             paths = []
             for platform in ["darwin", "linux2", "win32"]:
                 for root in project_paths_dict:

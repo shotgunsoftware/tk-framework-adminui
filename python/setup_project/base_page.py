@@ -37,21 +37,3 @@ class BasePage(QtGui.QWizardPage):
             return QtGui.QWizardPage.nextId(self)
 
         return self._next_page_id
-
-
-class UriSelectionPage(BasePage):
-    """ Base page for Shotgun pages that specify and validate the config uri """
-    def __init__(self, parent=None):
-        BasePage.__init__(self, parent)
-        self._storage_locations_page = None
-
-    def set_storage_locations_page(self, page):
-        self._storage_locations_page = page
-
-    def nextId(self):
-        if self._storage_locations_page is not None and self._storage_locations_page.show_page():
-            # need to display the storage locations page
-            return self._storage_locations_page.page_id()
-
-        # all storages are accounted for, skip the storage locations page
-        return self._storage_locations_page.nextId()

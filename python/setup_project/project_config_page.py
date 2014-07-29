@@ -20,17 +20,17 @@ from sgtk.platform import constants
 from .project_model import ProjectModel
 from .project_delegate import ProjectDelegate
 
-from .base_page import UriSelectionPage
+from .base_page import BasePage
 
 
-class ProjectConfigPage(UriSelectionPage):
+class ProjectConfigPage(BasePage):
     """ Page to base a configuration on that of another project's. """
     def __init__(self, parent=None):
-        UriSelectionPage.__init__(self, parent)
+        BasePage.__init__(self, parent)
         self._project_config_path = None
 
     def setup_ui(self, page_id):
-        UriSelectionPage.setup_ui(self, page_id)
+        BasePage.setup_ui(self, page_id)
 
         # setup the model and delegate for the list view
         wiz = self.wizard()
@@ -75,7 +75,7 @@ class ProjectConfigPage(UriSelectionPage):
             if not self._project_config_path:
                 wiz = self.wizard()
                 project_name = indexes[0].data(ProjectModel.DISPLAY_NAME_ROLE)
-                wiz.ui.project_errors.setText("Could not load configuration for '%s'" % project_name)
+                wiz.ui.project_errors.setText("Could not find configuration for '%s'" % project_name)
         finally:
             # restore the regular cursor
             QtGui.QApplication.restoreOverrideCursor()
@@ -92,11 +92,10 @@ class ProjectConfigPage(UriSelectionPage):
         config_uri = os.path.join(self._project_config_path, "config")
         try:
             # test the config and clear errors on success
-            self._storage_locations_page.set_uri(config_uri)
+            wiz.set_config_uri(config_uri)
             wiz.ui.project_errors.setText("")
             return True
         except Exception, e:
-            self._valid_selection = False
             wiz.ui.project_errors.setText(str(e))
             return False
 

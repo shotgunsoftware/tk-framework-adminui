@@ -10,17 +10,16 @@
 
 import random
 
-from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
-from .base_page import UriSelectionPage
+from .base_page import BasePage
 from ..ui import resources_rc
 
 
-class GithubConfigPage(UriSelectionPage):
+class GithubConfigPage(BasePage):
     """ Page to base a configuration on a github repo. """
     def setup_ui(self, page_id):
-        UriSelectionPage.setup_ui(self, page_id)
+        BasePage.setup_ui(self, page_id)
         wiz = self.wizard()
 
         # set the default text
@@ -52,7 +51,7 @@ class GithubConfigPage(UriSelectionPage):
             return False
 
         try:
-            self._storage_locations_page.set_uri(uri)
+            wiz.set_config_uri(uri)
             wiz.ui.github_errors.setText("")
         except Exception, e:
             wiz.ui.github_errors.setText(str(e))
