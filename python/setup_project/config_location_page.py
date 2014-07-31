@@ -27,11 +27,43 @@ class ConfigLocationPage(BasePage):
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
 
-        # enable browse button for this os
+        # update the layout of the os specific widgets
         wiz = self.wizard()
+        ui = wiz.ui
+        os_widgets = [
+            (ui.linux_label, ui.linux_path, ui.linux_browse, sys.platform.startswith("linux")),
+            (ui.mac_label, ui.mac_path, ui.mac_browse, sys.platform == "darwin"),
+            (ui.windows_label, ui.windows_path, ui.windows_browse, sys.platform == "win32"),
+        ]
+
+        # current os first, then alphabetically
+        def os_key(element):
+            # return a key that sorts the os'es properly
+            (label, _, _, os_current) = element
+            return (not os_current, label.text())
+        os_widgets.sort(key=os_key)
+
+        # remove the widgets from the layout
+        for (label, path, browse, _) in os_widgets:
+            self.layout().removeWidget(label)
+            self.layout().removeWidget(path)
+            self.layout().removeWidget(browse)
+
+        # add them back in
+        offset = 1
+        for (row, (label, path, browse, os_current)) in enumerate(os_widgets):
+            self.layout().addWidget(label, row+offset, 0, 1, 1)
+            if os_current:
+                self.layout().addWidget(path, row+offset, 2, 1, 1)
+                self.layout().addWidget(browse, row+offset, 3, 1, 1)
+            else:
+                self.layout().addWidget(path, row+offset, 2, 1, 2)
+                browse.hide()
+
+        # enable browse button for this os
         if sys.platform == "darwin":
             browse = self.wizard().ui.mac_browse
-            self._path_label = wiz.ui.mac_path
+            self._path_label = ui.mac_path
             self._path_field = "config_path_mac"
         elif sys.platform == "win32":
             browse = self.wizard().ui.windows_browse
@@ -42,7 +74,6 @@ class ConfigLocationPage(BasePage):
             self._path_label = wiz.ui.linux_path
             self._path_field = "config_path_linux"
 
-        browse.setEnabled(True)
         browse.pressed.connect(self._on_browse_pressed)
 
     def _on_browse_pressed(self):
@@ -79,16 +110,8 @@ class ConfigLocationPage(BasePage):
             wiz.ui.config_location_errors.setText("Path must be an absolute path.")
             return False
 
-        # prompt to create the path if it does not exist
+        # create the path if it does not exist
         if not os.path.exists(current_os_path):
-            # prompt for permission
-            message = "Path does not exist. Try to create it?\n\n %s" % current_os_path
-            response = QtGui.QMessageBox.warning(
-                self, "Create paths", message,
-                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.Yes)
-            if response == QtGui.QMessageBox.No:
-                return False
-
             try:
                 os.makedirs(current_os_path)
             except Exception, e:

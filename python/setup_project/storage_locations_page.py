@@ -40,25 +40,34 @@ class StorageLocationsPage(BasePage):
         description = QtGui.QLabel(self)
         description.setWordWrap(True)
         description.setText("%s: %s" % (store_name.title(), store_info["description"]))
-        layout.addWidget(description, 0, 0, 1, 3)
+        layout.addWidget(description, 0, 0, 1, 4)
 
         # add a spacer between storages
         spacer = QtGui.QSpacerItem(10, 10, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        layout.addItem(spacer, 1, 0, 1, 3)
+        layout.addItem(spacer, 1, 0, 1, 4)
 
         # Setup a group of line edits per storage
         os_specifics = [
             # (Label, info_key, current_os)
-            ("Mac", "darwin", sys.platform == "darwin"),
-            ("Linux", "linux2", sys.platform.startswith("linux")),
-            ("Windows", "win32", sys.platform == "win32"),
+            ("Mac", "darwin", "/Path/On/Mac", sys.platform == "darwin"),
+            ("Linux", "linux2", "/path/on/linux", sys.platform.startswith("linux")),
+            ("Windows", "win32", "\\\\Path\\On\\Windows", sys.platform == "win32"),
         ]
 
+        # current os first, then alphabetically
+        def os_key(element):
+            # return a key that sorts the os'es properly
+            (os_display, _, _, os_current) = element
+            return (not os_current, os_display)
+        os_specifics.sort(key=os_key)
+
         self._store_path_widgets = {}
-        for (i, (os_display, os_key, os_current)) in enumerate(os_specifics):
+        for (i, (os_display, os_key, os_placeholder, os_current)) in enumerate(os_specifics):
             # setup the os widgets
-            os_label = QtGui.QLabel("%s:" % os_display, self)
+            os_label = QtGui.QLabel("%s" % os_display, self)
+            os_label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
             os_path = QtGui.QLineEdit(self)
+            os_path.setPlaceholderText(os_placeholder)
 
             # populate with existing paths
             if store_info[os_key]:
@@ -98,27 +107,27 @@ class StorageLocationsPage(BasePage):
             # add the widgets to the layout
             layout.addWidget(os_label, 2+i, 0, 1, 1)
             if create_browse:
-                layout.addWidget(os_path, 2+i, 1, 1, 1)
-                layout.addWidget(os_button, 2+i, 2, 1, 1)
+                layout.addWidget(os_path, 2+i, 2, 1, 1)
+                layout.addWidget(os_button, 2+i, 3, 1, 1)
             else:
-                layout.addWidget(os_path, 2+i, 1, 1, 2)
+                layout.addWidget(os_path, 2+i, 2, 1, 2)
 
         # add a spacer since PySide uic compilation doesn't track spacers in a code accessible way
         spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        layout.addItem(spacer, 5, 0, 1, 3)
+        layout.addItem(spacer, 5, 0, 1, 4)
 
         # setup a place to report errors
         self.storage_errors = QtGui.QLabel(self)
         self.storage_errors.setWordWrap(True)
         self.storage_errors.setStyleSheet("color: rgb(231, 109, 125);")
         self.storage_errors.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        layout.addWidget(self.storage_errors, 6, 0, 1, 3)
+        layout.addWidget(self.storage_errors, 6, 0, 1, 4)
 
         # add a note to the bottom of the UI
         storage_note = QtGui.QLabel(self)
         storage_note.setWordWrap(True)
         storage_note.setText("*Linking to local files must be enabled in your Shotgun Preferences.")
-        layout.addWidget(storage_note, 7, 0, 1, 3)
+        layout.addWidget(storage_note, 7, 0, 1, 4)
 
     def set_next_page(self, page, last_page=False):
         """ Override which page comes next """
@@ -202,17 +211,9 @@ class StorageLocationsPage(BasePage):
             self.storage_errors.setText(message)
             return False
 
-        # if local paths don't exist see if we can create them
+        # if local paths don't exist
         if not_on_disk:
-            # prompt for permission
-            message = "The local path does not exist. Try to create it?\n\n%s" % not_on_disk
-            response = QtGui.QMessageBox.warning(
-                self, "Create paths", message,
-                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.Yes)
-            if response == QtGui.QMessageBox.No:
-                return False
-
-            # got the go ahead, try to create the directories
+            # try to create the directories
             try:
                 os.makedirs(not_on_disk)
             except Exception, e:

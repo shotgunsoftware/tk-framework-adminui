@@ -80,8 +80,10 @@ class SetupProjectWizard(QtGui.QWizard):
         self.setButtonText(self.NextButton, "Continue")
         self.setButtonText(self.BackButton, "Back")
         self.setButtonText(self.FinishButton, "Done")
+        self.setButtonText(self.CommitButton, "Run Setup")
         self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
+        self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
 
     def _is_store_valid(self, store_info):
         """ returns True if the store should be valid.  False otherwise """
@@ -125,5 +127,8 @@ class SetupProjectWizard(QtGui.QWizard):
             else:
                 # no storage pages set the right next page
                 current_page.set_next_page(self.ui.project_name_page)
+
+                # actually set the uri
+                self.core_wizard.set_config_uri(uri)
         finally:
             QtGui.QApplication.restoreOverrideCursor()

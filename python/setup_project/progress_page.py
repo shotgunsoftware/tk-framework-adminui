@@ -36,8 +36,46 @@ class ProgressPage(BasePage):
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
 
+        # setup additional details behavior
+        self._down_arrow = QtGui.QIcon(":/tk-framework-adminui/setup_project/down_arrow.png")
+        self._right_arrow = QtGui.QIcon(":/tk-framework-adminui/setup_project/right_arrow.png")
+
         wiz = self.wizard()
-        wiz.ui.complete_icon.setVisible(False)
+        wiz.ui.progress_output.hide()
+        wiz.ui.additional_details_button.pressed.connect(self.additional_details_pressed)
+        wiz.ui.additional_details_button.setIcon(self._right_arrow)
+
+    def initializePage(self):
+        # disable the cancel and back buttons
+        wiz = self.wizard()
+        wiz.button(wiz.CancelButton).setVisible(False)
+        wiz.button(wiz.BackButton).setVisible(False)
+        wiz.button(wiz.FinishButton).setEnabled(False)
+        wiz.setButtonText(wiz.FinishButton, "Running...")
+
+        # setup for progress reporting
+        wiz.ui.progress.setValue(0)
+        wiz.core_wizard.set_progress_callback(self.progress_callback)
+
+        # run the thread
+        self.execute_thread = RunSetupThread(wiz.core_wizard)
+        self.execute_thread.success.connect(self._on_run_succeeded)
+        self.execute_thread.failure.connect(self._on_run_failed)
+        self.execute_thread.start()
+
+    def additional_details_pressed(self):
+        # handle the additional details toggle being pressed
+        wiz = self.wizard()
+        if wiz.ui.progress_output.isVisible():
+            # hide the additional details
+            wiz.ui.progress_output.hide()
+            wiz.ui.additional_details_button.setText("Show details")
+            wiz.ui.additional_details_button.setIcon(self._right_arrow)
+        else:
+            # show the additional details
+            wiz.ui.progress_output.show()
+            wiz.ui.additional_details_button.setText("Hide details")
+            wiz.ui.additional_details_button.setIcon(self._down_arrow)
 
     def append_log_message(self, text):
         # append the log message to the end of the logging area
@@ -49,57 +87,37 @@ class ProgressPage(BasePage):
         wiz.ui.progress_output.setTextCursor(cursor)
         wiz.ui.progress_output.ensureCursorVisible()
 
-    def initializePage(self):
-        # disable the cancel and back buttons
-        wiz = self.wizard()
-        wiz.button(wiz.CancelButton).setVisible(False)
-        wiz.button(wiz.BackButton).setVisible(False)
-        wiz.button(wiz.FinishButton).setEnabled(False)
-
-        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-
-        # run the thread
-        self.execute_thread = RunSetupThread(wiz.core_wizard)
-        self.execute_thread.success.connect(self._on_run_succeeded)
-        self.execute_thread.failure.connect(self._on_run_failed)
-        self.execute_thread.start()
+    def progress_callback(self, chapter, progress):
+        if progress is not None:
+            wiz = self.wizard()
+            wiz.ui.progress.setValue(progress)
+        print chapter
 
     def _on_run_finished(self):
         # thread has finished
         # clean up the page state
         wiz = self.wizard()
-        wiz.ui.complete_icon.setVisible(True)
-        QtGui.QApplication.restoreOverrideCursor()
-        button = wiz.button(wiz.FinishButton)
-        button.setEnabled(True)
+        wiz.button(wiz.FinishButton).setEnabled(True)
 
     def _on_run_succeeded(self):
         # thread finished successfully
         self._on_run_finished()
-        wiz = self.wizard()
 
-        # show the success icon and message
-        wiz.ui.complete_icon.setPixmap(":/tk-framework-adminui/setup_project/checkmark.png")
-        wiz.ui.complete_errors.setText("")
-        wiz.ui.complete_label.setText("""
-            <html><head/><body>
-                <p><span style=" font-size:26pt;">Project Setup Complete</span></p>
-            </body></html>
-        """)
+        wiz = self.wizard()
+        wiz.ui.progress.setValue(100)
+        wiz.setButtonText(wiz.FinishButton, "Done")
 
     def _on_run_failed(self, message):
         # thread failed
         self._on_run_finished()
-        wiz = self.wizard()
 
         # show the failure icon and message
-        wiz.ui.complete_icon.setPixmap(":/tk-framework-adminui/setup_project/error.png")
+        wiz = self.wizard()
+        wiz.setButtonText(wiz.FinishButton, "Quit")
         wiz.ui.complete_errors.setText(message)
-        wiz.ui.complete_label.setText("""
-            <html><head/><body>
-                <p><span style=" font-size:26pt;">Error During Setup</span></p>
-            </body></html>
-        """)
 
-        def isFinalPage(self):
-            return True
+    def isFinalPage(self):
+        return True
+
+    def validatePage(self):
+        return self.execute_thread.isFinished()
