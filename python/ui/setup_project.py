@@ -325,7 +325,7 @@ class Ui_Wizard(object):
         self.project_name_scroll_area.setWidgetResizable(True)
         self.project_name_scroll_area.setObjectName("project_name_scroll_area")
         self.project_name_scroll_area_contents = QtGui.QWidget()
-        self.project_name_scroll_area_contents.setGeometry(QtCore.QRect(0, 0, 302, 189))
+        self.project_name_scroll_area_contents.setGeometry(QtCore.QRect(0, 0, 677, 189))
         self.project_name_scroll_area_contents.setObjectName("project_name_scroll_area_contents")
         self.project_contents_layout = QtGui.QVBoxLayout(self.project_name_scroll_area_contents)
         self.project_contents_layout.setContentsMargins(25, 20, 25, 20)
@@ -416,7 +416,7 @@ class Ui_Wizard(object):
         self.mac_path = QtGui.QLineEdit(self.config_location_page)
         self.mac_path.setObjectName("mac_path")
         self.gridLayout_3.addWidget(self.mac_path, 2, 2, 1, 1)
-        spacerItem20 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        spacerItem20 = QtGui.QSpacerItem(20, 30, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         self.gridLayout_3.addItem(spacerItem20, 1, 0, 1, 4)
         Wizard.addPage(self.config_location_page)
         self.progress_page = ProgressPage()
@@ -428,6 +428,7 @@ class Ui_Wizard(object):
         spacerItem21 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_5.addItem(spacerItem21)
         self.message = QtGui.QLabel(self.progress_page)
+        self.message.setText("")
         self.message.setObjectName("message")
         self.verticalLayout_5.addWidget(self.message)
         self.progress = QtGui.QProgressBar(self.progress_page)
@@ -551,7 +552,6 @@ class Ui_Wizard(object):
         self.mac_path.setPlaceholderText(QtGui.QApplication.translate("Wizard", "/Path/On/Mac", None, QtGui.QApplication.UnicodeUTF8))
         self.progress_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>&nbsp;Hang on, setting up your project</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
         self.progress_page.setSubTitle(QtGui.QApplication.translate("Wizard", "&nbsp;", None, QtGui.QApplication.UnicodeUTF8))
-        self.message.setText(QtGui.QApplication.translate("Wizard", "Current Message", None, QtGui.QApplication.UnicodeUTF8))
         self.additional_details_button.setText(QtGui.QApplication.translate("Wizard", "Show Details", None, QtGui.QApplication.UnicodeUTF8))
 
 from ..setup_project.setup_type_page import SetupTypePage

@@ -8,6 +8,7 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import sgtk.platform
 from sgtk.platform.qt import QtCore
 
 from .base_page import BasePage
@@ -67,6 +68,11 @@ class ProgressPage(BasePage):
         wiz.ui.additional_details_button.hide()
 
     def append_log_message(self, text):
+        # since a thread could be calling this make sure we are doing GUI work on the main thread
+        engine = sgtk.platform.current_engine()
+        engine.execute_in_main_thread(self.__append_on_main_thread, text)
+
+    def __append_on_main_thread(self, text):
         # append the log message to the end of the logging area
         wiz = self.wizard()
         wiz.ui.progress_output.appendHtml(text)
@@ -77,18 +83,34 @@ class ProgressPage(BasePage):
         wiz.ui.progress_output.ensureCursorVisible()
 
     def progress_callback(self, chapter, progress):
+        # since a thread could be calling this make sure we are doing GUI work on the main thread
+        engine = sgtk.platform.current_engine()
+        engine.execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
+
+    def __progress_on_main_thread(self, chapter, progress):
+        # update the progress display
         if progress is not None:
             wiz = self.wizard()
             wiz.ui.message.setText(chapter)
             wiz.ui.progress.setValue(progress)
 
     def _on_run_finished(self):
+        # since a thread could be calling this make sure we are doing GUI work on the main thread
+        engine = sgtk.platform.current_engine()
+        engine.execute_in_main_thread(self._on_run_finished_main_thread)
+
+    def _on_run_finished_main_thread(self):
         # thread has finished
         # clean up the page state
         wiz = self.wizard()
         wiz.button(wiz.FinishButton).setEnabled(True)
 
     def _on_run_succeeded(self):
+        # since a thread could be calling this make sure we are doing GUI work on the main thread
+        engine = sgtk.platform.current_engine()
+        engine.execute_in_main_thread(self._on_run_succeeded_main_thread)
+
+    def _on_run_succeeded_main_thread(self):
         # thread finished successfully
         self._on_run_finished()
 
@@ -97,6 +119,11 @@ class ProgressPage(BasePage):
         wiz.setButtonText(wiz.FinishButton, "Done")
 
     def _on_run_failed(self, message):
+        # since a thread could be calling this make sure we are doing GUI work on the main thread
+        engine = sgtk.platform.current_engine()
+        engine.execute_in_main_thread(self._on_run_failed_main_thread, message)
+
+    def _on_run_failed_main_thread(self, message):
         # thread failed
         self._on_run_finished()
 
@@ -106,6 +133,11 @@ class ProgressPage(BasePage):
         wiz.ui.complete_errors.setText(message)
 
     def _on_thread_finished(self):
+        # since a thread could be calling this make sure we are doing GUI work on the main thread
+        engine = sgtk.platform.current_engine()
+        engine.execute_in_main_thread(self._on_thread_finished_main_thread)
+
+    def _on_thread_finished_main_thread(self):
         # let the wizard know that our complete state has changed
         self.completeChanged.emit()
 
