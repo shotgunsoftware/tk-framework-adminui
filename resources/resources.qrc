@@ -1,6 +1,8 @@
 <RCC>
   <qresource prefix="tk-framework-adminui/setup_project">
     <file>right_arrow.png</file>
+    <file>wait_screen_icon.png</file>
+    <file>shotgun_folder.png</file>
     <file>down_arrow.png</file>
     <file>error.png</file>
     <file>missing_thumbnail_project.png</file>

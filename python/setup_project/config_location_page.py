@@ -57,7 +57,7 @@ class ConfigLocationPage(BasePage):
                 self.layout().addWidget(path, row+offset, 2, 1, 1)
                 self.layout().addWidget(browse, row+offset, 3, 1, 1)
             else:
-                self.layout().addWidget(path, row+offset, 2, 1, 2)
+                self.layout().addWidget(path, row+offset, 2, 1, 1)
                 browse.hide()
 
         # enable browse button for this os
@@ -112,13 +112,16 @@ class ConfigLocationPage(BasePage):
 
         # create the path if it does not exist
         if not os.path.exists(current_os_path):
+            old_umask = os.umask(0)
             try:
-                os.makedirs(current_os_path)
+                os.makedirs(current_os_path, 0777)
             except Exception, e:
                 # could not create the directories, report and bail
                 message = "Got the following error creating the directory:\n %s" % str(e)
                 QtGui.QMessageBox.critical(self, "Error creating directories.", message)
                 return False
+            finally:
+                os.umask(old_umask)
 
         # pass the paths to the wizard and make sure they are ok
         try:

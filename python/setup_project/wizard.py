@@ -53,6 +53,9 @@ class SetupProjectWizard(QtGui.QWizard):
         # hook up logging
         self._handler.connect(self.ui.progress_page.append_log_message)
 
+        # hook up help handling
+        self.helpRequested.connect(self._on_help_requested)
+
         # Setup fields
         self.ui.github_config_page.registerField("github_url*", self.ui.github_url)
         self.ui.disk_config_page.registerField("disk_path*", self.ui.path)
@@ -84,6 +87,11 @@ class SetupProjectWizard(QtGui.QWizard):
         self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
+
+    def _on_help_requested(self):
+        # forward help request to current page
+        page = self.currentPage()
+        page.help_requested()
 
     def _is_store_valid(self, store_info):
         """ returns True if the store should be valid.  False otherwise """

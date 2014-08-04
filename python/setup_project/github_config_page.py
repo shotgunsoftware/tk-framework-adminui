@@ -13,20 +13,12 @@ import random
 from sgtk.platform.qt import QtCore
 
 from .base_page import BasePage
+from .wait_screen import WaitScreen
 from ..ui import resources_rc
 
 
 class GithubConfigPage(BasePage):
     """ Page to base a configuration on a github repo. """
-    def setup_ui(self, page_id):
-        BasePage.setup_ui(self, page_id)
-        wiz = self.wizard()
-
-        # set the default text
-        default_text = "https://www.github.com"
-        wiz.ui.github_url.setText(default_text)
-        wiz.ui.github_url.setSelection(0, len(default_text))
-
     def initializePage(self):
         # pick a random octocat
         cats = []
@@ -50,11 +42,15 @@ class GithubConfigPage(BasePage):
             wiz.ui.github_errors.setText("Error, the url does not end in '.git'")
             return False
 
+        wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
+        wait.show()
         try:
             wiz.set_config_uri(uri)
             wiz.ui.github_errors.setText("")
         except Exception, e:
             wiz.ui.github_errors.setText(str(e))
             return False
+        finally:
+            wait.hide()
 
         return True

@@ -8,6 +8,11 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import os
+import sys
+
+from sgtk.platform.qt import QtGui
+
 from .base_page import BasePage
 
 
@@ -20,6 +25,7 @@ class ProjectNamePage(BasePage):
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
         self.wizard().ui.project_name.textChanged.connect(self.on_name_changed)
+        self._storage_path_widgets = {}
 
     def initializePage(self):
         wiz = self.wizard()
@@ -28,34 +34,117 @@ class ProjectNamePage(BasePage):
 
     def on_name_changed(self, name):
         """ react to the name changing.  Update the paths that will be used. """
-        name = self.field("project_name")
         wiz = self.wizard()
+        name = self.field("project_name")
         try:
             # update where the project folders will be for the given name
             wiz.core_wizard.set_project_disk_name(name)
             project_paths_dict = wiz.core_wizard.preview_project_paths(name)
-            paths = []
-            for platform in ["darwin", "linux2", "win32"]:
-                for root in project_paths_dict:
-                    if project_paths_dict[root][platform]:
-                        paths.append(project_paths_dict[root][platform])
-            formatted_paths = """
-                <html><head/><body>
-                <p><span style="font-size:18px;">Preview:</span></p>
-                <p style="line-height: 130%%">
-                %s
-                </p></body></html>
-            """ % "<br/>\n".join(paths)
-            wiz.ui.project_directories.setText(formatted_paths)
+
+            # create path widgets if needed
+            if not self._storage_path_widgets:
+                self._setup_storage_widgets(project_paths_dict)
+
+            # fill out path widgets
+            for storage in project_paths_dict:
+                for key in ["linux2", "darwin", "win32"]:
+                    path = project_paths_dict[storage].get(key)
+                    if path:
+                        self._storage_path_widgets[storage][key].setText(path)
+                    else:
+                        self._storage_path_widgets[storage][key].hide()
+
+            # clear state
             wiz.ui.project_name_errors.setText("")
             self.name_valid = True
         except Exception, e:
-            wiz.ui.project_directories.setText("")
             wiz.ui.project_name_errors.setText(str(e))
             self.name_valid = False
 
         # signal that the next button may have changed state
         self.completeChanged.emit()
+
+    def _setup_storage_widgets(self, project_paths_dict):
+        # setup os info and ordering
+        os_info = [
+            # (dict key, label, current os)
+            ("darwin", "Mac", sys.platform == "darwin"),
+            ("linux2", "Linux", sys.platform.startswith("linux")),
+            ("win32", "Windows", sys.platform == "win32"),
+        ]
+
+        # current os first, then alphabetically
+        def os_key(element):
+            # return a key that sorts the os'es properly
+            (_, label, os_current) = element
+            return (not os_current, label)
+        os_info.sort(key=os_key)
+
+        wiz = self.wizard()
+        for storage in project_paths_dict:
+            # each storage gets a group showing what paths will be created for that storage
+            group = QtGui.QGroupBox(" %s " % storage.title())
+            group.setStyleSheet("""
+                QGroupBox {
+                    border: 1px solid rgb(217, 217, 217);
+                    border-radius: 3px;
+                    margin-top: 0.5em;
+                }
+
+                QGroupBox::title {
+                    font-size: 14px;
+                    subcontrol-origin: margin;
+                    left: 10px;
+                    padding: 0 3px 0 3px;
+                    color: rgb(55, 168, 225);
+                }
+            """)
+            group_layout = QtGui.QGridLayout(group)
+            row = 0
+            for (key, label, _) in os_info:
+                path = project_paths_dict[storage].get(key)
+                if path:
+                    group_layout.addWidget(QtGui.QLabel("<big>%s</big>" % label), row, 0, 1, 1)
+                    path_widget = QtGui.QLabel()
+                    self._storage_path_widgets.setdefault(storage, {})[key] = path_widget
+                    group_layout.addWidget(path_widget, row, 1, 1, 1)
+                    row += 1
+            group_layout.setColumnStretch(1, 1)
+            group_layout.setHorizontalSpacing(15)
+            wiz.ui.project_contents_layout.addWidget(group)
+
+    def validatePage(self):
+        # get the paths for the current os
+        if sys.platform == "darwin":
+            current_os = "darwin"
+        if sys.platform == "win32":
+            current_os = "win32"
+        if sys.platform.startswith("linux"):
+            current_os = "linux2"
+
+        paths = []
+        for (storage, storage_paths) in self._storage_path_widgets.iteritems():
+            if storage_paths:
+                current_os_path_widget = storage_paths.get(current_os)
+                if current_os_path_widget:
+                    current_os_path = current_os_path_widget.text()
+                    if not os.path.exists(current_os_path):
+                        paths.append(current_os_path)
+
+        # try and create the needed directories
+        try:
+            old_umask = os.umask(0)
+            for path in paths:
+                try:
+                    os.makedirs(path, 0777)
+                except Exception, e:
+                    message = "Could not create directory\n%s\n%s" % (path, e)
+                    QtGui.QMessageBox.critical(self, "Error creating directory.", message)
+                    return False
+        finally:
+            os.umask(old_umask)
+
+        return True
 
     def isComplete(self):
         return self.name_valid

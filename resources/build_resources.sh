@@ -36,6 +36,7 @@ function build_res {
 
 # build UI's:
 echo "building user interfaces..."
+build_ui wait_screen
 build_ui setup_project
 
 # build resources

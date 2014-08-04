@@ -33,18 +33,35 @@ class StorageLocationsPage(BasePage):
         layout = QtGui.QGridLayout(self)
         layout.setContentsMargins(25, 20, 25, 20)
         self.setTitle("<p></p><font size=18>Define %s Storage</font><p></p>" % store_name.title())
-        self.setSubTitle(
-            """<p style=\"line-height: 130%\">Specify where you want Shotgun to store files on disk.</p>""")
+        self.setSubTitle("&nbsp;")
+
+        # setup the subtitle
+        subtitle = QtGui.QLabel(self)
+        subtitle.setWordWrap(True)
+        subtitle.setStyleSheet("font-size: 14px;")
+        subtitle.setText("""
+            <p style="line-height: 130%%">
+                Specify where you want Shotgun to store files on disk.<br/>
+                If you use multiple operating systems, enter the equivalent path for each.<br/>
+            </p>
+        """)
+        layout.addWidget(subtitle, 0, 0, 1, 4)
 
         # setup a label to describe the storage
         description = QtGui.QLabel(self)
         description.setWordWrap(True)
-        description.setText("%s: %s" % (store_name.title(), store_info["description"]))
-        layout.addWidget(description, 0, 0, 1, 4)
+        description.setText(
+            """
+            <p style="line-height: 130%%">
+                Storage description:<br/>
+                %s
+            </p>
+        """ % (store_info["description"]))
+        layout.addWidget(description, 1, 0, 1, 4)
 
         # add a spacer between storages
-        spacer = QtGui.QSpacerItem(10, 10, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        layout.addItem(spacer, 1, 0, 1, 4)
+        spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        layout.addItem(spacer, 2, 0, 1, 4)
 
         # Setup a group of line edits per storage
         os_specifics = [
@@ -105,29 +122,27 @@ class StorageLocationsPage(BasePage):
                 os_button.pressed.connect(generate_on_browse_clicked(os_path))
 
             # add the widgets to the layout
-            layout.addWidget(os_label, 2+i, 0, 1, 1)
+            layout.addWidget(os_label, 3+i, 0, 1, 1)
+            layout.addWidget(os_path, 3+i, 2, 1, 1)
             if create_browse:
-                layout.addWidget(os_path, 2+i, 2, 1, 1)
-                layout.addWidget(os_button, 2+i, 3, 1, 1)
-            else:
-                layout.addWidget(os_path, 2+i, 2, 1, 2)
+                layout.addWidget(os_button, 3+i, 3, 1, 1)
 
-        # add a spacer since PySide uic compilation doesn't track spacers in a code accessible way
+        # add a spacer since
         spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        layout.addItem(spacer, 5, 0, 1, 4)
+        layout.addItem(spacer, 6, 0, 1, 4)
 
         # setup a place to report errors
         self.storage_errors = QtGui.QLabel(self)
         self.storage_errors.setWordWrap(True)
-        self.storage_errors.setStyleSheet("color: rgb(231, 109, 125);")
+        self.storage_errors.setStyleSheet("color: rgb(252, 98, 70);")
         self.storage_errors.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        layout.addWidget(self.storage_errors, 6, 0, 1, 4)
+        layout.addWidget(self.storage_errors, 7, 0, 1, 4)
 
         # add a note to the bottom of the UI
         storage_note = QtGui.QLabel(self)
         storage_note.setWordWrap(True)
         storage_note.setText("*Linking to local files must be enabled in your Shotgun Preferences.")
-        layout.addWidget(storage_note, 7, 0, 1, 4)
+        layout.addWidget(storage_note, 8, 0, 1, 4)
 
     def set_next_page(self, page, last_page=False):
         """ Override which page comes next """
@@ -214,13 +229,16 @@ class StorageLocationsPage(BasePage):
         # if local paths don't exist
         if not_on_disk:
             # try to create the directories
+            old_umask = os.umask(0)
             try:
-                os.makedirs(not_on_disk)
+                os.makedirs(not_on_disk, 0777)
             except Exception, e:
                 # could not create all the directories, report and bail
                 message = "Got the following errors creating the directory:\n%s" % str(e)
                 QtGui.QMessageBox.critical(self, "Error creating directories.", message)
                 return False
+            finally:
+                os.umask(old_umask)
 
         # report if invalid paths were entered
         if invalid:

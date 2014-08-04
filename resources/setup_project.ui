@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>513</height>
+    <width>701</width>
+    <height>528</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,19 +24,22 @@
    <enum>QWizard::ModernStyle</enum>
   </property>
   <property name="options">
-   <set>QWizard::CancelButtonOnLeft|QWizard::NoBackButtonOnLastPage</set>
+   <set>QWizard::CancelButtonOnLeft|QWizard::HaveHelpButton|QWizard::NoBackButtonOnLastPage</set>
   </property>
   <property name="titleFormat">
    <enum>Qt::RichText</enum>
   </property>
+  <property name="subTitleFormat">
+   <enum>Qt::RichText</enum>
+  </property>
   <widget class="SetupTypePage" name="setup_type_page">
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select a Pipeline Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string> </string>
+    <string>&amp;nbsp;</string>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,1">
     <property name="leftMargin">
      <number>25</number>
     </property>
@@ -63,12 +66,23 @@
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="select_standard">
-      <property name="font">
-       <font>
-        <pointsize>-1</pointsize>
-       </font>
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="select_standard">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -89,11 +103,8 @@
     <item>
      <widget class="QLabel" name="label_standard">
       <property name="styleSheet">
-       <string notr="true">
-QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>Use a standard configuration as a starting point for your Project.</string>
@@ -124,11 +135,6 @@ QLabel {
     </item>
     <item>
      <widget class="QRadioButton" name="select_project">
-      <property name="font">
-       <font>
-        <pointsize>-1</pointsize>
-       </font>
-      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -146,11 +152,8 @@ QLabel {
     <item>
      <widget class="QLabel" name="label_project">
       <property name="styleSheet">
-       <string notr="true">
-QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>Use the configuration from another Project with this Project.</string>
@@ -181,11 +184,6 @@ QLabel {
     </item>
     <item>
      <widget class="QRadioButton" name="select_github">
-      <property name="font">
-       <font>
-        <pointsize>-1</pointsize>
-       </font>
-      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -203,11 +201,8 @@ QLabel {
     <item>
      <widget class="QLabel" name="label_github">
       <property name="styleSheet">
-       <string notr="true">
-QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>Clone a configuration from a repository and use it for this Project.</string>
@@ -238,11 +233,6 @@ QLabel {
     </item>
     <item>
      <widget class="QRadioButton" name="select_disk">
-      <property name="font">
-       <font>
-        <pointsize>-1</pointsize>
-       </font>
-      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
@@ -260,11 +250,8 @@ QLabel {
     <item>
      <widget class="QLabel" name="label_disk">
       <property name="styleSheet">
-       <string notr="true">
-QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>Choose a configuration from a location on disk and use it for this Project.</string>
@@ -294,10 +281,10 @@ QLabel {
   </widget>
   <widget class="DefaultConfigPage" name="default_configs_page">
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select a Shotgun Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a Shotgun Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string> </string>
+    <string>&amp;nbsp;</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <property name="leftMargin">
@@ -326,6 +313,22 @@ QLabel {
      </widget>
     </item>
     <item>
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <widget class="QRadioButton" name="select_default_config">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -346,10 +349,8 @@ QLabel {
     <item>
      <widget class="QLabel" name="label_default_config">
       <property name="styleSheet">
-       <string notr="true">QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a single root storage configuration that mimcs a VFX/Animation workflow.&lt;/p&gt;</string>
@@ -399,10 +400,8 @@ QLabel {
     <item>
      <widget class="QLabel" name="label_multiroot_config">
       <property name="styleSheet">
-       <string notr="true">QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the oficially released engines and apps with a multiroot storage configuration that mimics a VFX/Animation workflow.&lt;/p</string>
@@ -452,10 +451,8 @@ QLabel {
     <item>
      <widget class="QLabel" name="label_games_config">
       <property name="styleSheet">
-       <string notr="true">QLabel {
-	font-size: 12px;
-	color: rgb(160, 160, 160);
-}</string>
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
        <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a single root storage configuration that mimics a Games workflow.&lt;/p&gt;</string>
@@ -487,7 +484,7 @@ QLabel {
     <item>
      <widget class="QLabel" name="default_configs_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
        <string/>
@@ -507,10 +504,10 @@ QLabel {
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a Project to copy the config from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select Another Project's Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select Another Project's Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string> </string>
+    <string>&amp;nbsp;</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <property name="leftMargin">
@@ -537,6 +534,22 @@ QLabel {
        <bool>true</bool>
       </property>
      </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_8">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
     <item>
      <widget class="QListView" name="project_list">
@@ -596,7 +609,7 @@ QLabel {
     <item>
      <widget class="QLabel" name="project_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
        <string/>
@@ -619,12 +632,15 @@ QLabel {
     </sizepolicy>
    </property>
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select a Github Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a Github Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string> </string>
+    <string>&amp;nbsp;</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout" rowstretch="0,1,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0,0,0">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <property name="leftMargin">
      <number>25</number>
     </property>
@@ -637,71 +653,7 @@ QLabel {
     <property name="bottomMargin">
      <number>20</number>
     </property>
-    <item row="2" column="1">
-     <spacer name="verticalSpacer_9">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="3" column="0" colspan="2">
-     <widget class="QLabel" name="github_errors">
-      <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="octocat">
-      <property name="maximumSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/octocats/original.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="buddy">
-       <cstring>github_url</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="github_url">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the url to a github repo containing a configuration to clone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="placeholderText">
-       <string>GitHub URL</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" colspan="2">
+    <item>
      <widget class="QLabel" name="github_config_subheader">
       <property name="styleSheet">
        <string notr="true">font-size: 14px;</string>
@@ -714,55 +666,108 @@ QLabel {
       </property>
      </widget>
     </item>
-   </layout>
-  </widget>
-  <widget class="DiskConfigPage" name="disk_config_page">
-   <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Browse for a Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
-   </property>
-   <property name="subTitle">
-    <string> </string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_2">
-    <property name="leftMargin">
-     <number>25</number>
-    </property>
-    <property name="topMargin">
-     <number>20</number>
-    </property>
-    <property name="rightMargin">
-     <number>25</number>
-    </property>
-    <property name="bottomMargin">
-     <number>25</number>
-    </property>
-    <item row="1" column="0">
-     <widget class="QLineEdit" name="path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="placeholderText">
-       <string>/Path/To/Configuration</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <spacer name="verticalSpacer_10">
+    <item>
+     <spacer name="verticalSpacer_14">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>40</height>
+        <height>20</height>
        </size>
       </property>
      </spacer>
     </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="disk_errors">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+      <property name="spacing">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="octocat">
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/octocats/original.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>github_url</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <spacer name="verticalSpacer_20">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="github_url">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the url to a github repo containing a configuration to clone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="placeholderText">
+           <string>GitHub URL</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your url needs to end with .git, for example:&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-family:'Courier New,courier'; font-size:12pt;&quot;&gt;https://github.com/shotgunsoftware/tk-config-default.git&lt;br/&gt;git@github.com:shotgunsoftware/tk-config-default.git&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="github_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
        <string/>
@@ -775,14 +780,29 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="disk_browse_button">
-      <property name="text">
-       <string>&amp;Browse...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" colspan="2">
+   </layout>
+  </widget>
+  <widget class="DiskConfigPage" name="disk_config_page">
+   <property name="title">
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Browse for a Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+   </property>
+   <property name="subTitle">
+    <string>&amp;nbsp;</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_8">
+    <property name="leftMargin">
+     <number>25</number>
+    </property>
+    <property name="topMargin">
+     <number>20</number>
+    </property>
+    <property name="rightMargin">
+     <number>25</number>
+    </property>
+    <property name="bottomMargin">
+     <number>20</number>
+    </property>
+    <item>
      <widget class="QLabel" name="disk_config_subheader">
       <property name="styleSheet">
        <string notr="true">font-size: 14px;</string>
@@ -795,45 +815,116 @@ QLabel {
       </property>
      </widget>
     </item>
-   </layout>
-  </widget>
-  <widget class="ProjectNamePage" name="project_name_page">
-   <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Project Folder Name&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
-   </property>
-   <property name="subTitle">
-    <string> </string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_5">
-    <property name="leftMargin">
-     <number>25</number>
-    </property>
-    <property name="topMargin">
-     <number>20</number>
-    </property>
-    <property name="rightMargin">
-     <number>25</number>
-    </property>
-    <property name="bottomMargin">
-     <number>20</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>20</number>
-    </property>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="project_name">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a valid project name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <item>
+     <spacer name="verticalSpacer_17">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="placeholderText">
-       <string>Name</string>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
       </property>
-     </widget>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="project_name_errors">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+      <property name="spacing">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="folder_icon">
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/shotgun_folder.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <spacer name="verticalSpacer_21">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="path">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="placeholderText">
+             <string>/Path/To/Configuration</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="disk_browse_button">
+            <property name="text">
+             <string>&amp;Browse...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Please select either a folder or a zip file.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_10">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="disk_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
        <string/>
@@ -846,36 +937,134 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="project_name_label">
-      <property name="text">
-       <string>Name:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QLabel" name="project_directories">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+   </layout>
+  </widget>
+  <widget class="ProjectNamePage" name="project_name_page">
+   <property name="title">
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Project Folder Name&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+   </property>
+   <property name="subTitle">
+    <string>&amp;nbsp;</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_9">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QScrollArea" name="project_name_scroll_area">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:large;&quot;&gt;Preview:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;/mnt/foo/bar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <property name="widgetResizable">
+       <bool>true</bool>
       </property>
-      <property name="buddy">
-       <cstring>project_name</cstring>
-      </property>
+      <widget class="QWidget" name="project_name_scroll_area_contents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>302</width>
+         <height>189</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="project_contents_layout">
+        <property name="leftMargin">
+         <number>25</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>25</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="project_name_subheader">
+          <property name="styleSheet">
+           <string notr="true">font-size: 14px;</string>
+          </property>
+          <property name="text">
+           <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Enter the name you want to use for the Project folder on disk.&lt;/p&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_18">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="project_name">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a valid project name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="placeholderText">
+           <string>Name</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_23">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="project_directories">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="text">
+           <string>The following project folders will be created:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+          <property name="buddy">
+           <cstring>project_name</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
-    <item row="3" column="0" colspan="2">
+    <item>
      <spacer name="verticalSpacer_11">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -888,13 +1077,16 @@ QLabel {
       </property>
      </spacer>
     </item>
-    <item row="0" column="0" colspan="2">
-     <widget class="QLabel" name="project_name_subheader">
+    <item>
+     <widget class="QLabel" name="project_name_errors">
       <property name="styleSheet">
-       <string notr="true">font-size: 14px;</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Enter the name you want to use for the Project folder on disk.&lt;/p&gt;</string>
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -905,10 +1097,10 @@ QLabel {
   </widget>
   <widget class="ConfigLocationPage" name="config_location_page">
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Select Pipeline Configuration Location&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select Configuration Location&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string> </string>
+    <string>&amp;nbsp;</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
     <property name="leftMargin">
@@ -923,21 +1115,8 @@ QLabel {
     <property name="bottomMargin">
      <number>20</number>
     </property>
-    <item row="6" column="0" colspan="4">
-     <spacer name="verticalSpacer_12">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="5" column="3">
-     <widget class="QPushButton" name="windows_browse">
+    <item row="2" column="3">
+     <widget class="QPushButton" name="mac_browse">
       <property name="enabled">
        <bool>true</bool>
       </property>
@@ -946,20 +1125,30 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="4" column="3">
-     <widget class="QPushButton" name="linux_browse">
-      <property name="enabled">
-       <bool>true</bool>
+    <item row="6" column="2">
+     <widget class="QLineEdit" name="windows_path">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
-      <property name="text">
-       <string>Browse...</string>
+      <property name="placeholderText">
+       <string>\\Path\On\Windows</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="0" colspan="4">
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="linux_path">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="placeholderText">
+       <string>/path/on/linux</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="4">
      <widget class="QLabel" name="config_location_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
        <string/>
@@ -972,8 +1161,8 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="mac_browse">
+    <item row="5" column="3">
+     <widget class="QPushButton" name="linux_browse">
       <property name="enabled">
        <bool>true</bool>
       </property>
@@ -982,17 +1171,20 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
-     <widget class="QLineEdit" name="windows_path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <item row="7" column="0" colspan="4">
+     <spacer name="verticalSpacer_12">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="placeholderText">
-       <string>\\Path\On\Windows</string>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
       </property>
-     </widget>
+     </spacer>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="windows_label">
       <property name="text">
        <string>Windows</string>
@@ -1005,27 +1197,30 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QLineEdit" name="linux_path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <item row="0" column="0" colspan="4">
+     <widget class="QLabel" name="config_location_subheader">
+      <property name="styleSheet">
+       <string notr="true">font-size: 14px;</string>
       </property>
-      <property name="placeholderText">
-       <string>/path/on/linux</string>
+      <property name="text">
+       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.  If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;</string>
       </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QLineEdit" name="mac_path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="placeholderText">
-       <string>/Path/On/Mac</string>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="6" column="3">
+     <widget class="QPushButton" name="windows_browse">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
      <widget class="QLabel" name="mac_label">
       <property name="text">
        <string>Mac</string>
@@ -1038,7 +1233,7 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="5" column="0">
      <widget class="QLabel" name="linux_label">
       <property name="text">
        <string>Linux</string>
@@ -1051,27 +1246,40 @@ QLabel {
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="4">
-     <widget class="QLabel" name="config_location_subheader">
-      <property name="styleSheet">
-       <string notr="true">font-size: 14px;</string>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="mac_path">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
-      <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
+      <property name="placeholderText">
+       <string>/Path/On/Mac</string>
       </property>
      </widget>
+    </item>
+    <item row="1" column="0" colspan="4">
+     <spacer name="verticalSpacer_19">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>
   <widget class="ProgressPage" name="progress_page">
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;Setting up Project&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Hang on, setting up your project&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
-    <string> </string>
+    <string>&amp;nbsp;</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_5">
     <property name="spacing">
@@ -1083,6 +1291,26 @@ QLabel {
     <property name="rightMargin">
      <number>25</number>
     </property>
+    <item>
+     <spacer name="verticalSpacer_22">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="message">
+      <property name="text">
+       <string>Current Message</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QProgressBar" name="progress"/>
     </item>
@@ -1100,17 +1328,13 @@ QLabel {
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
-         <string>Show details</string>
-        </property>
-        <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/tk-framework-adminui/setup_project/right_arrow.png</normaloff>:/tk-framework-adminui/setup_project/right_arrow.png</iconset>
+         <string>Show Details</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -1164,7 +1388,7 @@ QLabel {
     <item>
      <widget class="QLabel" name="complete_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(231, 109, 125);</string>
+       <string notr="true">color: rgb(252, 98, 70);</string>
       </property>
       <property name="text">
        <string/>
@@ -1237,9 +1461,7 @@ QLabel {
   <tabstop>select_disk</tabstop>
   <tabstop>project_list</tabstop>
   <tabstop>github_url</tabstop>
-  <tabstop>path</tabstop>
   <tabstop>disk_browse_button</tabstop>
-  <tabstop>project_name</tabstop>
   <tabstop>mac_path</tabstop>
   <tabstop>mac_browse</tabstop>
   <tabstop>linux_path</tabstop>

@@ -37,3 +37,12 @@ class BasePage(QtGui.QWizardPage):
             return QtGui.QWizardPage.nextId(self)
 
         return self._next_page_id
+
+    def help_requested(self):
+        help_url = self._help_url()
+        if help_url:
+            QtGui.QDesktopServices.openUrl(help_url)
+
+    def _help_url(self):
+        # by default return the general setting up your project page
+        return "https://toolkit.shotgunsoftware.com/entries/23888707"
