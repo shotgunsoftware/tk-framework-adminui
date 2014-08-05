@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shotgun Setup Project Wizard</string>
+   <string>Shotgun Set Up Project Wizard</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -952,6 +952,9 @@ color: rgb(160, 160, 160);</string>
     </property>
     <item>
      <widget class="QScrollArea" name="project_name_scroll_area">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -1267,7 +1270,7 @@ color: rgb(160, 160, 160);</string>
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>30</height>
+        <height>20</height>
        </size>
       </property>
      </spacer>
@@ -1455,17 +1458,18 @@ color: rgb(160, 160, 160);</string>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>select_standard</tabstop>
-  <tabstop>select_project</tabstop>
-  <tabstop>select_github</tabstop>
-  <tabstop>select_disk</tabstop>
   <tabstop>project_list</tabstop>
   <tabstop>github_url</tabstop>
+  <tabstop>path</tabstop>
   <tabstop>disk_browse_button</tabstop>
+  <tabstop>project_name</tabstop>
   <tabstop>mac_path</tabstop>
   <tabstop>mac_browse</tabstop>
   <tabstop>linux_path</tabstop>
   <tabstop>linux_browse</tabstop>
+  <tabstop>windows_path</tabstop>
+  <tabstop>windows_browse</tabstop>
+  <tabstop>project_name_scroll_area</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>

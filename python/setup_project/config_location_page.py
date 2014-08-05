@@ -21,8 +21,7 @@ class ConfigLocationPage(BasePage):
     """ Page to specify the location for the configuration. """
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
-        self._path_label = None
-        self._path_field = None
+        self._path_widget = None
 
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
@@ -50,37 +49,24 @@ class ConfigLocationPage(BasePage):
             self.layout().removeWidget(browse)
 
         # add them back in
-        offset = 1
+        offset = 2
         for (row, (label, path, browse, os_current)) in enumerate(os_widgets):
             self.layout().addWidget(label, row+offset, 0, 1, 1)
+            self.layout().addWidget(path, row+offset, 2, 1, 1)
             if os_current:
-                self.layout().addWidget(path, row+offset, 2, 1, 1)
+                # current os gets browse setup and we track the path widget
                 self.layout().addWidget(browse, row+offset, 3, 1, 1)
+                browse.pressed.connect(self._on_browse_pressed)
+                self._path_widget = path
             else:
-                self.layout().addWidget(path, row+offset, 2, 1, 1)
+                # hide the browse button on all other os'es
                 browse.hide()
-
-        # enable browse button for this os
-        if sys.platform == "darwin":
-            browse = self.wizard().ui.mac_browse
-            self._path_label = ui.mac_path
-            self._path_field = "config_path_mac"
-        elif sys.platform == "win32":
-            browse = self.wizard().ui.windows_browse
-            self._path_label = wiz.ui.windows_path
-            self._path_field = "config_path_win"
-        elif sys.platform.startswith("linux"):
-            browse = self.wizard().ui.linux_browse
-            self._path_label = wiz.ui.linux_path
-            self._path_field = "config_path_linux"
-
-        browse.pressed.connect(self._on_browse_pressed)
 
     def _on_browse_pressed(self):
         config_dir = QtGui.QFileDialog.getExistingDirectory(
             self, "Choose configuration", None,
             QtGui.QFileDialog.ShowDirsOnly | QtGui.QFileDialog.DontConfirmOverwrite)
-        self.setField(self._path_field, config_dir)
+        self._path_widget.setText(config_dir)
 
     def initializePage(self):
         # setup the default locations
@@ -90,6 +76,8 @@ class ConfigLocationPage(BasePage):
         self.wizard().ui.linux_path.setText(default_locations["linux2"])
         self.wizard().ui.windows_path.setText(default_locations["win32"])
         self.wizard().ui.mac_path.setText(default_locations["darwin"])
+
+        self._path_widget.setFocus(QtCore.Qt.OtherFocusReason)
 
     def validatePage(self):
         # grab the os paths
