@@ -596,7 +596,7 @@ class Ui_Wizard(object):
         self.final_message.setText(QtGui.QApplication.translate("Wizard", "Toolkit is now ready to use in your Project!<br/>\n"
 "<br/>\n"
 "For more information on how to configure your Project and tailor it to your system, go to<br/>\n"
-"<a href=\"http://www.boingboing.net\" style=\"color: rgb(203, 205, 205);\">Project Configuration</a>.", None, QtGui.QApplication.UnicodeUTF8))
+"<a href=\"https://toolkit.shotgunsoftware.com/entries/93728833#Welcome%20to%20Toolkit\" style=\"color: rgb(203, 205, 205);\">Project Configuration</a>.", None, QtGui.QApplication.UnicodeUTF8))
         self.setup_complete.setText(QtGui.QApplication.translate("Wizard", "<big>Project Setup Complete</big>", None, QtGui.QApplication.UnicodeUTF8))
 
 from ..setup_project.setup_type_page import SetupTypePage

@@ -37,6 +37,8 @@ class ProgressPage(BasePage):
         BasePage.__init__(self, parent)
 
         self._thread_success = False
+        self._original_next_css = None
+        self._original_next_text = None
 
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
@@ -51,7 +53,12 @@ class ProgressPage(BasePage):
         wiz.button(wiz.BackButton).setVisible(False)
         wiz.button(wiz.CancelButton).setVisible(False)
         wiz.button(wiz.NextButton).setEnabled(False)
+
+        self._original_next_text = wiz.buttonText(wiz.NextButton)
+        self._original_next_css = wiz.button(wiz.NextButton).styleSheet()
+
         wiz.setButtonText(wiz.NextButton, "Running...")
+        wiz.button(wiz.NextButton).setStyleSheet("background-color: rgb(128, 128, 128);")
 
         # setup for progress reporting
         wiz.ui.progress.setValue(0)
@@ -123,7 +130,14 @@ class ProgressPage(BasePage):
 
         wiz = self.wizard()
         wiz.ui.progress.setValue(100)
-        wiz.setButtonText(wiz.NextButton, "Finished")
+        wiz.ui.message.setText("Set up finished")
+        wiz.setButtonText(wiz.NextButton, self._original_next_text)
+        wiz.button(wiz.NextButton).setStyleSheet(self._original_next_css)
+
+        if wiz.ui.progress_output.isHidden():
+            # auto advance if details are not shown
+            wiz.next()
+
 
     def _on_run_failed(self, message):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
