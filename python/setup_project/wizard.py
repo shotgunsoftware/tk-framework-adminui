@@ -66,7 +66,9 @@ class SetupProjectWizard(QtGui.QWizard):
 
         # Let each page set itself up
         for page_id in self.pageIds():
-            self.page(page_id).setup_ui(page_id)
+            page = self.page(page_id)
+            if hasattr(page, "setup_ui"):
+                self.page(page_id).setup_ui(page_id)
 
         # Setup Page Order
         self.ui.setup_type_page.set_default_configs_page(self.ui.default_configs_page)
@@ -78,6 +80,7 @@ class SetupProjectWizard(QtGui.QWizard):
         self.ui.config_location_page.set_next_page(self.ui.progress_page)
 
         self.ui.config_location_page.setCommitPage(True)
+        self.ui.summary_page.setFinalPage(True)
 
         # Override button formatting
         self.setButtonText(self.NextButton, "Continue")

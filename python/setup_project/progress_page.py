@@ -33,6 +33,11 @@ class RunSetupThread(QtCore.QThread):
 
 class ProgressPage(BasePage):
     """ Page to show the progress bar during configuration setup. """
+    def __init__(self, parent=None):
+        BasePage.__init__(self, parent)
+
+        self._thread_success = False
+
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
 
@@ -43,10 +48,10 @@ class ProgressPage(BasePage):
     def initializePage(self):
         # disable the cancel and back buttons
         wiz = self.wizard()
-        wiz.button(wiz.CancelButton).setVisible(False)
         wiz.button(wiz.BackButton).setVisible(False)
-        wiz.button(wiz.FinishButton).setEnabled(False)
-        wiz.setButtonText(wiz.FinishButton, "Running...")
+        wiz.button(wiz.CancelButton).setVisible(False)
+        wiz.button(wiz.NextButton).setEnabled(False)
+        wiz.setButtonText(wiz.NextButton, "Running...")
 
         # setup for progress reporting
         wiz.ui.progress.setValue(0)
@@ -103,7 +108,7 @@ class ProgressPage(BasePage):
         # thread has finished
         # clean up the page state
         wiz = self.wizard()
-        wiz.button(wiz.FinishButton).setEnabled(True)
+        wiz.button(wiz.NextButton).setEnabled(True)
 
     def _on_run_succeeded(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
@@ -114,9 +119,11 @@ class ProgressPage(BasePage):
         # thread finished successfully
         self._on_run_finished()
 
+        self._thread_success = True
+
         wiz = self.wizard()
         wiz.ui.progress.setValue(100)
-        wiz.setButtonText(wiz.FinishButton, "Done")
+        wiz.setButtonText(wiz.NextButton, "Finished")
 
     def _on_run_failed(self, message):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
@@ -129,7 +136,8 @@ class ProgressPage(BasePage):
 
         # show the failure icon and message
         wiz = self.wizard()
-        wiz.setButtonText(wiz.FinishButton, "Quit")
+        wiz.button(wiz.CancelButton).setVisible(True)
+        wiz.setButtonText(wiz.NextButton, "Quit")
         wiz.ui.complete_errors.setText(message)
 
     def _on_thread_finished(self):
@@ -142,7 +150,4 @@ class ProgressPage(BasePage):
         self.completeChanged.emit()
 
     def isComplete(self):
-        return self.execute_thread.isFinished()
-
-    def isFinalPage(self):
-        return True
+        return self._thread_success

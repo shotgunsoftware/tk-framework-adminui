@@ -969,7 +969,7 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>302</width>
+         <width>677</width>
          <height>189</height>
         </rect>
        </property>
@@ -1406,6 +1406,136 @@ color: rgb(160, 160, 160);</string>
     </item>
    </layout>
   </widget>
+  <widget class="QWizardPage" name="summary_page">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>25</number>
+    </property>
+    <property name="topMargin">
+     <number>60</number>
+    </property>
+    <property name="rightMargin">
+     <number>25</number>
+    </property>
+    <property name="bottomMargin">
+     <number>20</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>20</number>
+    </property>
+    <item row="5" column="2">
+     <spacer name="verticalSpacer_24">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLabel" name="final_message">
+      <property name="styleSheet">
+       <string notr="true">font-size: 16px;
+color: rgb(141, 143, 143);</string>
+      </property>
+      <property name="text">
+       <string>Toolkit is now ready to use in your Project!&lt;br/&gt;
+&lt;br/&gt;
+For more information on how to configure your Project and tailor it to your system, go to&lt;br/&gt;
+&lt;a href=&quot;http://www.boingboing.net&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;Project Configuration&lt;/a&gt;.</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="openExternalLinks">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="6">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLabel" name="setup_complete">
+      <property name="styleSheet">
+       <string notr="true">font-size: 20px;</string>
+      </property>
+      <property name="text">
+       <string>&lt;big&gt;Project Setup Complete&lt;/big&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLabel" name="icon">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/circle_logo.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="7" column="2">
+     <spacer name="verticalSpacer_25">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1473,6 +1603,7 @@ color: rgb(160, 160, 160);</string>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>
+  <include location="../../../../../.designer/backup/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

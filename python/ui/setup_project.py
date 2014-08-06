@@ -326,7 +326,7 @@ class Ui_Wizard(object):
         self.project_name_scroll_area.setWidgetResizable(True)
         self.project_name_scroll_area.setObjectName("project_name_scroll_area")
         self.project_name_scroll_area_contents = QtGui.QWidget()
-        self.project_name_scroll_area_contents.setGeometry(QtCore.QRect(0, 0, 302, 189))
+        self.project_name_scroll_area_contents.setGeometry(QtCore.QRect(0, 0, 677, 189))
         self.project_name_scroll_area_contents.setObjectName("project_name_scroll_area_contents")
         self.project_contents_layout = QtGui.QVBoxLayout(self.project_name_scroll_area_contents)
         self.project_contents_layout.setContentsMargins(25, 20, 25, 20)
@@ -465,6 +465,44 @@ class Ui_Wizard(object):
         self.complete_errors.setObjectName("complete_errors")
         self.verticalLayout_5.addWidget(self.complete_errors)
         Wizard.addPage(self.progress_page)
+        self.summary_page = QtGui.QWizardPage()
+        self.summary_page.setObjectName("summary_page")
+        self.gridLayout = QtGui.QGridLayout(self.summary_page)
+        self.gridLayout.setContentsMargins(25, 60, 25, 20)
+        self.gridLayout.setVerticalSpacing(20)
+        self.gridLayout.setObjectName("gridLayout")
+        spacerItem24 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem24, 5, 2, 1, 1)
+        self.final_message = QtGui.QLabel(self.summary_page)
+        self.final_message.setStyleSheet("font-size: 16px;\n"
+"color: rgb(141, 143, 143);")
+        self.final_message.setTextFormat(QtCore.Qt.RichText)
+        self.final_message.setWordWrap(True)
+        self.final_message.setOpenExternalLinks(True)
+        self.final_message.setObjectName("final_message")
+        self.gridLayout.addWidget(self.final_message, 6, 2, 1, 1)
+        spacerItem25 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem25, 0, 0, 1, 1)
+        spacerItem26 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem26, 0, 6, 1, 1)
+        self.setup_complete = QtGui.QLabel(self.summary_page)
+        self.setup_complete.setStyleSheet("font-size: 20px;")
+        self.setup_complete.setAlignment(QtCore.Qt.AlignCenter)
+        self.setup_complete.setObjectName("setup_complete")
+        self.gridLayout.addWidget(self.setup_complete, 4, 2, 1, 1)
+        self.horizontalLayout_5 = QtGui.QHBoxLayout()
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.icon = QtGui.QLabel(self.summary_page)
+        self.icon.setMaximumSize(QtCore.QSize(100, 100))
+        self.icon.setText("")
+        self.icon.setPixmap(QtGui.QPixmap(":/tk-framework-adminui/setup_project/circle_logo.png"))
+        self.icon.setScaledContents(True)
+        self.icon.setObjectName("icon")
+        self.horizontalLayout_5.addWidget(self.icon)
+        self.gridLayout.addLayout(self.horizontalLayout_5, 0, 2, 1, 1)
+        spacerItem27 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem27, 7, 2, 1, 1)
+        Wizard.addPage(self.summary_page)
         self.label_standard.setBuddy(self.select_standard)
         self.label_project.setBuddy(self.select_project)
         self.label_github.setBuddy(self.select_github)
@@ -555,6 +593,11 @@ class Ui_Wizard(object):
         self.progress_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>&nbsp;Hang on, setting up your project</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
         self.progress_page.setSubTitle(QtGui.QApplication.translate("Wizard", "&nbsp;", None, QtGui.QApplication.UnicodeUTF8))
         self.additional_details_button.setText(QtGui.QApplication.translate("Wizard", "Show Details", None, QtGui.QApplication.UnicodeUTF8))
+        self.final_message.setText(QtGui.QApplication.translate("Wizard", "Toolkit is now ready to use in your Project!<br/>\n"
+"<br/>\n"
+"For more information on how to configure your Project and tailor it to your system, go to<br/>\n"
+"<a href=\"http://www.boingboing.net\" style=\"color: rgb(203, 205, 205);\">Project Configuration</a>.", None, QtGui.QApplication.UnicodeUTF8))
+        self.setup_complete.setText(QtGui.QApplication.translate("Wizard", "<big>Project Setup Complete</big>", None, QtGui.QApplication.UnicodeUTF8))
 
 from ..setup_project.setup_type_page import SetupTypePage
 from ..setup_project.config_location_page import ConfigLocationPage
@@ -564,4 +607,5 @@ from ..setup_project.default_config_page import DefaultConfigPage
 from ..setup_project.disk_config_page import DiskConfigPage
 from ..setup_project.project_name_page import ProjectNamePage
 from ..setup_project.progress_page import ProgressPage
+from . import resources_rc
 from . import resources_rc
