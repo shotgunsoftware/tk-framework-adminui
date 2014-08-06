@@ -16,6 +16,8 @@ from .wait_screen import WaitScreen
 
 class DefaultConfigPage(BasePage):
     """ Page to choose which default configuration to use. """
+    _HELP_URL = BasePage._HELP_URL + "#Default%20configuration%20templates"
+
     DEFAULT_ID = 0
     MULTIROOT_ID = 1
     GAMES_ID = 2

@@ -20,6 +20,8 @@ from .base_page import BasePage
 
 class StorageLocationsPage(BasePage):
     """ Page to collect the needed storages for the selected config. """
+    _HELP_URL = BasePage._HELP_URL + "#Setting%20up%20a%20storage"
+
     def __init__(self, store_name, store_info, uri, parent=None):
         BasePage.__init__(self, parent)
 

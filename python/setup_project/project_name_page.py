@@ -18,6 +18,8 @@ from .base_page import BasePage
 
 class ProjectNamePage(BasePage):
     """ Page to name a project. """
+    _HELP_URL = BasePage._HELP_URL + "#Choosing%20a%20project%20folder%20name"
+
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
         self.name_valid = False

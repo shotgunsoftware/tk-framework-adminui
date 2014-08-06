@@ -13,6 +13,9 @@ from sgtk.platform.qt import QtGui
 
 class BasePage(QtGui.QWizardPage):
     """ Base page for all Shotgun pages to inherit from. """
+    # by default return the general setting up your project page
+    _HELP_URL = "https://toolkit.shotgunsoftware.com/entries/23888707"
+
     def __init__(self, parent=None):
         """ Constructor """
         QtGui.QWizardPage.__init__(self, parent)
@@ -39,10 +42,5 @@ class BasePage(QtGui.QWizardPage):
         return self._next_page_id
 
     def help_requested(self):
-        help_url = self._help_url()
-        if help_url:
-            QtGui.QDesktopServices.openUrl(help_url)
-
-    def _help_url(self):
-        # by default return the general setting up your project page
-        return "https://toolkit.shotgunsoftware.com/entries/23888707"
+        if self._HELP_URL:
+            QtGui.QDesktopServices.openUrl(self._HELP_URL)

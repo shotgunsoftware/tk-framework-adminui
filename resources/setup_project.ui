@@ -194,7 +194,7 @@ color: rgb(160, 160, 160);</string>
 </string>
       </property>
       <property name="text">
-       <string>Github</string>
+       <string>Git</string>
       </property>
      </widget>
     </item>
@@ -632,7 +632,7 @@ color: rgb(160, 160, 160);</string>
     </sizepolicy>
    </property>
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a Github Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a Git Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
     <string>&amp;nbsp;</string>
@@ -659,7 +659,7 @@ color: rgb(160, 160, 160);</string>
        <string notr="true">font-size: 14px;</string>
       </property>
       <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Enter the Github URL to the repository that you want to use for this configuration.&lt;/p&gt;</string>
+       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Enter the Git URL to the repository that you want to use for this configuration.&lt;/p&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -736,7 +736,7 @@ color: rgb(160, 160, 160);</string>
            <string/>
           </property>
           <property name="placeholderText">
-           <string>GitHub URL</string>
+           <string>Git URL</string>
           </property>
          </widget>
         </item>
@@ -969,7 +969,7 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>677</width>
+         <width>302</width>
          <height>189</height>
         </rect>
        </property>

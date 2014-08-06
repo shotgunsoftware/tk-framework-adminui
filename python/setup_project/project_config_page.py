@@ -25,6 +25,8 @@ from .base_page import BasePage
 
 class ProjectConfigPage(BasePage):
     """ Page to base a configuration on that of another project's. """
+    _HELP_URL = BasePage._HELP_URL + "#Basing%20your%20new%20project%20on%20an%20existing%20project"
+
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
         self._project_config_path = None

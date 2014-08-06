@@ -19,6 +19,8 @@ from .base_page import BasePage
 
 class ConfigLocationPage(BasePage):
     """ Page to specify the location for the configuration. """
+    _HELP_URL = BasePage._HELP_URL + "#Selecting%20a%20configuration%20location"
+
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
         self._path_widget = None

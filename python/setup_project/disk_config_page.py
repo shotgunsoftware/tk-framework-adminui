@@ -15,6 +15,8 @@ from .base_page import BasePage
 
 class DiskConfigPage(BasePage):
     """ Page to base a configuration on a disk location. """
+    _HELP_URL = BasePage._HELP_URL + "#Browsing%20for%20a%20configuration%20template"
+
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
 
