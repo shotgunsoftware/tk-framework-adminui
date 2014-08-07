@@ -51,10 +51,11 @@ class ProjectNamePage(BasePage):
             for storage in project_paths_dict:
                 for key in ["linux2", "darwin", "win32"]:
                     path = project_paths_dict[storage].get(key)
-                    if path:
-                        self._storage_path_widgets[storage][key].setText(path)
-                    else:
-                        self._storage_path_widgets[storage][key].hide()
+                    widget = self._storage_path_widgets[storage].get(key)
+                    if path and widget:
+                        widget.setText(path)
+                    elif widget:
+                        widget.hide()
 
             # clear state
             wiz.ui.project_name_errors.setText("")

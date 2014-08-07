@@ -234,6 +234,7 @@ class StorageLocationsPage(BasePage):
             old_umask = os.umask(0)
             try:
                 os.makedirs(not_on_disk, 0777)
+                self._store_info["exists_on_disk"] = True
             except Exception, e:
                 # could not create all the directories, report and bail
                 message = "Got the following errors creating the directory:\n%s" % str(e)
@@ -252,7 +253,12 @@ class StorageLocationsPage(BasePage):
         sg = shotgun.create_sg_connection()
         if create_in_shotgun:
             try:
-                sg.create("LocalStorage", create_in_shotgun)
+                shotgun_store = sg.create("LocalStorage", create_in_shotgun)
+                self._store_info["defined_in_shotgun"] = True
+                self._store_info["shotgun_id"] = shotgun_store["id"]
+                self._store_info["darwin"] = mac_path
+                self._store_info["linux2"] = linux_path
+                self._store_info["win32"] = windows_path
             except Exception, e:
                 self.storage_errors.setText("Error creating Storage in Shotgun:\n%s" % str(e))
                 return False
@@ -264,6 +270,13 @@ class StorageLocationsPage(BasePage):
                 local_stores = sg.find("LocalStorage", [], fields=["code", "id"])
                 local_store_map = dict([(s["code"], s["id"]) for s in local_stores])
                 sg.update("LocalStorage", local_store_map[update_in_shotgun["code"]], update_in_shotgun)
+
+                if "mac_path" in update_in_shotgun:
+                    self._store_info["darwin"] = update_in_shotgun["mac_path"]
+                if "linux_path" in update_in_shotgun:
+                    self._store_info["linux2"] = update_in_shotgun["linux_path"]
+                if "windows_path" in update_in_shotgun:
+                    self._store_info["win32"] = update_in_shotgun["windows_path"]
             except Exception, e:
                 self.storage_errors.setText("Error updating Storage in Shotgun:\n%s" % str(e))
                 return False
