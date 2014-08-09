@@ -39,6 +39,7 @@ class ProgressPage(BasePage):
         self._thread_success = False
         self._original_next_css = None
         self._original_next_text = None
+        self.execute_thread = None
 
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
@@ -50,8 +51,6 @@ class ProgressPage(BasePage):
     def initializePage(self):
         # disable the cancel and back buttons
         wiz = self.wizard()
-        wiz.button(wiz.BackButton).setVisible(False)
-        wiz.button(wiz.CancelButton).setVisible(False)
         wiz.button(wiz.NextButton).setEnabled(False)
 
         self._original_next_text = wiz.buttonText(wiz.NextButton)
@@ -70,6 +69,9 @@ class ProgressPage(BasePage):
         self.execute_thread.failure.connect(self._on_run_failed)
         self.execute_thread.finished.connect(self._on_thread_finished)
         self.execute_thread.start()
+
+        # can no longer cancel or hit back
+        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.NextButton])
 
     def additional_details_pressed(self):
         # handle the additional details toggle being pressed
