@@ -138,7 +138,6 @@ class ProgressPage(BasePage):
             # auto advance if details are not shown
             wiz.next()
 
-
     def _on_run_failed(self, message):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()

@@ -116,38 +116,5 @@ class ProjectNamePage(BasePage):
             group_layout.setHorizontalSpacing(15)
             wiz.ui.project_contents_layout.addWidget(group)
 
-    def validatePage(self):
-        # get the paths for the current os
-        if sys.platform == "darwin":
-            current_os = "darwin"
-        if sys.platform == "win32":
-            current_os = "win32"
-        if sys.platform.startswith("linux"):
-            current_os = "linux2"
-
-        paths = []
-        for (storage, storage_paths) in self._storage_path_widgets.iteritems():
-            if storage_paths:
-                current_os_path_widget = storage_paths.get(current_os)
-                if current_os_path_widget:
-                    current_os_path = current_os_path_widget.text()
-                    if not os.path.exists(current_os_path):
-                        paths.append(current_os_path)
-
-        # try and create the needed directories
-        try:
-            old_umask = os.umask(0)
-            for path in paths:
-                try:
-                    os.makedirs(path, 0777)
-                except Exception, e:
-                    message = "Could not create directory\n%s\n%s" % (path, e)
-                    QtGui.QMessageBox.critical(self, "Error creating directory.", message)
-                    return False
-        finally:
-            os.umask(old_umask)
-
-        return True
-
     def isComplete(self):
         return self.name_valid

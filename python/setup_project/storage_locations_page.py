@@ -140,12 +140,6 @@ class StorageLocationsPage(BasePage):
         self.storage_errors.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         layout.addWidget(self.storage_errors, 7, 0, 1, 4)
 
-        # add a note to the bottom of the UI
-        storage_note = QtGui.QLabel(self)
-        storage_note.setWordWrap(True)
-        storage_note.setText("*Linking to local files must be enabled in your Shotgun Preferences.")
-        layout.addWidget(storage_note, 8, 0, 1, 4)
-
     def set_next_page(self, page, last_page=False):
         """ Override which page comes next """
         BasePage.set_next_page(self, page)
