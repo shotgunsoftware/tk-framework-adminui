@@ -40,7 +40,6 @@ class ProjectNamePage(BasePage):
         name = self.field("project_name")
         try:
             # update where the project folders will be for the given name
-            wiz.core_wizard.set_project_disk_name(name)
             project_paths_dict = wiz.core_wizard.preview_project_paths(name)
 
             # create path widgets if needed
@@ -66,6 +65,18 @@ class ProjectNamePage(BasePage):
 
         # signal that the next button may have changed state
         self.completeChanged.emit()
+
+    def validatePage(self):
+        wiz = self.wizard()
+        name = self.field("project_name")
+        try:
+            wiz.core_wizard.set_project_disk_name(name)
+            self.name_valid = True
+            return True
+        except Exception, e:
+            wiz.ui.project_name_errors.setText(str(e))
+            self.name_valid = False
+            return False
 
     def _setup_storage_widgets(self, project_paths_dict):
         # setup os info and ordering
