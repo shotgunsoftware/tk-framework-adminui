@@ -549,7 +549,7 @@ class Ui_Wizard(object):
         self.select_default_config.setText(QtGui.QApplication.translate("Wizard", "Default", None, QtGui.QApplication.UnicodeUTF8))
         self.label_default_config.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">This includes all of the officially released engines and apps with a single root storage configuration that mimcs a VFX/Animation workflow.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.select_multiroot_config.setText(QtGui.QApplication.translate("Wizard", "Default Multiroot", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_multiroot_config.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">This includes all of the oficially released engines and apps with a multiroot storage configuration that mimics a VFX/Animation workflow.</p", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_multiroot_config.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">This includes all of the officially released engines and apps with a multiroot storage configuration that mimics a VFX/Animation workflow.</p", None, QtGui.QApplication.UnicodeUTF8))
         self.select_games_config.setText(QtGui.QApplication.translate("Wizard", "Default Games", None, QtGui.QApplication.UnicodeUTF8))
         self.label_games_config.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">This includes all of the officially released engines and apps with a single root storage configuration that mimics a Games workflow.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.project_config_page.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Select a Project to copy the config from.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
@@ -595,8 +595,7 @@ class Ui_Wizard(object):
         self.additional_details_button.setText(QtGui.QApplication.translate("Wizard", "Show Details", None, QtGui.QApplication.UnicodeUTF8))
         self.final_message.setText(QtGui.QApplication.translate("Wizard", "Toolkit is now ready to use in your Project!<br/>\n"
 "<br/>\n"
-"For more information on how to configure your Project and tailor it to your system, go to<br/>\n"
-"<a href=\"https://toolkit.shotgunsoftware.com/entries/93728833#Welcome%20to%20Toolkit\" style=\"color: rgb(203, 205, 205);\">Project Configuration</a>.", None, QtGui.QApplication.UnicodeUTF8))
+"For more information on how to configure your Project and tailor it to your system, <a href=\"https://toolkit.shotgunsoftware.com/entries/93728833#Welcome%20to%20Toolkit\" style=\"color: rgb(203, 205, 205);\">click here to check out our documentation</a>.", None, QtGui.QApplication.UnicodeUTF8))
         self.setup_complete.setText(QtGui.QApplication.translate("Wizard", "<big>Project Setup Complete</big>", None, QtGui.QApplication.UnicodeUTF8))
 
 from ..setup_project.setup_type_page import SetupTypePage
