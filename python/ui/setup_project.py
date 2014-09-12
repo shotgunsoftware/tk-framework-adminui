@@ -584,7 +584,7 @@ class Ui_Wizard(object):
         self.linux_path.setPlaceholderText(QtGui.QApplication.translate("Wizard", "/path/on/linux", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_browse.setText(QtGui.QApplication.translate("Wizard", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.windows_label.setText(QtGui.QApplication.translate("Wizard", "Windows", None, QtGui.QApplication.UnicodeUTF8))
-        self.config_location_subheader.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Specify where you want Shotgun to install your Project\'s pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.  If you use multiple operating systems, enter the equivalent path for each.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.config_location_subheader.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Specify where you want Shotgun to install your Project\'s pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.windows_browse.setText(QtGui.QApplication.translate("Wizard", "Browse...", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_label.setText(QtGui.QApplication.translate("Wizard", "Mac", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_label.setText(QtGui.QApplication.translate("Wizard", "Linux", None, QtGui.QApplication.UnicodeUTF8))
