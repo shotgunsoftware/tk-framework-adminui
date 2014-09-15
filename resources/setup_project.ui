@@ -1206,7 +1206,7 @@ color: rgb(160, 160, 160);</string>
        <string notr="true">font-size: 14px;</string>
       </property>
       <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.  If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;</string>
+       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
