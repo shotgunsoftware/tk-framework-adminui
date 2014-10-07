@@ -71,7 +71,7 @@ class ProgressPage(BasePage):
         self.execute_thread.start()
 
         # can no longer cancel or hit back
-        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.NextButton])
+        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.NextButton, wiz.FinishButton])
 
     def additional_details_pressed(self):
         # handle the additional details toggle being pressed
