@@ -94,6 +94,13 @@ class SetupProjectWizard(QtGui.QWizard):
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
 
+    def closeEvent(self, event):
+        """
+        Disables Alt-F4 on windows and prevents user from cancelling mid-operation and
+        leaving the configuration in an un-recoverable state.
+        """
+        event.ignore()
+
     def _on_help_requested(self):
         # forward help request to current page
         page = self.currentPage()
