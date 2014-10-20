@@ -28,6 +28,8 @@ class SetupProjectWizard(QtGui.QWizard):
     """
     def __init__(self, project, parent=None):
         QtGui.QWizard.__init__(self, parent)
+
+        # Disable Close button. Note that on mac, need to disable minimize button also to do this (but maximize can stay). 
         self.setWindowFlags(QtCore.Qt.Tool | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMaximizeButtonHint)
 
         # setup the command wizard from core
