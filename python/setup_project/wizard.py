@@ -28,7 +28,7 @@ class SetupProjectWizard(QtGui.QWizard):
     """
     def __init__(self, project, parent=None):
         QtGui.QWizard.__init__(self, parent)
-        self.setWindowFlags((self.windowFlags() | QtCore.Qt.CustomizeWindowHint) & ~QtCore.Qt.WindowCloseButtonHint)
+        self.setWindowFlags(QtCore.Qt.Tool | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMaximizeButtonHint)
 
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
