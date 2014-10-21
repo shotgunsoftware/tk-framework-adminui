@@ -27,11 +27,21 @@ class ProjectNamePage(BasePage):
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
         self.wizard().ui.project_name.textChanged.connect(self.on_name_changed)
-        self._storage_path_widgets = {}
+        self._widget_groups = []
 
     def initializePage(self):
         wiz = self.wizard()
         name = wiz.core_wizard.get_default_project_disk_name()
+
+        # Reset page state in case back button was used (ie: remove previously created widgets)
+        self._storage_path_widgets = {}
+        for group in self._widget_groups:
+            if wiz.ui.project_contents_layout.indexOf(group) != -1:
+                wiz.ui.project_contents_layout.removeWidget(group)
+                group.deleteLater()
+
+        self._widget_groups = []
+
         self.setField("project_name", name)
 
     def on_name_changed(self, name):
@@ -126,6 +136,9 @@ class ProjectNamePage(BasePage):
             group_layout.setColumnStretch(1, 1)
             group_layout.setHorizontalSpacing(15)
             wiz.ui.project_contents_layout.addWidget(group)
+            
+            # Keep added widgets in order to remove them in case back button is used.
+            self._widget_groups.append(group)
 
     def isComplete(self):
         return self.name_valid
