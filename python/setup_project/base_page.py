@@ -21,10 +21,12 @@ class BasePage(QtGui.QWizardPage):
         QtGui.QWizardPage.__init__(self, parent)
         self._page_id = None
         self._next_page_id = None
+        self._error_field = None
 
-    def setup_ui(self, page_id):
+    def setup_ui(self, page_id, error_field=None):
         """ Setup page UI after the Wizard's UI has been setup from the uic. """
         self._page_id = page_id
+        self._error_field = error_field
 
     def page_id(self):
         """ Return the cached id of this page """
@@ -44,3 +46,16 @@ class BasePage(QtGui.QWizardPage):
     def help_requested(self):
         if self._HELP_URL:
             QtGui.QDesktopServices.openUrl(self._HELP_URL)
+
+    def validatePage(self):
+        try:
+            # Validate 
+            if self.isCommitPage():
+                wiz = self.wizard()
+                wiz.core_wizard.pre_setup_validation()
+        except Exception, e:
+            if self._error_field:
+                self._error_field.setText(str(e))
+            return False
+
+        return True
