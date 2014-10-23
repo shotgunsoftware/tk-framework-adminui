@@ -87,6 +87,7 @@ class StorageLocationsPage(BasePage):
             os_label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
             os_path = QtGui.QLineEdit(self)
             os_path.setPlaceholderText(os_placeholder)
+            os_path_locked = None
 
             # populate with existing paths
             if store_info[os_key]:
@@ -96,8 +97,15 @@ class StorageLocationsPage(BasePage):
             if store_info["defined_in_shotgun"] and store_info[os_key]:
                 os_path.setReadOnly(True)
                 os_path.setEnabled(False)
+                os_path.setStyleSheet("background-color: rgb(60, 60, 60); color: rgb(128, 128, 128);")
                 os_path.setToolTip(
                     "Can not edit paths defined Shotgun. This has to be changed in Shotgun's preferences.")
+
+                os_path_locked = QtGui.QLabel(self)
+                os_path_locked.setPixmap(QtGui.QPixmap(":/tk-framework-adminui/setup_project/icon_locked.png"))
+                os_path_locked.setMaximumSize(QtCore.QSize(24, 24))
+                os_path_locked.setText("")
+                os_path_locked.setScaledContents(True)
 
             # keep around the line edits for validation
             self._store_path_widgets[os_key] = os_path
@@ -128,6 +136,8 @@ class StorageLocationsPage(BasePage):
             layout.addWidget(os_path, 3+i, 2, 1, 1)
             if create_browse:
                 layout.addWidget(os_button, 3+i, 3, 1, 1)
+            if os_path_locked:
+                layout.addWidget(os_path_locked, 3+i, 3, 1, 1)
 
         # add a spacer since
         spacer = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
