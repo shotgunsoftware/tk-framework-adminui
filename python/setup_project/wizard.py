@@ -28,7 +28,13 @@ class SetupProjectWizard(QtGui.QWizard):
     """
     def __init__(self, project, parent=None):
         QtGui.QWizard.__init__(self, parent)
-        self.setWindowFlags((self.windowFlags() | QtCore.Qt.CustomizeWindowHint) & ~QtCore.Qt.WindowCloseButtonHint)
+
+        # Disable Close button. Note that on mac, need to disable minimize 
+        # button also to do this (but maximize can stay). 
+        self.setWindowFlags(QtCore.Qt.Tool | 
+                            QtCore.Qt.CustomizeWindowHint | 
+                            QtCore.Qt.WindowTitleHint | 
+                            QtCore.Qt.WindowMaximizeButtonHint)
 
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
@@ -91,6 +97,13 @@ class SetupProjectWizard(QtGui.QWizard):
         self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
+
+    def closeEvent(self, event):
+        """
+        Disables Alt-F4 on windows and prevents user from cancelling mid-operation and
+        leaving the configuration in an un-recoverable state.
+        """
+        event.ignore()
 
     def _on_help_requested(self):
         # forward help request to current page
