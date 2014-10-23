@@ -18,5 +18,6 @@
     <file>octocats/poptocat_v2.png</file>
     <file>octocats/steroidtocat.png</file>
     <file>shotgun_logo.png</file>
+    <file>icon_lock.png</file>
   </qresource>
 </RCC>
