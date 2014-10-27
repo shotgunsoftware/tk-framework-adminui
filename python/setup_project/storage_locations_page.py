@@ -98,7 +98,6 @@ class StorageLocationsPage(BasePage):
                 tooltip = "Can not edit paths defined Shotgun. This has to be changed in Shotgun's preferences."
                 os_path.setReadOnly(True)
                 os_path.setEnabled(False)
-                os_path.setStyleSheet("QLineEdit {background-color: rgb(60, 60, 60); color: rgb(128, 128, 128);}")
                 os_path.setToolTip(tooltip)
 
                 os_path_locked = QtGui.QLabel(self)
