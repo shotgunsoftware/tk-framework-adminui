@@ -10,6 +10,7 @@
 
 from sgtk.platform.qt import QtGui
 
+import traceback
 
 class BasePage(QtGui.QWizardPage):
     """ Base page for all Shotgun pages to inherit from. """
@@ -24,7 +25,11 @@ class BasePage(QtGui.QWizardPage):
         self._error_field = None
 
     def setup_ui(self, page_id, error_field=None):
-        """ Setup page UI after the Wizard's UI has been setup from the uic. """
+        """ 
+        Setup page UI after the Wizard's UI has been setup from the uic. 
+        :param page_id: Page id for current page.
+        :param error_field: Ui field to report errors to.
+        """
         self._page_id = page_id
         self._error_field = error_field
 
@@ -48,14 +53,26 @@ class BasePage(QtGui.QWizardPage):
             QtGui.QDesktopServices.openUrl(self._HELP_URL)
 
     def validatePage(self):
+        """
+        Validate the current page.
+
+        The idea of having this in BasePage is that whatever the last page is 
+        will be the one calling pre_setup_validation.
+        """
+        state = True
+
         try:
             # Validate 
             if self.isCommitPage():
                 wiz = self.wizard()
                 wiz.core_wizard.pre_setup_validation()
-        except Exception, e:
+        except TankError, e:
             if self._error_field:
                 self._error_field.setText(str(e))
-            return False
+            valid = False
+        except Exception, e:
+            if self._error_field:
+                self._error_field.setText(traceback.format_exc())
+            valid = False
 
-        return True
+        return state

@@ -129,6 +129,7 @@ class ConfigLocationPage(BasePage):
 
         # Previous validation code should be ran first as it setup necessary variables in core_wizard for
         # pre-commit validation.
-        if not BasePage.validatePage(self): return False
+        if not BasePage.validatePage(self): 
+            return False
 
         return True
