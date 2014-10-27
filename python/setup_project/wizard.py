@@ -30,6 +30,9 @@ class SetupProjectWizard(QtGui.QWizard):
         QtGui.QWizard.__init__(self, parent)
         self.setWindowFlags((self.windowFlags() | QtCore.Qt.CustomizeWindowHint) & ~QtCore.Qt.WindowCloseButtonHint)
 
+        # Set stylesheet modification for this wizard
+        self.setStyleSheet("QLineEdit:Disabled {background-color: rgb(60, 60, 60); color: rgb(128, 128, 128);}")
+
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
 
