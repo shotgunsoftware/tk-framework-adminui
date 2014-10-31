@@ -36,6 +36,9 @@ class SetupProjectWizard(QtGui.QWizard):
                             QtCore.Qt.WindowTitleHint | 
                             QtCore.Qt.WindowMaximizeButtonHint)
 
+        # Set stylesheet modification for this wizard
+        self.setStyleSheet("QLineEdit:Disabled {background-color: rgb(60, 60, 60); color: rgb(128, 128, 128);}")
+
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
 

@@ -87,6 +87,7 @@ class StorageLocationsPage(BasePage):
             os_label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
             os_path = QtGui.QLineEdit(self)
             os_path.setPlaceholderText(os_placeholder)
+            os_path_locked = None
 
             # populate with existing paths
             if store_info[os_key]:
@@ -94,10 +95,17 @@ class StorageLocationsPage(BasePage):
 
             # don't allow editing data from Shotgun, too dangerous
             if store_info["defined_in_shotgun"] and store_info[os_key]:
+                tooltip = "Can not edit paths defined Shotgun. This has to be changed in Shotgun's preferences."
                 os_path.setReadOnly(True)
                 os_path.setEnabled(False)
-                os_path.setToolTip(
-                    "Can not edit paths defined Shotgun. This has to be changed in Shotgun's preferences.")
+                os_path.setToolTip(tooltip)
+
+                os_path_locked = QtGui.QLabel(self)
+                os_path_locked.setPixmap(QtGui.QPixmap(":/tk-framework-adminui/setup_project/icon_lock.png"))
+                os_path_locked.setAlignment(QtCore.Qt.AlignVCenter)
+                os_path_locked.setToolTip(tooltip)
+
+                os_label.setToolTip(tooltip)
 
             # keep around the line edits for validation
             self._store_path_widgets[os_key] = os_path
@@ -125,6 +133,8 @@ class StorageLocationsPage(BasePage):
 
             # add the widgets to the layout
             layout.addWidget(os_label, 3+i, 0, 1, 1)
+            if os_path_locked:
+                layout.addWidget(os_path_locked, 3+i, 1, 1, 1)
             layout.addWidget(os_path, 3+i, 2, 1, 1)
             if create_browse:
                 layout.addWidget(os_button, 3+i, 3, 1, 1)
