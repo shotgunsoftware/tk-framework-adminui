@@ -28,7 +28,8 @@ class BasePage(QtGui.QWizardPage):
         """ 
         Setup page UI after the Wizard's UI has been setup from the uic. 
         :param page_id: Page id for current page.
-        :param error_field: Ui field to report errors to.
+        :param error_field: QLabel object to use to display error messages. 
+                            These messages may be one-liners as well as full call stacks.
         """
         self._page_id = page_id
         self._error_field = error_field
