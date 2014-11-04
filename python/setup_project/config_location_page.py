@@ -26,10 +26,11 @@ class ConfigLocationPage(BasePage):
         self._path_widget = None
 
     def setup_ui(self, page_id):
-        BasePage.setup_ui(self, page_id)
+        wiz = self.wizard()
+
+        BasePage.setup_ui(self, page_id, wiz.ui.config_location_errors)
 
         # update the layout of the os specific widgets
-        wiz = self.wizard()
         ui = wiz.ui
         os_widgets = [
             (ui.linux_label, ui.linux_path, ui.linux_browse, sys.platform.startswith("linux")),
@@ -118,11 +119,17 @@ class ConfigLocationPage(BasePage):
             QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
             wiz.core_wizard.validate_configuration_location(linux_path, windows_path, macosx_path)
             wiz.core_wizard.set_configuration_location(linux_path, windows_path, macosx_path)
+            wiz.core_wizard.set_default_core()
             wiz.ui.config_location_errors.setText("")
         except Exception, e:
             wiz.ui.config_location_errors.setText(str(e))
             return False
         finally:
             QtGui.QApplication.restoreOverrideCursor()
+
+        # Previous validation code should be ran first as it setup necessary variables in core_wizard for
+        # pre-commit validation.
+        if not BasePage.validatePage(self): 
+            return False
 
         return True

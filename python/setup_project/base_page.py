@@ -10,6 +10,7 @@
 
 from sgtk.platform.qt import QtGui
 
+import traceback
 
 class BasePage(QtGui.QWizardPage):
     """ Base page for all Shotgun pages to inherit from. """
@@ -21,10 +22,17 @@ class BasePage(QtGui.QWizardPage):
         QtGui.QWizardPage.__init__(self, parent)
         self._page_id = None
         self._next_page_id = None
+        self._error_field = None
 
-    def setup_ui(self, page_id):
-        """ Setup page UI after the Wizard's UI has been setup from the uic. """
+    def setup_ui(self, page_id, error_field=None):
+        """ 
+        Setup page UI after the Wizard's UI has been setup from the uic. 
+        :param page_id: Page id for current page.
+        :param error_field: QLabel object to use to display error messages. 
+                            These messages may be one-liners as well as full call stacks.
+        """
         self._page_id = page_id
+        self._error_field = error_field
 
     def page_id(self):
         """ Return the cached id of this page """
@@ -44,3 +52,28 @@ class BasePage(QtGui.QWizardPage):
     def help_requested(self):
         if self._HELP_URL:
             QtGui.QDesktopServices.openUrl(self._HELP_URL)
+
+    def validatePage(self):
+        """
+        Validate the current page.
+
+        The idea of having this in BasePage is that whatever the last page is 
+        will be the one calling pre_setup_validation.
+        """
+        state = True
+
+        try:
+            # Validate 
+            if self.isCommitPage():
+                wiz = self.wizard()
+                wiz.core_wizard.pre_setup_validation()
+        except TankError, e:
+            if self._error_field:
+                self._error_field.setText(str(e))
+            valid = False
+        except Exception, e:
+            if self._error_field:
+                self._error_field.setText(traceback.format_exc())
+            valid = False
+
+        return state
