@@ -9,6 +9,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 from sgtk.platform.qt import QtGui
+from sgtk import TankError
 
 import traceback
 
@@ -70,10 +71,10 @@ class BasePage(QtGui.QWizardPage):
         except TankError, e:
             if self._error_field:
                 self._error_field.setText(str(e))
-            valid = False
+            state = False
         except Exception, e:
             if self._error_field:
                 self._error_field.setText(traceback.format_exc())
-            valid = False
+            state = False
 
         return state
