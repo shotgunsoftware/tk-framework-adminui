@@ -21,11 +21,13 @@ class DefaultConfigPage(BasePage):
     DEFAULT_ID = 0
     MULTIROOT_ID = 1
     GAMES_ID = 2
+    FLAME_ID = 3
 
     SELECTION_ID_MAP = {
         DEFAULT_ID: "tk-config-default",
         MULTIROOT_ID: "tk-config-multiroot",
         GAMES_ID: "tk-config-games",
+        FLAME_ID: "tk-config-flame",
     }
 
     def __init__(self, parent=None):
@@ -40,6 +42,7 @@ class DefaultConfigPage(BasePage):
         self._config_button_group.addButton(wiz.ui.select_default_config, self.DEFAULT_ID)
         self._config_button_group.addButton(wiz.ui.select_multiroot_config, self.MULTIROOT_ID)
         self._config_button_group.addButton(wiz.ui.select_games_config, self.GAMES_ID)
+        self._config_button_group.addButton(wiz.ui.select_flame_config, self.FLAME_ID)
 
     def validatePage(self):
         selected_id = self._config_button_group.checkedId()
