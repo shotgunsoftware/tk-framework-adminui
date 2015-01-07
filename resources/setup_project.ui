@@ -353,7 +353,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a single root storage configuration that mimcs a VFX/Animation workflow.&lt;/p&gt;</string>
+       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a single root storage configuration that mimics a VFX/Animation workflow.&lt;/p&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
