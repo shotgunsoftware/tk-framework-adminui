@@ -49,6 +49,9 @@ class ProjectNamePage(BasePage):
         wiz = self.wizard()
         name = self.field("project_name")
         try:
+            # Will raise exception if not valid
+            wiz.core_wizard.validate_project_disk_name(name)
+
             # update where the project folders will be for the given name
             project_paths_dict = wiz.core_wizard.preview_project_paths(name)
 
