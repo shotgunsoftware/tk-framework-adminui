@@ -95,7 +95,9 @@ class StorageLocationsPage(BasePage):
 
             # don't allow editing data from Shotgun, too dangerous
             if store_info["defined_in_shotgun"] and store_info[os_key]:
-                tooltip = "Can not edit paths defined Shotgun. This has to be changed in Shotgun's preferences."
+                tooltip = ("There is already a secondary Local Storage defined in your Shotgun Site Preferences "
+                           "named \"secondary\". In order to change these paths, you'll need to update this Local "
+                           "Storage definition in your Shotgun Site Preferences.")
                 os_path.setReadOnly(True)
                 os_path.setEnabled(False)
                 os_path.setToolTip(tooltip)
