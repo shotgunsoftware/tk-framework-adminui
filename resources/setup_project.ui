@@ -1438,7 +1438,7 @@ color: rgb(141, 143, 143);</string>
       <property name="text">
        <string>Toolkit is now ready to use in your Project!&lt;br/&gt;
 &lt;br/&gt;
-For more information on how to configure your Project and tailor it to your system, &lt;a href=&quot;https://toolkit.shotgunsoftware.com/entries/93728833#Welcome%20to%20Toolkit&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;click here to check out our documentation&lt;/a&gt;.</string>
+For more information on how to configure your Project and tailor it to your system, &lt;a href=&quot;https://support.shotgunsoftware.com/entries/95443887#Welcome%20to%20Toolkit&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;click here to check out our documentation&lt;/a&gt;.</string>
       </property>
       <property name="textFormat">
        <enum>Qt::RichText</enum>
