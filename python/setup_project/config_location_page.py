@@ -84,9 +84,9 @@ class ConfigLocationPage(BasePage):
 
     def validatePage(self):
         # grab the os paths
-        macosx_path = self.field("config_path_mac")
-        linux_path = self.field("config_path_linux")
-        windows_path = self.field("config_path_win")
+        macosx_path = self.field("config_path_mac").encode("utf-8")
+        linux_path = self.field("config_path_linux").encode("utf-8")
+        windows_path = self.field("config_path_win").encode("utf-8")
 
         if sys.platform == "darwin":
             current_os_path = macosx_path

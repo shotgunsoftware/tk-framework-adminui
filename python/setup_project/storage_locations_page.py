@@ -175,9 +175,9 @@ class StorageLocationsPage(BasePage):
 
         # grab the path for the operating systems
         current_os_path = str(self._store_path_widgets[current_os].text())
-        mac_path = str(self._store_path_widgets["darwin"].text())
-        windows_path = str(self._store_path_widgets["win32"].text())
-        linux_path = str(self._store_path_widgets["linux2"].text())
+        mac_path = self._store_path_widgets["darwin"].text().encode("utf-8")
+        windows_path = self._store_path_widgets["win32"].text().encode("utf-8")
+        linux_path = self._store_path_widgets["linux2"].text().encode("utf-8")
 
         if self._store_info["defined_in_shotgun"]:
             # see if any shotgun values have changed

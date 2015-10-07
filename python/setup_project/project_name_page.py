@@ -83,7 +83,7 @@ class ProjectNamePage(BasePage):
         wiz = self.wizard()
         name = self.field("project_name")
         try:
-            wiz.core_wizard.set_project_disk_name(name)
+            wiz.core_wizard.set_project_disk_name(name.encode("utf-8"))
             self.name_valid = True
             return True
         except Exception, e:
