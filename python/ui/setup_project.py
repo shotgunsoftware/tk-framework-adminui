@@ -600,7 +600,7 @@ class Ui_Wizard(object):
         self.disk_config_subheader.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Specify a path to the location on disk that you want to use for this configuration.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.path.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.path.setPlaceholderText(QtGui.QApplication.translate("Wizard", "/Path/To/Configuration", None, QtGui.QApplication.UnicodeUTF8))
-        self.disk_browse_button_zip.setText(QtGui.QApplication.translate("Wizard", "&Choose .zip...", None, QtGui.QApplication.UnicodeUTF8))
+        self.disk_browse_button_zip.setText(QtGui.QApplication.translate("Wizard", "&Choose zip...", None, QtGui.QApplication.UnicodeUTF8))
         self.disk_browse_button_dir.setText(QtGui.QApplication.translate("Wizard", "&Choose directory...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Wizard", "Please select either a folder or a zip file.", None, QtGui.QApplication.UnicodeUTF8))
         self.project_name_page.setTitle(QtGui.QApplication.translate("Wizard", "<p></p><font size=18>&nbsp;Project Folder Name</font><p></p>", None, QtGui.QApplication.UnicodeUTF8))
