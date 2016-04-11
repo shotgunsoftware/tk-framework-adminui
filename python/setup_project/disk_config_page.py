@@ -21,15 +21,21 @@ class DiskConfigPage(BasePage):
         BasePage.setup_ui(self, page_id)
 
         wiz = self.wizard()
-        wiz.ui.disk_browse_button.pressed.connect(self._on_browse_pressed)
+        wiz.ui.disk_browse_button_dir.pressed.connect(self._on_browse_pressed)
+        wiz.ui.disk_browse_button_zip.pressed.connect(self._on_browse_zip_pressed)
 
     def _on_browse_pressed(self):
         config_dir = QtGui.QFileDialog.getExistingDirectory(
-            self, "Choose configuration", None,
+            self, "Choose pipeline configuration directory", None,
             QtGui.QFileDialog.ShowDirsOnly |
             QtGui.QFileDialog.DontConfirmOverwrite |
             QtGui.QFileDialog.ReadOnly)
         self.setField("disk_path", config_dir)
+
+    def _on_browse_zip_pressed(self):
+        config_zip = QtGui.QFileDialog.getOpenFileName(
+            self, "Choose pipeline configuration zip", None, "*.zip")
+        self.setField("disk_path", str(config_zip[0]))
 
     def validatePage(self):
         uri = self.field("disk_path")
