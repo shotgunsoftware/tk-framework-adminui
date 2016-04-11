@@ -322,8 +322,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>629</width>
-         <height>312</height>
+         <width>625</width>
+         <height>278</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -851,7 +851,7 @@ color: rgb(160, 160, 160);</string>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <property name="spacing">
-         <number>20</number>
+         <number>10</number>
         </property>
         <item>
          <spacer name="verticalSpacer_21">
@@ -867,24 +867,56 @@ color: rgb(160, 160, 160);</string>
          </spacer>
         </item>
         <item>
+         <widget class="QLineEdit" name="path">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="placeholderText">
+           <string>/Path/To/Configuration</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="spacing">
            <number>20</number>
           </property>
           <item>
-           <widget class="QLineEdit" name="path">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path to a configuration on disk.  Either a valid configuration directory or a zip of one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="placeholderText">
-             <string>/Path/To/Configuration</string>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="disk_browse_button_zip">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>&amp;Choose .zip...</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="disk_browse_button">
+           <widget class="QPushButton" name="disk_browse_button_dir">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
-             <string>&amp;Browse...</string>
+             <string>&amp;Choose directory...</string>
             </property>
            </widget>
           </item>
@@ -962,8 +994,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>332</width>
-         <height>200</height>
+         <width>302</width>
+         <height>189</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="project_contents_layout">
@@ -1582,8 +1614,7 @@ For more information on how to configure your Project and tailor it to your syst
  <tabstops>
   <tabstop>project_list</tabstop>
   <tabstop>github_url</tabstop>
-  <tabstop>path</tabstop>
-  <tabstop>disk_browse_button</tabstop>
+  <tabstop>disk_browse_button_dir</tabstop>
   <tabstop>project_name</tabstop>
   <tabstop>mac_path</tabstop>
   <tabstop>mac_browse</tabstop>
