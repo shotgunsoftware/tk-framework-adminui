@@ -8,6 +8,8 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import os
+
 from sgtk.platform.qt import QtGui
 
 from .base_page import BasePage
@@ -35,7 +37,10 @@ class DiskConfigPage(BasePage):
     def _on_browse_zip_pressed(self):
         config_zip = QtGui.QFileDialog.getOpenFileName(
             self, "Choose pipeline configuration zip", None, "*.zip")
-        self.setField("disk_path", str(config_zip[0]))
+        # Unlike getExistingDirectory(), getOpenFileName() always returns a path with / separators. 
+        # So we need to convert them for Windows since core expects the path to be a native one.
+        zip_path = str(config_zip[0])
+        self.setField("disk_path", zip_path.replace("/", os.path.sep))
 
     def validatePage(self):
         uri = self.field("disk_path")

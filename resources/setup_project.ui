@@ -879,7 +879,7 @@ color: rgb(160, 160, 160);</string>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="spacing">
-           <number>20</number>
+           <number>10</number>
           </property>
           <item>
            <spacer name="horizontalSpacer_4">
@@ -903,7 +903,7 @@ color: rgb(160, 160, 160);</string>
              </sizepolicy>
             </property>
             <property name="text">
-             <string>&amp;Choose .zip...</string>
+             <string>&amp;Choose zip...</string>
             </property>
            </widget>
           </item>
@@ -994,7 +994,7 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>302</width>
+         <width>677</width>
          <height>189</height>
         </rect>
        </property>
