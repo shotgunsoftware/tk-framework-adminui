@@ -15,7 +15,7 @@ from tank.platform.qt import QtCore
 
 from . import project_model
 
-shotgun_view = sgtk.platform.import_framework("tk-framework-qtwidgets", "shotgun_view")
+views = sgtk.platform.import_framework("tk-framework-qtwidgets", "views")
 
 
 class ProjectWidget(QtGui.QFrame):
@@ -88,10 +88,10 @@ class ProjectWidget(QtGui.QFrame):
                 }""")
 
 
-class ProjectDelegate(shotgun_view.WidgetDelegate):
+class ProjectDelegate(views.EditSelectedWidgetDelegate):
     """ Wrapper around the ProjectWidget for delegate use """
     def __init__(self, view):
-        shotgun_view.WidgetDelegate.__init__(self, view)
+        views.EditSelectedWidgetDelegate.__init__(self, view)
 
     def _create_widget(self, parent):
         return ProjectWidget(parent)

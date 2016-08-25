@@ -53,6 +53,7 @@ class ProjectConfigPage(BasePage):
         try:
             self._project_config_path = None
             indexes = selected.indexes()
+
             if indexes:
                 # get the primary config path from Shotgun for the selected project
                 project_id = indexes[0].data(ProjectModel.PROJECT_ID_ROLE)
@@ -74,10 +75,12 @@ class ProjectConfigPage(BasePage):
                     elif sys.platform.startswith("linux"):
                         self._project_config_path = configuration.get("linux_path")
 
-            if not self._project_config_path:
                 wiz = self.wizard()
-                project_name = indexes[0].data(ProjectModel.DISPLAY_NAME_ROLE)
-                wiz.ui.project_errors.setText("Could not find configuration for '%s'" % project_name)
+                if not self._project_config_path:
+                    project_name = indexes[0].data(ProjectModel.DISPLAY_NAME_ROLE)
+                    wiz.ui.project_errors.setText("Could not find configuration for '%s'" % project_name)
+                else:
+                    wiz.ui.project_errors.setText("")
         finally:
             # restore the regular cursor
             QtGui.QApplication.restoreOverrideCursor()
