@@ -88,10 +88,10 @@ class ProjectWidget(QtGui.QFrame):
                 }""")
 
 
-class ProjectDelegate(views.WidgetDelegate):
+class ProjectDelegate(views.EditSelectedWidgetDelegate):
     """ Wrapper around the ProjectWidget for delegate use """
     def __init__(self, view):
-        views.WidgetDelegate.__init__(self, view)
+        views.EditSelectedWidgetDelegate.__init__(self, view)
 
     def _create_widget(self, parent):
         return ProjectWidget(parent)
