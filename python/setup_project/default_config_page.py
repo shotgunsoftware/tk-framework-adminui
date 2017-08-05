@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Shotgun Software Inc.
+﻿# Copyright (c) 2013 Shotgun Software Inc.
 #
 # CONFIDENTIAL AND PROPRIETARY
 #
@@ -19,15 +19,11 @@ class DefaultConfigPage(BasePage):
     _HELP_URL = BasePage._HELP_URL + "#Default%20configuration%20templates"
 
     DEFAULT_ID = 0
-    MULTIROOT_ID = 1
-    GAMES_ID = 2
-    FLAME_ID = 3
+    LEGACY_DEFAULT_ID = 1
 
     SELECTION_ID_MAP = {
-        DEFAULT_ID: "tk-config-default",
-        MULTIROOT_ID: "tk-config-multiroot",
-        GAMES_ID: "tk-config-games",
-        FLAME_ID: "tk-config-flame",
+        DEFAULT_ID: "tk-config-default2",
+        LEGACY_DEFAULT_ID: "tk-config-default",
     }
 
     def __init__(self, parent=None):
@@ -40,9 +36,7 @@ class DefaultConfigPage(BasePage):
         wiz = self.wizard()
         self._config_button_group = QtGui.QButtonGroup(self)
         self._config_button_group.addButton(wiz.ui.select_default_config, self.DEFAULT_ID)
-        self._config_button_group.addButton(wiz.ui.select_multiroot_config, self.MULTIROOT_ID)
-        self._config_button_group.addButton(wiz.ui.select_games_config, self.GAMES_ID)
-        self._config_button_group.addButton(wiz.ui.select_flame_config, self.FLAME_ID)
+        self._config_button_group.addButton(wiz.ui.select_legacy_default_config, self.LEGACY_DEFAULT_ID)
 
     def validatePage(self):
         selected_id = self._config_button_group.checkedId()
