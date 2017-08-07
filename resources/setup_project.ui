@@ -314,6 +314,9 @@ color: rgb(160, 160, 160);</string>
     </item>
     <item>
      <widget class="QScrollArea" name="scrollArea">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
@@ -322,8 +325,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>627</width>
-         <height>252</height>
+         <width>629</width>
+         <height>254</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -352,7 +355,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This includes all of the officially released engines and apps with a DCC centric configuration layout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This configuration matches how projects behave before any configuration, but adds an example directory structure and related tools (such as workfile management).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -387,7 +390,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This includes all of the officially released engines and apps with a classic or legacy configuration layout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the configuration that matches the behavior before every project had a default configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
