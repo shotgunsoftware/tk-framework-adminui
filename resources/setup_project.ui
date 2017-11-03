@@ -314,6 +314,9 @@ color: rgb(160, 160, 160);</string>
     </item>
     <item>
      <widget class="QScrollArea" name="scrollArea">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
@@ -322,8 +325,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>625</width>
-         <height>278</height>
+         <width>629</width>
+         <height>254</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -352,7 +355,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a single root storage configuration that mimics a VFX/Animation workflow.&lt;/p&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This configuration matches how projects behave before any configuration, but adds an example directory structure and related tools (such as workfile management).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -366,7 +369,7 @@ color: rgb(160, 160, 160);</string>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="select_multiroot_config">
+         <widget class="QRadioButton" name="select_legacy_default_config">
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
@@ -376,7 +379,7 @@ color: rgb(160, 160, 160);</string>
 }</string>
           </property>
           <property name="text">
-           <string>Multiroot</string>
+           <string>Legacy Default</string>
           </property>
          </widget>
         </item>
@@ -387,7 +390,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a multiroot storage configuration that mimics a VFX/Animation workflow.&lt;/p</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the configuration that matches the behavior before every project had a default configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -401,74 +404,17 @@ color: rgb(160, 160, 160);</string>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="select_flame_config">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-          <property name="styleSheet">
-           <string notr="true">QRadioButton {
-	font-size: 16px;
-}</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
           </property>
-          <property name="text">
-           <string>Flame</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_multiroot_config_2">
-          <property name="styleSheet">
-           <string notr="true">font-size: 12px;
-color: rgb(160, 160, 160);</string>
-          </property>
-          <property name="text">
-           <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This is the same as the Default configuration but also includes the Flame integration and a round-trip workflow between Flame and Nuke.&lt;/p</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="indent">
-           <number>20</number>
-          </property>
-          <property name="buddy">
-           <cstring>select_project</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="select_games_config">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QRadioButton {
-	font-size: 16px;
-}</string>
-          </property>
-          <property name="text">
-           <string>Games</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_games_config">
-          <property name="styleSheet">
-           <string notr="true">font-size: 12px;
-color: rgb(160, 160, 160);</string>
-          </property>
-          <property name="text">
-           <string>&lt;p style=&quot;line-height: 130%&quot;&gt;This includes all of the officially released engines and apps with a single root storage configuration that mimics a Games workflow.&lt;/p&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="indent">
-           <number>20</number>
-          </property>
-          <property name="buddy">
-           <cstring>select_github</cstring>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -994,8 +940,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>677</width>
-         <height>189</height>
+         <width>307</width>
+         <height>191</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="project_contents_layout">
