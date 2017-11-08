@@ -390,7 +390,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the configuration that matches the behavior before every project had a default configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the older VFX/Animation workflow that was available before every project had an implied configuration.  It should be used if you want the old structure provided by the default and Flame configurations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
