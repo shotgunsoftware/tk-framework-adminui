@@ -325,8 +325,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>629</width>
-         <height>254</height>
+         <width>627</width>
+         <height>280</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -355,7 +355,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This configuration matches how projects behave before any configuration, but adds an example directory structure and related tools (such as workfile management).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Not sure? Start here to add directory management, extra publishing options, and the ability to tweak configuration to your project.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -390,7 +390,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the older VFX/Animation workflow that was available before every project had an implied configuration.  It should be used if you want the old structure provided by the default and Flame configurations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose this option if you want the older structure from when every project required a configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -940,8 +940,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>307</width>
-         <height>191</height>
+         <width>302</width>
+         <height>189</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="project_contents_layout">
