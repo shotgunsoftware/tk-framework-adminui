@@ -355,7 +355,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Not sure? Start here to add directory management, extra publishing options, and the ability to tweak configuration to your project.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Not sure? Start here to add directory management, extra publishing options, and the ability to tweak your project configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>

@@ -551,7 +551,7 @@ class Ui_Wizard(object):
         self.default_configs_page.setSubTitle(QtGui.QApplication.translate("Wizard", "&nbsp;", None, QtGui.QApplication.UnicodeUTF8))
         self.default_configs_subheader.setText(QtGui.QApplication.translate("Wizard", "<p style=\"line-height: 130%\">Choose the Shotgun default that best matches your workflow and structure.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.select_default_config.setText(QtGui.QApplication.translate("Wizard", "Default", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_default_config.setText(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Not sure? Start here to add directory management, extra publishing options, and the ability to tweak configuration to your project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_default_config.setText(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Not sure? Start here to add directory management, extra publishing options, and the ability to tweak your project configuration.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.select_legacy_default_config.setText(QtGui.QApplication.translate("Wizard", "Legacy Default", None, QtGui.QApplication.UnicodeUTF8))
         self.label_multiroot_config.setText(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Choose this option if you want the older structure from when every project required a configuration.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.project_config_page.setToolTip(QtGui.QApplication.translate("Wizard", "<html><head/><body><p>Select a Project to copy the config from.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
