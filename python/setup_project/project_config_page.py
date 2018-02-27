@@ -97,7 +97,7 @@ class ProjectConfigPage(BasePage):
         config_uri = os.path.join(self._project_config_path, "config")
         try:
             # test the config and clear errors on success
-            wiz.set_config_uri(config_uri)
+            wiz.validate_config_uri(config_uri)
             wiz.ui.project_errors.setText("")
             return True
         except Exception, e:

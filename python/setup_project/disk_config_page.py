@@ -46,7 +46,7 @@ class DiskConfigPage(BasePage):
         uri = self.field("disk_path")
         wiz = self.wizard()
         try:
-            wiz.set_config_uri(uri)
+            wiz.validate_config_uri(uri)
             wiz.ui.disk_errors.setText("")
         except Exception, e:
             wiz.ui.disk_errors.setText(str(e))

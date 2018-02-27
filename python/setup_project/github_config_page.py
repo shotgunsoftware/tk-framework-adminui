@@ -47,7 +47,7 @@ class GithubConfigPage(BasePage):
         wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
         wait.show()
         try:
-            wiz.set_config_uri(uri)
+            wiz.validate_config_uri(uri)
             wiz.ui.github_errors.setText("")
         except Exception, e:
             wiz.ui.github_errors.setText(str(e))

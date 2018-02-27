@@ -15,7 +15,6 @@ from sgtk.platform.qt import QtCore
 
 from ..ui import setup_project
 from .emitting_handler import EmittingHandler
-from .storage_locations_page import StorageLocationsPage
 
 import sgtk
 
@@ -41,9 +40,6 @@ class SetupProjectWizard(QtGui.QWizard):
 
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
-
-        # initialize storage setup pages
-        self._storage_location_page_ids = []
 
         # setup logging
         self._logger = logging.getLogger("tk-framework-adminui.setup_project")
@@ -117,46 +113,19 @@ class SetupProjectWizard(QtGui.QWizard):
         """ returns True if the store should be valid.  False otherwise """
         return store_info["exists_on_disk"] and store_info["defined_in_shotgun"]
 
-    def set_config_uri(self, uri):
-        """ set the config uri and adjust the state of the wizard to reflect needed pages """
-        # clear the current storage pages
-        for storage_page_id in self._storage_location_page_ids:
-            self.removePage(storage_page_id)
-        self._storage_location_page_ids = []
+    def validate_config_uri(self, uri):
+        """Download and validate the supplied config URI.
+
+        This will also update the wizard to display the required storages for
+        mapping by the user.
+        """
 
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         try:
-            # validate the uri and get the required storages
+            # download and validate the uri and update the required storages.
             # let any exceptions propagate up to the calling page to be handled
             storage_info = self.core_wizard.validate_config_uri(uri)
-            for (store_name, store_info) in storage_info.iteritems():
-                if not self._is_store_valid(store_info):
-                    # storage is not available, show the page for it
-                    page = StorageLocationsPage(store_name, store_info, uri)
-                    page_id = self.addPage(page)
-                    self._storage_location_page_ids.append(page_id)
-                    page.setup_ui(page_id)
-
-                    # set the page flow if this is not the first page
-                    if len(self._storage_location_page_ids) > 1:
-                        previous_page = self.page(self._storage_location_page_ids[-2])
-                        previous_page.set_next_page(page, last_page=False)
-
-            current_page = self.currentPage()
-            if self._storage_location_page_ids:
-                # have storage pages
-                # let the last one know to set the uri on exit
-                last_page = self.page(self._storage_location_page_ids[-1])
-                last_page.set_next_page(self.ui.project_name_page, last_page=True)
-
-                # set the first storage page as the next page
-                first_page = self.page(self._storage_location_page_ids[0])
-                current_page.set_next_page(first_page)
-            else:
-                # no storage pages set the right next page
-                current_page.set_next_page(self.ui.project_name_page)
-
-                # actually set the uri
-                self.core_wizard.set_config_uri(uri)
+            for (root_name, root_info) in storage_info.iteritems():
+                self.ui.storage_map_page.add_mapping(root_name, root_info)
         finally:
             QtGui.QApplication.restoreOverrideCursor()

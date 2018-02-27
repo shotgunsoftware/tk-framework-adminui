@@ -127,7 +127,7 @@ class ConfigLocationPage(BasePage):
         finally:
             QtGui.QApplication.restoreOverrideCursor()
 
-        # Previous validation code should be ran first as it setup necessary variables in core_wizard for
+        # Previous validation code should be run first as it setup necessary variables in core_wizard for
         # pre-commit validation.
         if not BasePage.validatePage(self): 
             return False
