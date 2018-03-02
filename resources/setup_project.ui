@@ -682,7 +682,7 @@ color: rgb(160, 160, 160);</string>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your url needs to end with .git, for example:&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-family:'Courier New,courier'; font-size:12pt;&quot;&gt;https://github.com/shotgunsoftware/tk-config-default.git&lt;br/&gt;git@github.com:shotgunsoftware/tk-config-default.git&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your url needs to end with .git, for example:&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-family:'Courier New,courier'; font-size:12pt;&quot;&gt;https://github.com/shotgunsoftware/tk-config-default2.git&lt;br/&gt;git@github.com:shotgunsoftware/tk-config-default2.git&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
