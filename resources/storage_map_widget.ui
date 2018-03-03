@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>164</height>
+    <height>176</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0" columnstretch="2,3">
+  <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0" columnstretch="2,3">
    <property name="horizontalSpacing">
     <number>12</number>
    </property>
@@ -66,23 +66,6 @@ color: rgb(160, 160, 160);</string>
      </item>
     </layout>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QLabel" name="storage_info">
-     <property name="styleSheet">
-      <string notr="true">font-size: 10px;
-color: rgb(252, 98, 70);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1">
     <layout class="QHBoxLayout" name="storage_layout" stretch="1,1,1,100">
      <property name="spacing">
@@ -90,6 +73,9 @@ color: rgb(252, 98, 70);</string>
      </property>
      <item>
       <widget class="QLabel" name="storage_lbl">
+       <property name="toolTip">
+        <string>&lt;p&gt;These are the storage paths defined by your Shotgun site.&lt;/p&gt;</string>
+       </property>
        <property name="text">
         <string>Storage:</string>
        </property>
@@ -99,6 +85,9 @@ color: rgb(252, 98, 70);</string>
       <widget class="QComboBox" name="storage_select_combo">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;p&gt;These are the storage paths defined by your Shotgun site.&lt;/p&gt;</string>
        </property>
        <property name="autoFillBackground">
         <bool>true</bool>
@@ -117,6 +106,9 @@ color: rgb(252, 98, 70);</string>
        </property>
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;p&gt;Click this to save your changes to the selected Storage paths.&lt;/p&gt;</string>
        </property>
        <property name="text">
         <string>Save</string>
@@ -148,29 +140,18 @@ color: rgb(252, 98, 70);</string>
      </property>
      <item>
       <widget class="QFrame" name="path_frame">
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,100,1,0,0">
         <property name="margin">
          <number>6</number>
         </property>
         <property name="spacing">
          <number>4</number>
         </property>
-        <item row="2" column="2">
-         <widget class="QToolButton" name="windows_path_browse">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/tk-framework-adminui/setup_project/file_browse.png</normaloff>:/tk-framework-adminui/setup_project/file_browse.png</iconset>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="windows_path_lbl">
+          <property name="toolTip">
+           <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">font-size: 10px;
 color: rgb(120, 120, 120);</string>
@@ -190,10 +171,8 @@ color: rgb(120, 120, 120);</string>
           </property>
           <item>
            <widget class="QLabel" name="windows_path">
-            <property name="styleSheet">
-             <string notr="true">font-size: 10px;
-font: italic 10pt &quot;Courier&quot;;
-color: rgb(160, 160, 160);</string>
+            <property name="toolTip">
+             <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -204,7 +183,11 @@ color: rgb(160, 160, 160);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="windows_path_edit"/>
+           <widget class="QLineEdit" name="windows_path_edit">
+            <property name="toolTip">
+             <string>&lt;p&gt;Edit the storage path for this operating system.&lt;/p&gt;</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -215,10 +198,8 @@ color: rgb(160, 160, 160);</string>
           </property>
           <item>
            <widget class="QLabel" name="linux_path">
-            <property name="styleSheet">
-             <string notr="true">font-size: 10px;
-font: italic 10pt &quot;Courier&quot;;
-color: rgb(160, 160, 160);</string>
+            <property name="toolTip">
+             <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -229,26 +210,19 @@ color: rgb(160, 160, 160);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="linux_path_edit"/>
+           <widget class="QLineEdit" name="linux_path_edit">
+            <property name="toolTip">
+             <string>&lt;p&gt;Edit the storage path for this operating system.&lt;/p&gt;</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
-        <item row="1" column="2">
-         <widget class="QToolButton" name="mac_path_browse">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/tk-framework-adminui/setup_project/file_browse.png</normaloff>:/tk-framework-adminui/setup_project/file_browse.png</iconset>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="linux_path_lbl">
+          <property name="toolTip">
+           <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">font-size: 10px;
 color: rgb(120, 120, 120);</string>
@@ -261,47 +235,11 @@ color: rgb(120, 120, 120);</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QToolButton" name="linux_path_browse">
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/tk-framework-adminui/setup_project/file_browse.png</normaloff>:/tk-framework-adminui/setup_project/file_browse.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <layout class="QHBoxLayout" name="mac_path_layout" stretch="1,1">
-          <property name="spacing">
-           <number>4</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="mac_path">
-            <property name="styleSheet">
-             <string notr="true">font-size: 10px;
-font: italic 10pt &quot;Courier&quot;;
-color: rgb(160, 160, 160);</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::TextSelectableByMouse</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="mac_path_edit"/>
-          </item>
-         </layout>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="mac_path_lbl">
+          <property name="toolTip">
+           <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">font-size: 10px;
 color: rgb(120, 120, 120);</string>
@@ -313,6 +251,267 @@ color: rgb(120, 120, 120);</string>
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
+        </item>
+        <item row="1" column="1">
+         <layout class="QHBoxLayout" name="mac_path_layout" stretch="1,1">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="mac_path">
+            <property name="toolTip">
+             <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="mac_path_edit">
+            <property name="toolTip">
+             <string>&lt;p&gt;Edit the storage path for this operating system.&lt;/p&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="linux_path_browse">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>&lt;p&gt;Browse a path on the current operating system.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/tk-framework-adminui/setup_project/file_browse.png</normaloff>:/tk-framework-adminui/setup_project/file_browse.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="linux_lock">
+            <property name="minimumSize">
+             <size>
+              <width>8</width>
+              <height>11</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>8</width>
+              <height>11</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/icon_lock.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="mac_path_browse">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>&lt;p&gt;Browse a path on the current operating system.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/tk-framework-adminui/setup_project/file_browse.png</normaloff>:/tk-framework-adminui/setup_project/file_browse.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="mac_lock">
+            <property name="minimumSize">
+             <size>
+              <width>8</width>
+              <height>11</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>8</width>
+              <height>11</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/icon_lock.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="windows_path_browse">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>&lt;p&gt;Browse a path on the current operating system.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/tk-framework-adminui/setup_project/file_browse.png</normaloff>:/tk-framework-adminui/setup_project/file_browse.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="windows_lock">
+            <property name="minimumSize">
+             <size>
+              <width>8</width>
+              <height>11</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>8</width>
+              <height>11</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path.&lt;/p&gt;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="resources.qrc">:/tk-framework-adminui/setup_project/icon_lock.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -326,6 +525,9 @@ color: rgb(120, 120, 120);</string>
      </property>
      <item>
       <widget class="QLabel" name="root_name">
+       <property name="toolTip">
+        <string>&lt;p&gt;This is the storage root name as required by the selected configuration.&lt;/p&gt;</string>
+       </property>
        <property name="text">
         <string>root_name</string>
        </property>
@@ -343,6 +545,51 @@ color: rgb(120, 120, 120);</string>
         </size>
        </property>
       </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,10">
+     <item>
+      <widget class="QLabel" name="count_lbl">
+       <property name="styleSheet">
+        <string notr="true">font-size: 10px;
+color: rgb(120, 120, 120);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="storage_info">
+       <property name="styleSheet">
+        <string notr="true">font-size: 10px;
+color: rgb(252, 98, 70);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

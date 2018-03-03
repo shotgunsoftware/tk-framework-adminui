@@ -22,8 +22,10 @@ from ..ui import storage_map_widget
 class StorageMapWidget(QtGui.QWidget):
     """Allows mapping config storage roots to a SG local storage"""
 
-    # emitted when any error is encountered dealing with storage mapping
-    error_encountered = QtCore.Signal(str)
+    # emitted when a storage was saved or updated (indicating it was changed in
+    # some way). useful for to alert other map widgets that may be displaying
+    # the same storage
+    storage_saved = QtCore.Signal()
 
     def __init__(self, data_model, logger, parent=None):
         """
@@ -52,7 +54,7 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.storage_select_combo.setModel(self._data_model)
 
         self.ui.storage_select_combo.activated.connect(
-            lambda a: self._on_storage_selection())
+            lambda a: self.refresh_display())
 
         # if any of the line edits are modified it's because that's the current
         # os path being edited. keep a handle on this text so that it can be
@@ -120,7 +122,7 @@ class StorageMapWidget(QtGui.QWidget):
         match_index = self.ui.storage_select_combo.findText(storage_name)
         if match_index > -1:
             self.ui.storage_select_combo.setCurrentIndex(match_index)
-            self._on_storage_selection()
+            self.refresh_display()
 
     def mapping_is_valid(self):
         """Checks that the mapped storage is valid and on disk."""
@@ -132,8 +134,7 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.save_storage_btn.hide()
 
         if not local_storage:
-            self.ui.storage_info.setText(
-                "* No storage set for root: %s" % (self.root_name,))
+            self.ui.storage_info.setText("* No storage selected")
             return False
 
         linux_path = local_storage.get("linux_path")
@@ -193,11 +194,10 @@ class StorageMapWidget(QtGui.QWidget):
         # if we're here, everything is valid!
         return True
 
-    def _on_storage_selection(self):
+    def refresh_display(self):
         """Update the path display for the current selected storage."""
 
         storage_name = self.ui.storage_select_combo.currentText()
-        current_index = self.ui.storage_select_combo.currentIndex()
         storage_data = self.local_storage
 
         # clear everything out to its default state
@@ -240,6 +240,11 @@ class StorageMapWidget(QtGui.QWidget):
             self.ui.mac_path.show()
             self.ui.windows_path.show()
 
+            # show the locks
+            self.ui.linux_lock.show()
+            self.ui.mac_lock.show()
+            self.ui.windows_lock.show()
+
             # set the paths
             self.ui.linux_path.setText(linux_path)
             self.ui.mac_path.setText(mac_path)
@@ -248,6 +253,7 @@ class StorageMapWidget(QtGui.QWidget):
             if sys.platform.startswith("linux") and not linux_path:
                 # storage exists in SG, but no path defined for current OS
                 self.ui.linux_path.hide()
+                self.ui.linux_lock.hide()
                 self.ui.linux_path_edit.show()
                 self.ui.linux_path_browse.show()
                 self.ui.linux_path_edit.setText(edited_linux_path)
@@ -255,6 +261,7 @@ class StorageMapWidget(QtGui.QWidget):
             elif sys.platform == "darwin" and not mac_path:
                 # storage exists in SG, but no path defined for current OS
                 self.ui.mac_path.hide()
+                self.ui.mac_lock.hide()
                 self.ui.mac_path_edit.show()
                 self.ui.mac_path_browse.show()
                 self.ui.mac_path_edit.setText(edited_mac_path)
@@ -262,6 +269,7 @@ class StorageMapWidget(QtGui.QWidget):
             elif sys.platform == "win32" and not mac_path:
                 # storage exists in SG, but no path defined for current OS
                 self.ui.windows_path.hide()
+                self.ui.windows_lock.hide()
                 self.ui.windows_path_edit.show()
                 self.ui.windows_path_browse.show()
                 self.ui.windows_path_edit.setText(edited_windows_path)
@@ -329,6 +337,10 @@ class StorageMapWidget(QtGui.QWidget):
         else:
             self.local_storage = self._data_model.CHOOSE_STORAGE_ITEM_TEXT
 
+    def set_count(self, num, total):
+
+        self.ui.count_lbl.setText("%s of %s" % (num, total))
+
     def _browse_path(self, line_edit):
 
         # create the dialog
@@ -394,6 +406,8 @@ class StorageMapWidget(QtGui.QWidget):
             traceback.print_exc()
             self.ui.storage_info.setText(
                 "Error occurred trying to save storage data!")
+
+        self.storage_saved.emit()
 
     def _do_storage_update_or_save(self):
 
@@ -467,6 +481,11 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.mac_path_browse.hide()
         self.ui.windows_path_browse.hide()
 
+        # ensure the lock icon labels are hidden
+        self.ui.linux_lock.hide()
+        self.ui.mac_lock.hide()
+        self.ui.windows_lock.hide()
+
         # ensure the save button is hidden
         self.ui.save_storage_btn.hide()
 
@@ -492,3 +511,12 @@ class StorageMapWidget(QtGui.QWidget):
 
         # clear the info text
         self.ui.storage_info.setText("")
+
+    def paintEvent(self, event):
+
+        opt = QtGui.QStyleOption()
+        opt.initFrom(self)
+        painter = QtGui.QPainter(self)
+        self.style().drawPrimitive(QtGui.QStyle.PE_Widget, opt, painter, self)
+
+        super(StorageMapWidget, self).paintEvent(event)

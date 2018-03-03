@@ -28,6 +28,12 @@ QLabel {
     margin-top: 1px;
 }
 
+StorageMapWidget {
+    border: 1px solid #111111;
+    border-radius: 4px;
+    background-color: palette(window);
+}
+
 /* --------------------------------------------------------------------- */
 /* Frames                                                                */
 /* --------------------------------------------------------------------- */
@@ -43,11 +49,11 @@ QLabel {
 /* --------------------------------------------------------------------- */
 
 #storage_map_area_widget {
-    background: palette(base);
+    background-color: palette(base);
 }
 
 #storage_map_area {
-    background: palette(base);
+    background-color: palette(base);
 }
 
 /* --------------------------------------------------------------------- */
@@ -75,4 +81,75 @@ QToolButton:pressed {
     border: 1px solid #333333;
     border-radius: 3px;
     background-color: #18A7E3;
+}
+
+/* --------------------------------------------------------------------- */
+/* Labels
+/* --------------------------------------------------------------------- */
+
+#linux_path {
+    font: 10pt "Courier";
+    color: rgb(160, 160, 160);
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#mac_path {
+    font: 10pt "Courier";
+    color: rgb(160, 160, 160);
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#windows_path {
+    font: 10pt "Courier";
+    color: rgb(160, 160, 160);
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* --------------------------------------------------------------------- */
+/* Line Edit
+/* --------------------------------------------------------------------- */
+
+#linux_path_edit {
+    font: 10pt "Courier";
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#linux_path_edit:focus {
+    border: 1px solid #18A7E3;
+}
+
+#mac_path_edit {
+    font: 10pt "Courier";
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#mac_path_edit:focus {
+    border: 1px solid #18A7E3;
+}
+
+#windows_path_edit {
+    font: 10pt "Courier";
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#windows_path_edit:focus {
+    border: 1px solid #18A7E3;
 }

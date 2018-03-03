@@ -121,17 +121,21 @@ class StorageMapPage(BasePage):
         ui = wiz.ui
         layout = ui.storage_map_area_widget.layout()
 
+        num_roots = len(self._required_roots)
+        count = 1
+
         for (root_name, root_info) in self._required_roots:
 
             map_widget = StorageMapWidget(self._storages_model, wiz.logger)
             map_widget.root_name = root_name
             map_widget.root_info = root_info
+            map_widget.set_count(count, num_roots)
 
             # add the map widget to the ui
             layout.addWidget(map_widget)
 
-            # connect the error encountered signal
-            map_widget.error_encountered.connect(ui.storage_errors.setText)
+            # get alerts when a storage is saved
+            map_widget.storage_saved.connect(self._on_storage_saved)
 
             # keep a reference to the map widget
             self._map_widgets.append(map_widget)
@@ -139,6 +143,8 @@ class StorageMapPage(BasePage):
             # tell the widget to make an educated guess as to which storage
             # should be used for the supplied root name/info.
             map_widget.guess_storage()
+
+            count += 1
 
         layout.addStretch()
 
@@ -197,14 +203,18 @@ class StorageMapPage(BasePage):
         invalid_widgets = []
         not_on_disk_widgets = []
 
+        first_invalid_widget = None
+
         # see if each of the mappings is valid
         for map_widget in self._map_widgets:
 
             if not map_widget.mapping_is_valid():
                 # something is wrong with this widget's mapping
                 invalid_widgets.append(map_widget)
+                if first_invalid_widget is None:
+                    first_invalid_widget = map_widget
 
-            storage = map_widget.local_storage
+            storage = map_widget.local_storage or {}
             current_os_path = storage.get(current_os_key)
 
             if current_os_path and not os.path.exists(current_os_path):
@@ -215,9 +225,11 @@ class StorageMapPage(BasePage):
             # tell the user which roots don't have valid mappings
             root_names = [w.root_name for w in invalid_widgets]
             ui.storage_errors.setText(
-                "Please revisit the mappings for these roots: %s" %
+                "The mappings for these roots are invalid: <b>%s</b>" %
                 (", ".join(root_names),)
             )
+            if first_invalid_widget:
+                ui.storage_map_area.ensureWidgetVisible(first_invalid_widget)
             return False
 
         if not_on_disk_widgets:
@@ -282,3 +294,8 @@ class StorageMapPage(BasePage):
             return False
 
         return True
+
+    def _on_storage_saved(self):
+
+        for map_widget in self._map_widgets:
+            map_widget.refresh_display()
