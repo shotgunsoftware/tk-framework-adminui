@@ -1,0 +1,78 @@
+/*
+Copyright (c) 2018 Shotgun Software Inc
+
+CONFIDENTIAL AND PROPRIETARY
+
+This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
+Source Code License included in this distribution package. See LICENSE.
+By accessing, using, copying or modifying this work you indicate your
+agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
+not expressly granted therein are reserved by Shotgun Software Inc.
+*/
+
+/* --------------------------------------------------------------------- */
+/* Global styling */
+/* --------------------------------------------------------------------- */
+
+/* Use open sans font across the app if core supports it */
+QWidget {
+    font-family: Open Sans;
+    font-style: Regular;
+}
+
+/*
+ need this to kick QT into 'style mode' for labels otherwise things are not
+ formatted correctly
+*/
+QLabel {
+    margin-top: 1px;
+}
+
+/* --------------------------------------------------------------------- */
+/* Frames                                                                */
+/* --------------------------------------------------------------------- */
+
+#path_frame {
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background-color: #3A3A3A;
+}
+
+/* --------------------------------------------------------------------- */
+/* Scroll Area                                                           */
+/* --------------------------------------------------------------------- */
+
+#storage_map_area_widget {
+    background: palette(base);
+}
+
+#storage_map_area {
+    background: palette(base);
+}
+
+/* --------------------------------------------------------------------- */
+/* Buttons
+/* --------------------------------------------------------------------- */
+
+QToolButton {
+    border: none;
+}
+
+QToolButton:hover {
+    border: none;
+    border-radius: 2px;
+    background-color: rgba(200, 200, 200, 18%);
+}
+
+QToolButton:pressed {
+    border: none;
+    border-radius: 2px;
+    background-color: rgba(200, 200, 200, 35%);
+}
+
+#save_storage_btn {
+    color: #FFFFFF;
+    border: 1px solid #333333;
+    border-radius: 3px;
+    background-color: #18A7E3;
+}

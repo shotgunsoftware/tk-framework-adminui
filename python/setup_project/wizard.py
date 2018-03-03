@@ -9,14 +9,14 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import logging
+import os
 
+import sgtk
 from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
 from ..ui import setup_project
 from .emitting_handler import EmittingHandler
-
-import sgtk
 
 
 class SetupProjectWizard(QtGui.QWizard):
@@ -28,7 +28,7 @@ class SetupProjectWizard(QtGui.QWizard):
     def __init__(self, project, parent=None):
         QtGui.QWizard.__init__(self, parent)
 
-        # Disable Close button. Note that on mac, need to disable minimize 
+        # Disable Close button. Note that on mac, need to disable minimize
         # button also to do this (but maximize can stay). 
         self.setWindowFlags(QtCore.Qt.Tool | 
                             QtCore.Qt.CustomizeWindowHint | 
@@ -97,6 +97,9 @@ class SetupProjectWizard(QtGui.QWizard):
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
 
+        # load the stylesheet
+        self._load_stylesheet()
+
     def closeEvent(self, event):
         """
         Disables Alt-F4 on windows and prevents user from cancelling mid-operation and
@@ -104,14 +107,15 @@ class SetupProjectWizard(QtGui.QWizard):
         """
         event.ignore()
 
+    @property
+    def logger(self):
+        """Returns the wizard's logger."""
+        return self._logger
+
     def _on_help_requested(self):
         # forward help request to current page
         page = self.currentPage()
         page.help_requested()
-
-    def _is_store_valid(self, store_info):
-        """ returns True if the store should be valid.  False otherwise """
-        return store_info["exists_on_disk"] and store_info["defined_in_shotgun"]
 
     def validate_config_uri(self, uri):
         """Download and validate the supplied config URI.
@@ -125,7 +129,38 @@ class SetupProjectWizard(QtGui.QWizard):
             # download and validate the uri and update the required storages.
             # let any exceptions propagate up to the calling page to be handled
             storage_info = self.core_wizard.validate_config_uri(uri)
+
+            # set the uri for the storage mapping page
+            self.ui.storage_map_page.set_config_uri(uri)
+
+            # add mappings for each required storage root. clear any existing
+            # roots first (possible if back button is used)
+            self.ui.storage_map_page.clear_roots()
             for (root_name, root_info) in storage_info.iteritems():
                 self.ui.storage_map_page.add_mapping(root_name, root_info)
+
+            # a config has been chosen. we don't need to visit the other config
+            # selection pages. make the next page the storage mapping page.
+            current_page = self.currentPage()
+            current_page.set_next_page(self.ui.storage_map_page)
+
         finally:
             QtGui.QApplication.restoreOverrideCursor()
+
+    def _load_stylesheet(self):
+        """
+        Loads in a stylesheet from disk
+        """
+        qss_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "style.qss"
+        )
+        f = None
+        try:
+            f = open(qss_file, "rt")
+            qss_data = f.read()
+            # apply to widget (and all its children)
+            self.setStyleSheet(qss_data)
+        finally:
+            if f:
+                f.close()
