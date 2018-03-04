@@ -17,13 +17,20 @@ from ..ui import create_storage_dialog
 
 
 class CreateStorageDialog(QtGui.QDialog):
-    """A dialog that allows a user to create a new local storage in SG."""
+    """
+    A simple dialog to prompt the user for a storage name. Includes validation.
+    """
 
     # a regex that defines valid storage name
     STORAGE_NAME_REGEX = re.compile("^[\w\d]+$")
 
     def __init__(self, existing_storage_names, parent=None):
-        """Initialize the create dialog."""
+        """Initialize the create dialog.
+
+        :param existing_storage_names: A list of storage names that already
+            exist either in SG or pre-created by the map widget.
+        :param parent: The dialog parent
+        """
 
         super(CreateStorageDialog, self).__init__(parent)
         self.setWindowFlags(QtCore.Qt.Popup)
@@ -35,7 +42,8 @@ class CreateStorageDialog(QtGui.QDialog):
         self.ui = create_storage_dialog.Ui_CreateStorageDialog()
         self.ui.setupUi(self)
 
-        # keep a handle on the buttons
+        # keep a handle on the button. we can disable it until a valid name is
+        # input.
         self._accept_button = self.ui.button_box.button(
             QtGui.QDialogButtonBox.Ok)
 
@@ -44,7 +52,6 @@ class CreateStorageDialog(QtGui.QDialog):
 
         # do an initial check for valid values
         self._validation_check()
-
         self.ui.storage_name.setFocus()
 
     @property
@@ -52,16 +59,11 @@ class CreateStorageDialog(QtGui.QDialog):
         """The new storage name if the dialog was successful."""
         return self._new_storage_name
 
-    @property
-    def storage_name(self):
-        """The name of the storage to create."""
-        return str(self.ui.storage_name.text())
-
     def _validation_check(self):
         """Returns ``True`` if the input is valid, ``False`` otherwise."""
 
-        # get the values once for efficiency
-        storage_name = self.storage_name
+        # get the value once for efficiency
+        storage_name = str(self.ui.storage_name.text())
 
         if not storage_name:
             # no storage name defined
@@ -85,13 +87,18 @@ class CreateStorageDialog(QtGui.QDialog):
         """
         Sets the info label at the bottom to assist the user.
 
-        :param message: The message to display.
+        Returns the supplied is_valid boolean for convenience.
         """
+
+        # update the info message
         if message:
             self.ui.info.setText(message)
+            self.ui.info.show()
         else:
             self.ui.info.setText("")
+            self.ui.info.hide()
 
+        # enable/disable the accept button
         if is_valid:
             self._accept_button.setEnabled(True)
         else:
@@ -100,9 +107,6 @@ class CreateStorageDialog(QtGui.QDialog):
         return is_valid
 
     def accept(self):
-        """
-        Create the storage in SG.
-        """
-
-        self._new_storage_name = self.storage_name
+        """Store the new storage name for access by the calling code."""
+        self._new_storage_name = str(self.ui.storage_name.text())
         super(CreateStorageDialog, self).accept()

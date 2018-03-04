@@ -40,24 +40,34 @@ class StorageMapContainerWidget(QtGui.QWidget):
         super(StorageMapContainerWidget, self).__init__(parent)
 
         layout = QtGui.QVBoxLayout()
-        layout.setSpacing(12)
-        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(6)
+        layout.setContentsMargins(6, 6, 6, 6)
 
         self.setLayout(layout)
 
 
 class StorageModel(QtGui.QStandardItemModel):
+    """
+    A simple modle to store all available storages.
 
+    Some storages may exists in SG, others may be created/edited/saved via the
+    storage map widgets. The model is shared by all map widgets to keep them
+    in sync as storages are created/updated.
+    """
+
+    # non-storage item text
     CHOOSE_STORAGE_ITEM_TEXT = "Choose..."
     CREATE_STORAGE_ITEM_TEXT = "+ New"
 
+    # data role for the storages in the model's items
     STORAGE_DATA_ROLE = QtCore.Qt.UserRole + 7
 
     def __init__(self, parent):
+        """Initialize the model."""
 
         super(StorageModel, self).__init__(parent)
-        self._storages = []
 
+        # query all existing SG storages to include in the model
         sg_connection = sgtk.platform.current_engine().shotgun
         storages = sg_connection.find(
             "LocalStorage",
@@ -66,24 +76,41 @@ class StorageModel(QtGui.QStandardItemModel):
             order=[{"field_name": "code", "direction":"asc"}]
         )
 
+        # add the "choose" item
         choose_item = QtGui.QStandardItem(self.CHOOSE_STORAGE_ITEM_TEXT)
         self.appendRow(choose_item)
 
+        # add the "create" item
         create_item = QtGui.QStandardItem(self.CREATE_STORAGE_ITEM_TEXT)
         self.appendRow(create_item)
 
+        # add existing storages. they will be inserted before the "create" item
         for storage in storages:
             self.add_storage(storage)
 
     @property
     def storages(self):
         """All storage dictionaries stored by the model"""
-        return self._storages
+        storages = []
+
+        # iterate through the model and build a list of all storages
+        for row in range(0, self.rowCount()):
+            item = self.item(row, 0)
+            storage_data = item.data(self.STORAGE_DATA_ROLE)
+
+            # not all items represent storages
+            if storage_data:
+                storages.append(storage_data)
+
+        return storages
 
     def add_storage(self, storage):
+        """Add a new item to the model for the supplied storage dictionary.
 
-        self._storages.append(storage)
+        :param dict storage: A standard SG LocalStorage entity dict.
+        """
 
+        # create the item
         storage_name = storage["code"]
         storage_item = QtGui.QStandardItem(storage_name)
         storage_item.setData(storage, self.STORAGE_DATA_ROLE)
@@ -92,6 +119,7 @@ class StorageModel(QtGui.QStandardItemModel):
         self.insertRow(self.rowCount() - 1, storage_item)
 
     def update_storage(self, storage_name, storage_data):
+        """Update the supplied storage name with the supplied data."""
 
         # find the storage with the supplied name and update its data
         for row in range(0, self.rowCount()):
@@ -102,8 +130,11 @@ class StorageModel(QtGui.QStandardItemModel):
 
 class StorageMapPage(BasePage):
     """
-    Page to map the required roots for the selected config with SG local
-    storages.
+    Map the required roots for the selected config with SG local storages
+
+    A list of mapping widgets is displayed, one for each root required by the
+    configuration. The user must create a valid mapping for each required root
+    before the page will validate.
     """
 
     _HELP_URL = BasePage._HELP_URL + "#Setting%20up%20a%20storage"
@@ -112,33 +143,48 @@ class StorageMapPage(BasePage):
     HISTORICAL_MAPPING_KEY = "project_setup_storage_mappings"
 
     def __init__(self, parent=None):
+        """Initialize the storage map page."""
+
         super(StorageMapPage, self).__init__(parent)
 
+        # internal data stored for the page
         self._uri = None
         self._map_widgets = []
         self._required_roots = []
 
+        # retrieve a historical mapping of root names to SG storages. these will
+        # be used to make a best guess if it's not obvious what the mappings
+        # should be.
         self._settings = settings.UserSettings(sgtk.platform.current_bundle())
         self._historical_mappings = self._settings.retrieve(
             self.HISTORICAL_MAPPING_KEY, {})
 
     def setup_ui(self, page_id, error_field=None):
+        """Set up the UI for this page."""
+
         super(StorageMapPage, self).setup_ui(page_id, error_field=error_field)
 
-        # create one storage model to be shard by all widgets. that way, if one
-        # creates a new storage, all will share
+        # create one storage model to be shard by all widgets.
         self._storages_model = StorageModel(self)
 
     def initializePage(self):
+
+        # the wizard instance and its UI
         wiz = self.wizard()
         ui = wiz.ui
+
+        # we'll add the storage mapping widgets to the area widget's layout
         layout = ui.storage_map_area_widget.layout()
 
+        # keep a count so the user can see which one, and how many they need to
+        # edit.
         num_roots = len(self._required_roots)
         count = 1
 
+        # iterate over each required root and create a mapping widget
         for (root_name, root_info) in self._required_roots:
 
+            # create the widget and set all the values
             map_widget = StorageMapWidget(self._storages_model)
             map_widget.root_name = root_name
             map_widget.root_info = root_info
@@ -151,7 +197,7 @@ class StorageMapPage(BasePage):
             # add the map widget to the ui
             layout.addWidget(map_widget)
 
-            # get alerts when a storage is saved
+            # get alerts when a storage is saved for this mapping
             map_widget.storage_saved.connect(self._on_storage_saved)
 
             # keep a reference to the map widget
@@ -169,18 +215,33 @@ class StorageMapPage(BasePage):
         ui.storage_errors.setText("")
 
     def add_mapping(self, root_name, root_info):
-        """Add a new storage mapping widget to the list."""
+        """Add a new storage mapping widget to the list.
+
+        This should be called before the page is initialized.
+        """
         self._required_roots.append((root_name, root_info))
 
     def clear_roots(self):
-        """Clear any required roots already set for the page."""
+        """Clear any required roots already set for the page.
 
+        This is typically called when the wizard's "back" button is used. The
+        roots are cleared so they can be rebuilt with potentially a different
+        configuration.
+        """
+
+        # the wizard instance and its UI
         wiz = self.wizard()
         ui = wiz.ui
+
+        # the scroll area widget where the mapping widgets live
         layout = ui.storage_map_area_widget.layout()
 
+        # reset the internal data
         self._required_roots = []
         self._map_widgets = []
+
+        # iterate over all layout items and remove them. if the item is a
+        # storage map widget, delete it.
         for index in range(0, layout.count()):
             layout_item = layout.takeAt(0)
             widget = None
@@ -191,15 +252,13 @@ class StorageMapPage(BasePage):
                 widget.deleteLater()
 
     def set_config_uri(self, uri):
-        """Set the config URI.
-
-        This will be set for the wizard once the storages have all been mapped
-        and validated.
-        """
+        """Set the config URI."""
         self._uri = uri
 
     def validatePage(self):
+        """The 'next' button was pushed. See if the mappings are valid."""
 
+        # the wizard instance and its UI
         wiz = self.wizard()
         ui = wiz.ui
 
@@ -217,9 +276,12 @@ class StorageMapPage(BasePage):
             ui.storage_errors.setText("The current OS is unrecognized.")
             return False
 
+        # temp lists of widgets that need attention
         invalid_widgets = []
         not_on_disk_widgets = []
 
+        # keep track of the first invalid widget so we can ensure it is visible
+        # to the user in the list.
         first_invalid_widget = None
 
         # see if each of the mappings is valid
@@ -305,11 +367,11 @@ class StorageMapPage(BasePage):
                 self._historical_mappings
             )
 
+        # create a new storage roots instance and set it on the core wizard
         storage_roots = StorageRoots.from_metadata(roots_metadata)
         wiz.core_wizard.set_storage_roots(self._uri, storage_roots)
 
         # if we made it here, then we should be valid.
-        # Try to set the config
         try:
             wiz.core_wizard.set_config_uri(self._uri)
         except Exception, e:
@@ -323,6 +385,7 @@ class StorageMapPage(BasePage):
         return True
 
     def _on_storage_saved(self):
+        """A slot used to ensure all widget displays are updated."""
 
         for map_widget in self._map_widgets:
             map_widget.refresh_display()

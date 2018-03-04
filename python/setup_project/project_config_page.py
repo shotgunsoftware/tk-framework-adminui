@@ -96,7 +96,7 @@ class ProjectConfigPage(BasePage):
         wiz = self.wizard()
         config_uri = os.path.join(self._project_config_path, "config")
         try:
-            # test the config and clear errors on success
+            # Download/validate the config. prep storage mapping display
             wiz.validate_config_uri(config_uri)
             wiz.ui.project_errors.setText("")
             return True
