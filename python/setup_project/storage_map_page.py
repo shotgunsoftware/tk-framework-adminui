@@ -20,6 +20,12 @@ from sgtk.util.storage_roots import StorageRoots
 from .base_page import BasePage
 from .storage_map_widget import StorageMapWidget
 
+# use sg utils settings to remember previous storage mappings
+settings = sgtk.platform.import_framework(
+    "tk-framework-shotgunutils",
+    "settings"
+)
+
 
 class StorageMapContainerWidget(QtGui.QWidget):
     """
@@ -102,12 +108,19 @@ class StorageMapPage(BasePage):
 
     _HELP_URL = BasePage._HELP_URL + "#Setting%20up%20a%20storage"
 
+    # the key used in global settings to store historical storage mappings
+    HISTORICAL_MAPPING_KEY = "project_setup_storage_mappings"
+
     def __init__(self, parent=None):
         super(StorageMapPage, self).__init__(parent)
 
         self._uri = None
         self._map_widgets = []
         self._required_roots = []
+
+        self._settings = settings.UserSettings(sgtk.platform.current_bundle())
+        self._historical_mappings = self._settings.retrieve(
+            self.HISTORICAL_MAPPING_KEY, {})
 
     def setup_ui(self, page_id, error_field=None):
         super(StorageMapPage, self).setup_ui(page_id, error_field=error_field)
@@ -126,10 +139,14 @@ class StorageMapPage(BasePage):
 
         for (root_name, root_info) in self._required_roots:
 
-            map_widget = StorageMapWidget(self._storages_model, wiz.logger)
+            map_widget = StorageMapWidget(self._storages_model)
             map_widget.root_name = root_name
             map_widget.root_info = root_info
             map_widget.set_count(count, num_roots)
+
+            # set the best guess for this mapping based on saved historical
+            # mappings (this could be None)
+            map_widget.best_guess = self._historical_mappings.get(root_name)
 
             # add the map widget to the ui
             layout.addWidget(map_widget)
@@ -262,6 +279,7 @@ class StorageMapPage(BasePage):
 
         roots_metadata = {}
         for map_widget in self._map_widgets:
+
             root_name = map_widget.root_name
             root_info = map_widget.root_info
             storage_data = map_widget.local_storage
@@ -277,6 +295,15 @@ class StorageMapPage(BasePage):
                 storage_data["mac_path"])
             roots_metadata[root_name]["windows_path"] = str(
                 storage_data["windows_path"])
+
+            # store the fact that we've mapped this root name with this
+            # storage name. we can use this information to make better
+            # guesses next time this user is mapping storages.
+            self._historical_mappings[root_name] = storage_data["code"]
+            self._settings.store(
+                self.HISTORICAL_MAPPING_KEY,
+                self._historical_mappings
+            )
 
         storage_roots = StorageRoots.from_metadata(roots_metadata)
         wiz.core_wizard.set_storage_roots(self._uri, storage_roots)

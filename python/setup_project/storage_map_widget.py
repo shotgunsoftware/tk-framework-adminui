@@ -27,20 +27,20 @@ class StorageMapWidget(QtGui.QWidget):
     # the same storage
     storage_saved = QtCore.Signal()
 
-    def __init__(self, data_model, logger, parent=None):
+    def __init__(self, storage_model, parent=None):
         """
         Initialize the widget.
 
-        :param data_model: The SG model for available local storages.
+        :param storage_model: The SG model for available local storages.
         :param parent: The parent object for this widget
         """
 
         super(StorageMapWidget, self).__init__(parent)
 
-        self._data_model = data_model
+        self._storage_model = storage_model
         self._root_name = None
         self._root_info = None
-        self._logger = logger
+        self._best_guess = None
 
         # hold on to any edited text for the selected storage
         self._linux_path_edit = {}
@@ -51,7 +51,7 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui = storage_map_widget.Ui_StorageMapWidget()
         self.ui.setupUi(self)
 
-        self.ui.storage_select_combo.setModel(self._data_model)
+        self.ui.storage_select_combo.setModel(self._storage_model)
 
         self.ui.storage_select_combo.activated.connect(
             lambda a: self.refresh_display())
@@ -76,6 +76,15 @@ class StorageMapWidget(QtGui.QWidget):
 
         # connect the save button
         self.ui.save_storage_btn.clicked.connect(self._on_storage_save_clicked)
+
+    @property
+    def best_guess(self):
+        return self._best_guess
+
+    @best_guess.setter
+    def best_guess(self, storage_name):
+        """The best guess storage name to associate with this root."""
+        self._best_guess = storage_name
 
     @property
     def root_name(self):
@@ -109,7 +118,7 @@ class StorageMapWidget(QtGui.QWidget):
 
         # this will return None if not a storage item
         return self.ui.storage_select_combo.itemData(
-            current_index, self._data_model.STORAGE_DATA_ROLE)
+            current_index, self._storage_model.STORAGE_DATA_ROLE)
 
     @local_storage.setter
     def local_storage(self, storage_name):
@@ -206,7 +215,7 @@ class StorageMapWidget(QtGui.QWidget):
         if not storage_data:
             # no storage data to process.
 
-            if storage_name == self._data_model.CREATE_STORAGE_ITEM_TEXT:
+            if storage_name == self._storage_model.CREATE_STORAGE_ITEM_TEXT:
                 # user wants to create a new storage
                 self._create_new_storage()
 
@@ -313,7 +322,7 @@ class StorageMapWidget(QtGui.QWidget):
 
         # the storages may change as new storages are added manually so we do
         # this each time this is called
-        storages = self._data_model.storages
+        storages = self._storage_model.storages
         for storage in storages:
             storage_name = storage["code"]
             storage_id = storage["id"]
@@ -330,12 +339,12 @@ class StorageMapWidget(QtGui.QWidget):
         elif self.root_name in storage_by_name:
             self.local_storage = self.root_name
 
-        # look for one called "primary"
-        elif "primary" in storage_by_name:
-            self.local_storage = "primary"
+        # has this name been mapped before?
+        elif self._best_guess and self._best_guess in storage_by_name:
+            self.local_storage = self._best_guess
 
         else:
-            self.local_storage = self._data_model.CHOOSE_STORAGE_ITEM_TEXT
+            self.local_storage = self._storage_model.CHOOSE_STORAGE_ITEM_TEXT
 
     def set_count(self, num, total):
 
@@ -357,7 +366,7 @@ class StorageMapWidget(QtGui.QWidget):
 
     def _create_new_storage(self):
 
-        all_storages = self._data_model.storages
+        all_storages = self._storage_model.storages
         existing_storage_names = [storage["code"] for storage in all_storages]
 
         # user wants to create a new storage root in SG
@@ -375,7 +384,7 @@ class StorageMapWidget(QtGui.QWidget):
                 "mac_path": None,
                 "windows_path": None,
             }
-            self._data_model.add_storage(new_storage)
+            self._storage_model.add_storage(new_storage)
             self.local_storage = new_storage["code"]
         else:
             # didn't create a new storage. try to guess the best storage. this
@@ -460,7 +469,7 @@ class StorageMapWidget(QtGui.QWidget):
                 return_fields=storage_data.keys()
             )
 
-        self._data_model.update_storage(storage_name, storage_data)
+        self._storage_model.update_storage(storage_name, storage_data)
 
         # it should be sufficient to set the newly created/updated storage
         # this will update the storage display in the UI
