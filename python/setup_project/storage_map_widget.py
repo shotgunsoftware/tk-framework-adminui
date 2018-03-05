@@ -268,11 +268,6 @@ class StorageMapWidget(QtGui.QWidget):
             self.ui.mac_path.show()
             self.ui.windows_path.show()
 
-            # show the locks
-            self.ui.linux_lock.show()
-            self.ui.mac_lock.show()
-            self.ui.windows_lock.show()
-
             # set the paths
             self.ui.linux_path.setText(linux_path)
             self.ui.mac_path.setText(mac_path)
@@ -287,6 +282,8 @@ class StorageMapWidget(QtGui.QWidget):
                 self.ui.linux_path_browse.show()
                 self.ui.linux_path_edit.setText(edited_linux_path)
                 self.ui.linux_path_edit.setFocus()
+                self.ui.mac_lock.show()
+                self.ui.windows_lock.show()
             elif sys.platform == "darwin" and not mac_path:
                 # storage exists in SG, but no path defined for current OS
                 # make it possible to edit the current OS path.
@@ -296,6 +293,8 @@ class StorageMapWidget(QtGui.QWidget):
                 self.ui.mac_path_browse.show()
                 self.ui.mac_path_edit.setText(edited_mac_path)
                 self.ui.mac_path_edit.setFocus()
+                self.ui.linux_lock.show()
+                self.ui.windows_lock.show()
             elif sys.platform == "win32" and not mac_path:
                 # storage exists in SG, but no path defined for current OS
                 # make it possible to edit the current OS path.
@@ -305,6 +304,8 @@ class StorageMapWidget(QtGui.QWidget):
                 self.ui.windows_path_browse.show()
                 self.ui.windows_path_edit.setText(edited_windows_path)
                 self.ui.windows_path_edit.setFocus()
+                self.ui.linux_lock.show()
+                self.ui.mac_lock.show()
 
         else:
             # this is a new storage that hasn't been created in SG yet.

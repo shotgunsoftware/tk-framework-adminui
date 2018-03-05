@@ -149,9 +149,6 @@ color: rgb(160, 160, 160);</string>
         </property>
         <item row="2" column="0">
          <widget class="QLabel" name="windows_path_lbl">
-          <property name="toolTip">
-           <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
-          </property>
           <property name="styleSheet">
            <string notr="true">font-size: 10px;
 color: rgb(120, 120, 120);</string>
@@ -172,7 +169,7 @@ color: rgb(120, 120, 120);</string>
           <item>
            <widget class="QLabel" name="windows_path">
             <property name="toolTip">
-             <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -199,7 +196,7 @@ color: rgb(120, 120, 120);</string>
           <item>
            <widget class="QLabel" name="linux_path">
             <property name="toolTip">
-             <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -220,9 +217,6 @@ color: rgb(120, 120, 120);</string>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="linux_path_lbl">
-          <property name="toolTip">
-           <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
-          </property>
           <property name="styleSheet">
            <string notr="true">font-size: 10px;
 color: rgb(120, 120, 120);</string>
@@ -237,9 +231,6 @@ color: rgb(120, 120, 120);</string>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="mac_path_lbl">
-          <property name="toolTip">
-           <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
-          </property>
           <property name="styleSheet">
            <string notr="true">font-size: 10px;
 color: rgb(120, 120, 120);</string>
@@ -260,7 +251,7 @@ color: rgb(120, 120, 120);</string>
           <item>
            <widget class="QLabel" name="mac_path">
             <property name="toolTip">
-             <string>&lt;p&gt;This path is saved in Shotgun. To edit, visit Site Preferences &gt; File Management.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -329,7 +320,7 @@ color: rgb(120, 120, 120);</string>
              </size>
             </property>
             <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -407,7 +398,7 @@ color: rgb(120, 120, 120);</string>
              </size>
             </property>
             <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -485,7 +476,7 @@ color: rgb(120, 120, 120);</string>
              </size>
             </property>
             <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>

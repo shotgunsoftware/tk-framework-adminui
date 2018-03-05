@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from tank.platform.qt import QtCore, QtGui
+from sgtk.platform.qt import QtCore, QtGui
 
 class Ui_StorageMapWidget(object):
     def setupUi(self, StorageMapWidget):
@@ -247,27 +247,24 @@ class Ui_StorageMapWidget(object):
         self.storage_select_combo.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>These are the storage paths defined by your Shotgun site.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.save_storage_btn.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Click this to save your changes to the selected Storage paths.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.save_storage_btn.setText(QtGui.QApplication.translate("StorageMapWidget", "Save", None, QtGui.QApplication.UnicodeUTF8))
-        self.windows_path_lbl.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is saved in Shotgun. To edit, visit Site Preferences > File Management.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.windows_path_lbl.setText(QtGui.QApplication.translate("StorageMapWidget", "Windows:", None, QtGui.QApplication.UnicodeUTF8))
-        self.windows_path.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is saved in Shotgun. To edit, visit Site Preferences > File Management.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.windows_path.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path. WARNING: changing this path could break existing projects.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.windows_path_edit.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Edit the storage path for this operating system.</p>", None, QtGui.QApplication.UnicodeUTF8))
-        self.linux_path.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is saved in Shotgun. To edit, visit Site Preferences > File Management.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.linux_path.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path. WARNING: changing this path could break existing projects.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_path_edit.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Edit the storage path for this operating system.</p>", None, QtGui.QApplication.UnicodeUTF8))
-        self.linux_path_lbl.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is saved in Shotgun. To edit, visit Site Preferences > File Management.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_path_lbl.setText(QtGui.QApplication.translate("StorageMapWidget", "Linux:", None, QtGui.QApplication.UnicodeUTF8))
-        self.mac_path_lbl.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is saved in Shotgun. To edit, visit Site Preferences > File Management.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_path_lbl.setText(QtGui.QApplication.translate("StorageMapWidget", "Mac:", None, QtGui.QApplication.UnicodeUTF8))
-        self.mac_path.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is saved in Shotgun. To edit, visit Site Preferences > File Management.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.mac_path.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path. WARNING: changing this path could break existing projects.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_path_edit.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Edit the storage path for this operating system.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_path_browse.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Browse a path on the current operating system.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.linux_path_browse.setText(QtGui.QApplication.translate("StorageMapWidget", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.linux_lock.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.linux_lock.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path. WARNING: changing this path could break existing projects.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_path_browse.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Browse a path on the current operating system.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.mac_path_browse.setText(QtGui.QApplication.translate("StorageMapWidget", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.mac_lock.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.mac_lock.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path. WARNING: changing this path could break existing projects.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.windows_path_browse.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>Browse a path on the current operating system.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.windows_path_browse.setText(QtGui.QApplication.translate("StorageMapWidget", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.windows_lock.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path.</p>", None, QtGui.QApplication.UnicodeUTF8))
+        self.windows_lock.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This path is locked since it has been saved to Shotgun. Visit Site Preferences > File Management to modify this path. WARNING: changing this path could break existing projects.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.root_name.setToolTip(QtGui.QApplication.translate("StorageMapWidget", "<p>This is the storage root name as required by the selected configuration.</p>", None, QtGui.QApplication.UnicodeUTF8))
         self.root_name.setText(QtGui.QApplication.translate("StorageMapWidget", "root_name", None, QtGui.QApplication.UnicodeUTF8))
 
