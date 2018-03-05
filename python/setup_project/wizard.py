@@ -107,11 +107,6 @@ class SetupProjectWizard(QtGui.QWizard):
         """
         event.ignore()
 
-    @property
-    def logger(self):
-        """Returns the wizard's logger."""
-        return self._logger
-
     def _on_help_requested(self):
         # forward help request to current page
         page = self.currentPage()

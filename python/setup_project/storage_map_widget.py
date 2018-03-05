@@ -10,6 +10,7 @@
 
 import os
 import sys
+import traceback
 
 import sgtk
 from sgtk.platform.qt import QtCore
@@ -17,6 +18,8 @@ from sgtk.platform.qt import QtGui
 
 from .create_storage_dialog import CreateStorageDialog
 from ..ui import storage_map_widget
+
+logger = sgtk.platform.get_logger(__name__)
 
 
 class StorageMapWidget(QtGui.QWidget):
@@ -37,6 +40,7 @@ class StorageMapWidget(QtGui.QWidget):
 
         super(StorageMapWidget, self).__init__(parent)
 
+        # internal state values
         self._storage_model = storage_model
         self._root_name = None
         self._root_info = None
@@ -51,14 +55,14 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui = storage_map_widget.Ui_StorageMapWidget()
         self.ui.setupUi(self)
 
+        # set the combo box to use the supplied storage model
         self.ui.storage_select_combo.setModel(self._storage_model)
 
+        # update the display when a storage is selected in the combo box
         self.ui.storage_select_combo.activated.connect(
             lambda a: self.refresh_display())
 
-        # if any of the line edits are modified it's because that's the current
-        # os path being edited. keep a handle on this text so that it can be
-        # reset
+        # keep a handle on any edited text
         self.ui.linux_path_edit.textChanged.connect(
             lambda p: self._on_path_changed(p, self._linux_path_edit))
         self.ui.mac_path_edit.textChanged.connect(
@@ -79,16 +83,17 @@ class StorageMapWidget(QtGui.QWidget):
 
     @property
     def best_guess(self):
+        """The name of the best guess SG storage to associate with this root."""
         return self._best_guess
 
     @best_guess.setter
     def best_guess(self, storage_name):
-        """The best guess storage name to associate with this root."""
+        """Set the 'best guess' SG storage name to associate with this root."""
         self._best_guess = storage_name
 
     @property
     def root_name(self):
-        """The root name being mapped to a local storage"""
+        """The root name being mapped to a SG local storage"""
         return self._root_name
 
     @root_name.setter
@@ -104,7 +109,11 @@ class StorageMapWidget(QtGui.QWidget):
 
     @root_info.setter
     def root_info(self, info):
-        """Set the root info."""
+        """
+        Set the root info.
+
+        The ``info`` dict is a standard dict as defined in a config's roots.yml.
+        """
         self._root_info = info
         self.ui.root_description.setText(info.get("description"))
 
@@ -112,7 +121,9 @@ class StorageMapWidget(QtGui.QWidget):
     def local_storage(self):
         """
         Returns the local storage chosen by the user or None if no storage
-        has been selected.
+        has been selected. This will be a standard SG LocalStorage dict.
+
+        Will return ``None`` if no local storage selected.
         """
         current_index = self.ui.storage_select_combo.currentIndex()
 
@@ -134,7 +145,7 @@ class StorageMapWidget(QtGui.QWidget):
             self.refresh_display()
 
     def mapping_is_valid(self):
-        """Checks that the mapped storage is valid and on disk."""
+        """Checks that the mapped storage is valid and saved in SG."""
 
         # ensure a local storage is set
         local_storage = self.local_storage
@@ -142,14 +153,17 @@ class StorageMapWidget(QtGui.QWidget):
         # hide this by default
         self.ui.save_storage_btn.hide()
 
+        # root is not mapped to a local storage
         if not local_storage:
             self.ui.storage_info.setText("* No storage selected")
             return False
 
+        # get these once to make the code below a bit more readable
         linux_path = local_storage.get("linux_path")
         mac_path = local_storage.get("mac_path")
         windows_path = local_storage.get("windows_path")
 
+        # get the current os path and any edited path for the current OS.
         if sys.platform.startswith("linux") and not linux_path:
             current_os_path = linux_path
             edited_current_os_path_lookup = self._linux_path_edit
@@ -165,6 +179,7 @@ class StorageMapWidget(QtGui.QWidget):
         # no path for the current os
         if not current_os_path:
 
+            # the name of the selected local storage
             storage_name = local_storage["code"]
 
             # if haven't edited anything, need to edit + save
@@ -174,13 +189,14 @@ class StorageMapWidget(QtGui.QWidget):
             if edited_current_os_path:
                 # user has manually edited the path for the current OS
 
+                # current os path must be absolute path
                 if not os.path.isabs(edited_current_os_path):
                     self.ui.storage_info.setText(
                         "* The current OS storage path must be absolute.")
                     return False
 
                 # they've edited but haven't saved (otherwise the
-                # current_os_path would not be none. show the save button to
+                # current_os_path would not be None. show the save button to
                 # indicate they should save.
                 self.ui.save_storage_btn.show()
                 self.ui.storage_info.setText(
@@ -206,6 +222,7 @@ class StorageMapWidget(QtGui.QWidget):
     def refresh_display(self):
         """Update the path display for the current selected storage."""
 
+        # selected storage info
         storage_name = self.ui.storage_select_combo.currentText()
         storage_data = self.local_storage
 
@@ -219,7 +236,8 @@ class StorageMapWidget(QtGui.QWidget):
                 # user wants to create a new storage
                 self._create_new_storage()
 
-            # nothing left to do
+            # nothing left to do. if they create a new storage above, this
+            # method will be called again.
             return
 
         # --- if here, then a storage name was selected
@@ -227,11 +245,12 @@ class StorageMapWidget(QtGui.QWidget):
         # show the path section
         self.ui.path_frame.show()
 
-        # get the paths once
+        # get the paths once to make the code below a bit more readable
         linux_path = storage_data.get("linux_path")
         mac_path = storage_data.get("mac_path")
         windows_path = storage_data.get("windows_path")
 
+        # get any edited text for each OS
         edited_linux_path = self._linux_path_edit.get(storage_name, "")
         edited_mac_path = self._mac_path_edit.get(storage_name, "")
         edited_windows_path = self._windows_path_edit.get(storage_name, "")
@@ -260,7 +279,8 @@ class StorageMapWidget(QtGui.QWidget):
             self.ui.windows_path.setText(windows_path)
 
             if sys.platform.startswith("linux") and not linux_path:
-                # storage exists in SG, but no path defined for current OS
+                # storage exists in SG, but no path defined for current OS.
+                # make it possible to edit the current OS path.
                 self.ui.linux_path.hide()
                 self.ui.linux_lock.hide()
                 self.ui.linux_path_edit.show()
@@ -269,6 +289,7 @@ class StorageMapWidget(QtGui.QWidget):
                 self.ui.linux_path_edit.setFocus()
             elif sys.platform == "darwin" and not mac_path:
                 # storage exists in SG, but no path defined for current OS
+                # make it possible to edit the current OS path.
                 self.ui.mac_path.hide()
                 self.ui.mac_lock.hide()
                 self.ui.mac_path_edit.show()
@@ -277,6 +298,7 @@ class StorageMapWidget(QtGui.QWidget):
                 self.ui.mac_path_edit.setFocus()
             elif sys.platform == "win32" and not mac_path:
                 # storage exists in SG, but no path defined for current OS
+                # make it possible to edit the current OS path.
                 self.ui.windows_path.hide()
                 self.ui.windows_lock.hide()
                 self.ui.windows_path_edit.show()
@@ -303,7 +325,7 @@ class StorageMapWidget(QtGui.QWidget):
                 self.ui.windows_path_edit.setFocus()
                 self.ui.windows_path_browse.show()
 
-            # set the paths if they've been edited before
+            # set the path values if they've been edited before
             self.ui.linux_path_edit.setText(edited_linux_path)
             self.ui.mac_path_edit.setText(edited_mac_path)
             self.ui.windows_path_edit.setText(edited_windows_path)
@@ -317,6 +339,7 @@ class StorageMapWidget(QtGui.QWidget):
         Attempt to guess the most appropriate storage to use for the root.
         """
 
+        # build lookups by name and id
         storage_by_id = {}
         storage_by_name = {}
 
@@ -343,14 +366,17 @@ class StorageMapWidget(QtGui.QWidget):
         elif self._best_guess and self._best_guess in storage_by_name:
             self.local_storage = self._best_guess
 
+        # fall back to requiring the user to manually select an item
         else:
             self.local_storage = self._storage_model.CHOOSE_STORAGE_ITEM_TEXT
 
     def set_count(self, num, total):
+        """Simply sets the text of the count label of the widget. ex (1 of 3)"""
 
         self.ui.count_lbl.setText("%s of %s" % (num, total))
 
     def _browse_path(self, line_edit):
+        """Browse and set the path for the supplied edit widget."""
 
         # create the dialog
         folder_path = QtGui.QFileDialog.getExistingDirectory(
@@ -362,20 +388,26 @@ class StorageMapWidget(QtGui.QWidget):
         )
 
         if folder_path:
+            # folder was browsed, set the path in the widget.
             line_edit.setText(folder_path)
 
     def _create_new_storage(self):
+        """Prompt the user for a new storage name."""
 
+        # get all existing storages to provide to the dialog
         all_storages = self._storage_model.storages
         existing_storage_names = [storage["code"] for storage in all_storages]
 
-        # user wants to create a new storage root in SG
+        # propt the user for a new storage name
         create_dialog = CreateStorageDialog(
             existing_storage_names,
             parent=self
         )
 
         if create_dialog.exec_() == QtGui.QDialog.Accepted:
+            # user entered a valid storage name. create the skeleton data and
+            # add it to the storage model. the user will still have to "Save"
+            # the info to SG when they're finished editing the path(s).
             new_storage_name = create_dialog.new_storage_name
             new_storage = {
                 "id": None,
@@ -392,7 +424,12 @@ class StorageMapWidget(QtGui.QWidget):
             self.guess_storage()
 
     def _on_path_changed(self, path, edit_lookup):
+        """
+        Keep track of any path edits as they happen. Kepe the user informed if
+        there are any concerns about the entered text.
+        """
 
+        # store the edited path in the appropriate path lookup
         storage_name = str(self.ui.storage_select_combo.currentText())
         edit_lookup[storage_name] = path
 
@@ -410,23 +447,34 @@ class StorageMapWidget(QtGui.QWidget):
 
         try:
             self._do_storage_update_or_save()
-        except Exception, e:
-            import traceback
-            traceback.print_exc()
+        except Exception:
+            logger.error(traceback.format_exc())
             self.ui.storage_info.setText(
-                "Error occurred trying to save storage data!")
+                "Error occurred trying to save storage data! "
+                "See the tk-desktop log for more info."
+            )
 
         self.storage_saved.emit()
 
     def _do_storage_update_or_save(self):
+        """
+        Handles saving or updating the edited storage being displayed by the
+        widget.
+        """
 
+        # the storage info
         storage_data = self.local_storage
         storage_name = storage_data["code"]
 
+        # a SG connect we can use to save/update
         sg = sgtk.platform.current_engine().shotgun
 
         if storage_data.get("id"):
+            # the storage exists in SG. we just want to update the current OS
+            # path as the other OS paths can't be modified.
 
+            # get the current os key (field name in SG) and the path to update.
+            # this will be the edited path we've been keeping track of
             if sys.platform.startswith("linux"):
                 current_os_key = "linux_path"
                 current_os_path = self._linux_path_edit[storage_name]
@@ -439,8 +487,12 @@ class StorageMapWidget(QtGui.QWidget):
             else:
                 raise Exception("Unrecognized platform: %s" % (sys.platform,))
 
-            # the storage exists in SG. the user wants to update the storage
-            # with a path for the current OS
+            # do the update in SG. this method should be wrapped in a try/except
+            # to handle any issues here.
+            logger.debug(
+                "Updating SG local storage %s with %s: %s." %
+                (storage_name, current_os_key, current_os_path)
+            )
             update_data = sg.update(
                 "LocalStorage",
                 storage_data["id"],
@@ -450,25 +502,29 @@ class StorageMapWidget(QtGui.QWidget):
             # update the path in the storage data
             storage_data[current_os_key] = update_data[current_os_key]
         else:
+            # the storage does not exist in SG. we need to create it with the
+            # edited OS paths.
 
             # push any edited text into the storage data
             storage_data["linux_path"] = self._linux_path_edit.get(
                 storage_name, "")
-            storage_data["mac_path"] = self._mac_path_edit.get(
-                storage_name, "")
+            storage_data["mac_path"] = self._mac_path_edit.get(storage_name, "")
             storage_data["windows_path"] = self._windows_path_edit.get(
                 storage_name, "")
 
-            # delete the id field as it will be populated for us by SG
+            # delete the id field as it will be populated for us by SG. if we
+            # don't delete it, we get errors.
             del storage_data["id"]
 
             # no storage exists in SG. create a new one
+            logger.debug("Creating SG local storage: %s" % (storage_data,))
             storage_data = sg.create(
                 "LocalStorage",
                 storage_data,
                 return_fields=storage_data.keys()
             )
 
+        # update the storage in the model with the new data
         self._storage_model.update_storage(storage_name, storage_data)
 
         # it should be sufficient to set the newly created/updated storage
@@ -476,6 +532,10 @@ class StorageMapWidget(QtGui.QWidget):
         self.local_storage = storage_data["code"]
 
     def _set_default_edit_state(self):
+        """
+        Convenience method to get the UI in its default state.
+        :return:
+        """
 
         # hide the entire path section
         self.ui.path_frame.hide()
@@ -522,6 +582,12 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.storage_info.setText("")
 
     def paintEvent(self, event):
+        """
+        As per the docs, implementing this in order to use stylesheets on a
+        custom widget, allowing setting of bg color.
+
+        See: https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
+        """
 
         opt = QtGui.QStyleOption()
         opt.initFrom(self)

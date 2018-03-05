@@ -10,6 +10,7 @@
 
 import os
 import sys
+import traceback
 
 import sgtk
 from sgtk.platform.qt import QtCore
@@ -19,6 +20,8 @@ from sgtk.util.storage_roots import StorageRoots
 
 from .base_page import BasePage
 from .storage_map_widget import StorageMapWidget
+
+logger = sgtk.platform.get_logger(__name__)
 
 # use sg utils settings to remember previous storage mappings
 settings = sgtk.platform.import_framework(
@@ -324,6 +327,7 @@ class StorageMapPage(BasePage):
                     folder = storage[current_os_key]
                     ensure_folder_exists(folder)
                 except Exception:
+                    logger.error(traceback.format_exc())
                     failed_to_create.append(storage["code"])
 
             if failed_to_create:
@@ -331,10 +335,9 @@ class StorageMapPage(BasePage):
                 ui.storage_errors.setText(
                     "Unable to create folders on disk for these storages: %s."
                     "Please check to make sure you have permission to create "
-                    "these folders." % (", ".join(failed_to_create),)
+                    "these folders. See the tk-desktop log for more info." %
+                    (", ".join(failed_to_create),)
                 )
-
-        # TODO: go through the old page logic carefully. what is missing?
 
         # ---- now we've mapped the roots, and they're all valid, we need to
         #      create a StorageRoots instance and set it on the project params.
@@ -367,6 +370,8 @@ class StorageMapPage(BasePage):
                 self._historical_mappings
             )
 
+        logger.debug("Storage mappings are valid.")
+
         # create a new storage roots instance and set it on the core wizard
         storage_roots = StorageRoots.from_metadata(roots_metadata)
         wiz.core_wizard.set_storage_roots(self._uri, storage_roots)
@@ -379,6 +384,8 @@ class StorageMapPage(BasePage):
                 "Unknown error when setting the configuration uri:\n%s" %
                 str(e)
             )
+            logger.error(error)
+            logger.error(traceback.print_exc())
             ui.storage_errors.setText(error)
             return False
 
