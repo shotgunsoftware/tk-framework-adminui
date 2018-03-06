@@ -9,14 +9,14 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
-import sys
 import traceback
 
 import sgtk
 from sgtk.platform.qt import QtCore
 from sgtk.platform.qt import QtGui
 from sgtk.util.filesystem import ensure_folder_exists
-from sgtk.util.storage_roots import StorageRoots
+from sgtk.util import ShotgunPath
+from sgtk.util import StorageRoots
 
 from .base_page import BasePage
 from .storage_map_widget import StorageMapWidget
@@ -71,12 +71,17 @@ class StorageModel(QtGui.QStandardItemModel):
         super(StorageModel, self).__init__(parent)
 
         # query all existing SG storages to include in the model
+        logger.debug("Querying all SG LocalStorage entries...")
         sg_connection = sgtk.platform.current_engine().shotgun
         storages = sg_connection.find(
             "LocalStorage",
             filters=[],
             fields=["code", "id", "linux_path", "mac_path", "windows_path"],
             order=[{"field_name": "code", "direction":"asc"}]
+        )
+        logger.debug(
+            "Found %s LocalStorages: %s" %
+            (len(storages), storages)
         )
 
         # add the "choose" item
@@ -113,6 +118,8 @@ class StorageModel(QtGui.QStandardItemModel):
         :param dict storage: A standard SG LocalStorage entity dict.
         """
 
+        logger.debug("Adding storage to the model: %s" % (storage,))
+
         # create the item
         storage_name = storage["code"]
         storage_item = QtGui.QStandardItem(storage_name)
@@ -123,6 +130,8 @@ class StorageModel(QtGui.QStandardItemModel):
 
     def update_storage(self, storage_name, storage_data):
         """Update the supplied storage name with the supplied data."""
+
+        logger.debug("Updating storage %s: %s" % (storage_name, storage_data))
 
         # find the storage with the supplied name and update its data
         for row in range(0, self.rowCount()):
@@ -158,9 +167,11 @@ class StorageMapPage(BasePage):
         # retrieve a historical mapping of root names to SG storages. these will
         # be used to make a best guess if it's not obvious what the mappings
         # should be.
+        logger.debug("Querying historical storage mappings...")
         self._settings = settings.UserSettings(sgtk.platform.current_bundle())
         self._historical_mappings = self._settings.retrieve(
             self.HISTORICAL_MAPPING_KEY, {})
+        logger.debug("Historical mappings: %s" % (self._historical_mappings,))
 
     def setup_ui(self, page_id, error_field=None):
         """Set up the UI for this page."""
@@ -171,6 +182,9 @@ class StorageMapPage(BasePage):
         self._storages_model = StorageModel(self)
 
     def initializePage(self):
+        """Initialize the wizard page to display its contents properly."""
+
+        logger.debug("Initialize storage map page...")
 
         # the wizard instance and its UI
         wiz = self.wizard()
@@ -188,7 +202,7 @@ class StorageMapPage(BasePage):
         for (root_name, root_info) in self._required_roots:
 
             # create the widget and set all the values
-            map_widget = StorageMapWidget(self._storages_model)
+            map_widget = StorageMapWidget(self._storages_model, parent=self)
             map_widget.root_name = root_name
             map_widget.root_info = root_info
             map_widget.set_count(count, num_roots)
@@ -222,6 +236,10 @@ class StorageMapPage(BasePage):
 
         This should be called before the page is initialized.
         """
+        logger.debug(
+            "Adding root '%s' to be mapped: %s" %
+            (root_name, root_info)
+        )
         self._required_roots.append((root_name, root_info))
 
     def clear_roots(self):
@@ -231,6 +249,8 @@ class StorageMapPage(BasePage):
         roots are cleared so they can be rebuilt with potentially a different
         configuration.
         """
+
+        logger.debug("Clearing all storage roots from storage mapping page!")
 
         # the wizard instance and its UI
         wiz = self.wizard()
@@ -252,14 +272,20 @@ class StorageMapPage(BasePage):
                 widget = layout_item.widget()
             layout.removeItem(layout_item)
             if widget and isinstance(widget, StorageMapWidget):
+                # this is required to fully remove the widget from the parent's
+                # display. without this, the widget will still show up and be
+                # interactive in the scroll area for some reason.
                 widget.deleteLater()
 
     def set_config_uri(self, uri):
         """Set the config URI."""
+        logger.debug("Setting config uri: %s" % (uri,))
         self._uri = uri
 
     def validatePage(self):
         """The 'next' button was pushed. See if the mappings are valid."""
+
+        logger.debug("Validating the storage mappings page...")
 
         # the wizard instance and its UI
         wiz = self.wizard()
@@ -269,15 +295,9 @@ class StorageMapPage(BasePage):
         ui.storage_errors.setText("")
 
         # get the path key for the current os
-        if sys.platform.startswith("linux"):
-            current_os_key = "linux_path"
-        elif sys.platform == "darwin":
-            current_os_key = "mac_path"
-        elif sys.platform == "win32":
-            current_os_key = "windows_path"
-        else:
-            ui.storage_errors.setText("The current OS is unrecognized.")
-            return False
+        current_os_key = ShotgunPath.get_shotgun_storage_key()
+
+        logger.debug("Current OS storage path key: %s" % (current_os_key,))
 
         # temp lists of widgets that need attention
         invalid_widgets = []
@@ -287,8 +307,15 @@ class StorageMapPage(BasePage):
         # to the user in the list.
         first_invalid_widget = None
 
+        logger.debug("Checking all map widgets...")
+
         # see if each of the mappings is valid
         for map_widget in self._map_widgets:
+
+            logger.debug(
+                "Checking mapping for root: %s" %
+                (map_widget.root_name,)
+            )
 
             if not map_widget.mapping_is_valid():
                 # something is wrong with this widget's mapping
@@ -306,6 +333,7 @@ class StorageMapPage(BasePage):
         if invalid_widgets:
             # tell the user which roots don't have valid mappings
             root_names = [w.root_name for w in invalid_widgets]
+            logger.debug("Invalid mappings for roots: %s" % (root_names))
             ui.storage_errors.setText(
                 "The mappings for these roots are invalid: <b>%s</b>" %
                 (", ".join(root_names),)
@@ -321,12 +349,20 @@ class StorageMapPage(BasePage):
             for widget in not_on_disk_widgets:
 
                 storage = widget.local_storage
+                folder = storage[current_os_key]
 
-                # try to create any missing paths for the current OS
+                logger.debug(
+                    "Ensuring folder on disk for storage '%s': %s" %
+                    (storage["code"], folder)
+                )
+
+                # try to create the missing path for the current OS. this will
+                # help ensure the storage specified in SG is valid and the
+                # project data can be written to this root.
                 try:
-                    folder = storage[current_os_key]
                     ensure_folder_exists(folder)
                 except Exception:
+                    logger.error("Failed to create folder: %s" % (folder,))
                     logger.error(traceback.format_exc())
                     failed_to_create.append(storage["code"])
 
@@ -379,7 +415,7 @@ class StorageMapPage(BasePage):
         # if we made it here, then we should be valid.
         try:
             wiz.core_wizard.set_config_uri(self._uri)
-        except Exception, e:
+        except Exception as e:
             error = (
                 "Unknown error when setting the configuration uri:\n%s" %
                 str(e)
@@ -394,5 +430,6 @@ class StorageMapPage(BasePage):
     def _on_storage_saved(self):
         """A slot used to ensure all widget displays are updated."""
 
+        logger.debug("Storage saved, ensuring other widget displays updated...")
         for map_widget in self._map_widgets:
             map_widget.refresh_display()

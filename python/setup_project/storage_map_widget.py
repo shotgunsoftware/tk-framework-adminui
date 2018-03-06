@@ -15,6 +15,7 @@ import traceback
 import sgtk
 from sgtk.platform.qt import QtCore
 from sgtk.platform.qt import QtGui
+from sgtk.util import ShotgunPath
 
 from .create_storage_dialog import CreateStorageDialog
 from ..ui import storage_map_widget
@@ -474,16 +475,15 @@ class StorageMapWidget(QtGui.QWidget):
             # the storage exists in SG. we just want to update the current OS
             # path as the other OS paths can't be modified.
 
+            current_os_key = ShotgunPath.get_shotgun_storage_key()
+
             # get the current os key (field name in SG) and the path to update.
             # this will be the edited path we've been keeping track of
             if sys.platform.startswith("linux"):
-                current_os_key = "linux_path"
                 current_os_path = self._linux_path_edit[storage_name]
             elif sys.platform == "darwin":
-                current_os_key = "mac_path"
                 current_os_path = self._mac_path_edit[storage_name]
             elif sys.platform == "win32":
-                current_os_key = "windows_path"
                 current_os_path = self._mac_path_edit[storage_name]
             else:
                 raise Exception("Unrecognized platform: %s" % (sys.platform,))
