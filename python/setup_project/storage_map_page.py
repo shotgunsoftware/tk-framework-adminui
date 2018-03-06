@@ -16,7 +16,6 @@ from sgtk.platform.qt import QtCore
 from sgtk.platform.qt import QtGui
 from sgtk.util.filesystem import ensure_folder_exists
 from sgtk.util import ShotgunPath
-from sgtk.util import StorageRoots
 
 from .base_page import BasePage
 from .storage_map_widget import StorageMapWidget
@@ -376,9 +375,8 @@ class StorageMapPage(BasePage):
                 )
 
         # ---- now we've mapped the roots, and they're all valid, we need to
-        #      create a StorageRoots instance and set it on the project params.
+        #      update the root information on the core wizard
 
-        roots_metadata = {}
         for map_widget in self._map_widgets:
 
             root_name = map_widget.root_name
@@ -386,16 +384,21 @@ class StorageMapPage(BasePage):
             storage_data = map_widget.local_storage
 
             # populate the data defined prior to mapping
-            roots_metadata[root_name] = root_info
+            updated_storage_data = root_info
 
             # update the mapped shotgun data
-            roots_metadata[root_name]["shotgun_storage_id"] = storage_data["id"]
-            roots_metadata[root_name]["linux_path"] = str(
-                storage_data["linux_path"])
-            roots_metadata[root_name]["mac_path"] = str(
-                storage_data["mac_path"])
-            roots_metadata[root_name]["windows_path"] = str(
+            updated_storage_data["shotgun_storage_id"] = storage_data["id"]
+            updated_storage_data["linux_path"] = str(storage_data["linux_path"])
+            updated_storage_data["mac_path"] = str(storage_data["mac_path"])
+            updated_storage_data["windows_path"] = str(
                 storage_data["windows_path"])
+
+            # now update the core wizard's root info
+            wiz.core_wizard.update_storage_root(
+                self._uri,
+                root_name,
+                updated_storage_data
+            )
 
             # store the fact that we've mapped this root name with this
             # storage name. we can use this information to make better
@@ -407,10 +410,6 @@ class StorageMapPage(BasePage):
             )
 
         logger.debug("Storage mappings are valid.")
-
-        # create a new storage roots instance and set it on the core wizard
-        storage_roots = StorageRoots.from_metadata(roots_metadata)
-        wiz.core_wizard.set_storage_roots(self._uri, storage_roots)
 
         # if we made it here, then we should be valid.
         try:
