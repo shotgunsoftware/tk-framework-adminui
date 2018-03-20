@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>176</height>
+    <height>182</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0" columnstretch="2,3">
+  <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0" columnstretch="2,3">
    <property name="horizontalSpacing">
     <number>12</number>
    </property>
@@ -140,7 +140,7 @@ color: rgb(160, 160, 160);</string>
      </property>
      <item>
       <widget class="QFrame" name="path_frame">
-       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,100,1,0,0">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,100,1">
         <property name="margin">
          <number>6</number>
         </property>
@@ -167,20 +167,20 @@ color: rgb(120, 120, 120);</string>
            <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="windows_path">
-            <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
+           <widget class="QLineEdit" name="windows_path">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::TextSelectableByMouse</set>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="windows_path_edit">
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
+            </property>
             <property name="toolTip">
              <string>&lt;p&gt;Edit the storage path for this operating system.&lt;/p&gt;</string>
             </property>
@@ -194,20 +194,20 @@ color: rgb(120, 120, 120);</string>
            <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="linux_path">
-            <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
+           <widget class="QLineEdit" name="linux_path">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::TextSelectableByMouse</set>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="linux_path_edit">
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
+            </property>
             <property name="toolTip">
              <string>&lt;p&gt;Edit the storage path for this operating system.&lt;/p&gt;</string>
             </property>
@@ -249,20 +249,20 @@ color: rgb(120, 120, 120);</string>
            <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="mac_path">
-            <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to Shotgun. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
+           <widget class="QLineEdit" name="mac_path">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::TextSelectableByMouse</set>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="mac_path_edit">
+            <property name="focusPolicy">
+             <enum>Qt::ClickFocus</enum>
+            </property>
             <property name="toolTip">
              <string>&lt;p&gt;Edit the storage path for this operating system.&lt;/p&gt;</string>
             </property>

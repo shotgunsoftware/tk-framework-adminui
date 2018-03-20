@@ -151,6 +151,9 @@ class StorageMapWidget(QtGui.QWidget):
         # ensure a local storage is set
         local_storage = self.local_storage
 
+        # clear the storage info text to begin
+        self.ui.storage_info.setText("")
+
         # hide this by default
         self.ui.save_storage_btn.hide()
 
@@ -159,55 +162,78 @@ class StorageMapWidget(QtGui.QWidget):
             self.ui.storage_info.setText("* No storage selected")
             return False
 
-        # get these once to make the code below a bit more readable
+        storage_name = local_storage["code"]
+
+        # ---- first, validate any edited paths:
+
+        if self.ui.linux_path_edit.isVisible():
+            is_current_os = sys.platform.startswith("linux")
+            edited_linux_path = self._linux_path_edit.get(storage_name)
+            if edited_linux_path:
+                (is_valid, reason) = self._path_is_valid(
+                    edited_linux_path, is_current_os)
+                if is_valid:
+                    self.ui.save_storage_btn.show()
+                    self.ui.storage_info.setText(
+                        "* Please save the linux path before proceeding.")
+                    return False
+                else:
+                    self.ui.storage_info.setText(
+                        "* Linux path is invalid: %s" % (reason,))
+                    return False
+
+        if self.ui.mac_path_edit.isVisible():
+            is_current_os = sys.platform == "darwin"
+            edited_mac_path = self._mac_path_edit.get(storage_name)
+            if edited_mac_path:
+                (is_valid, reason) = self._path_is_valid(
+                    edited_mac_path, is_current_os)
+                if is_valid:
+                    self.ui.save_storage_btn.show()
+                    self.ui.storage_info.setText(
+                        "* Please save the mac path before proceeding.")
+                    return False
+                else:
+                    self.ui.storage_info.setText(
+                        "* Mac path is invalid: %s" % (reason,))
+                    return False
+
+        if self.ui.windows_path_edit.isVisible():
+            is_current_os = sys.platform == "win32"
+            edited_windows_path = self._windows_path_edit.get(storage_name)
+            if edited_windows_path:
+                (is_valid, reason) = self._path_is_valid(
+                    edited_windows_path, is_current_os)
+                if is_valid:
+                    self.ui.save_storage_btn.show()
+                    self.ui.storage_info.setText(
+                        "* Please save the windows path before proceeding.")
+                    return False
+                else:
+                    self.ui.storage_info.setText(
+                        "* Windows path is invalid: %s" % (reason,))
+                    return False
+
+        # get the stored paths once to make the code below a bit more readable
         linux_path = local_storage.get("linux_path")
         mac_path = local_storage.get("mac_path")
         windows_path = local_storage.get("windows_path")
 
-        # get the current os path and any edited path for the current OS.
-        if sys.platform.startswith("linux") and not linux_path:
+        # get the current os path
+        if sys.platform.startswith("linux"):
             current_os_path = linux_path
-            edited_current_os_path_lookup = self._linux_path_edit
         elif sys.platform == "darwin":
             current_os_path = mac_path
-            edited_current_os_path_lookup = self._mac_path_edit
         elif sys.platform == "win32":
             current_os_path = windows_path
-            edited_current_os_path_lookup = self._windows_path_edit
         else:
             raise Exception("Unrecognized platform: %s" % (sys.platform,))
 
         # no path for the current os
         if not current_os_path:
-
-            # the name of the selected local storage
-            storage_name = local_storage["code"]
-
-            # if haven't edited anything, need to edit + save
-            edited_current_os_path = edited_current_os_path_lookup.get(
-                storage_name)
-
-            if edited_current_os_path:
-                # user has manually edited the path for the current OS
-
-                # current os path must be absolute path
-                if not os.path.isabs(edited_current_os_path):
-                    self.ui.storage_info.setText(
-                        "* The current OS storage path must be absolute.")
-                    return False
-
-                # they've edited but haven't saved (otherwise the
-                # current_os_path would not be None. show the save button to
-                # indicate they should save.
-                self.ui.save_storage_btn.show()
-                self.ui.storage_info.setText(
-                    "* Please save the current OS path before proceeding.")
-                return False
-
-            else:
-                self.ui.storage_info.setText(
-                    "* A storage path is required for the current OS.")
-                return False
+            self.ui.storage_info.setText(
+                "* A storage path is required for the current OS.")
+            return False
 
         if not local_storage.get("id"):
             # if there's no id, the storage hasn't been saved. show the save
@@ -274,39 +300,35 @@ class StorageMapWidget(QtGui.QWidget):
             self.ui.mac_path.setText(mac_path)
             self.ui.windows_path.setText(windows_path)
 
-            if sys.platform.startswith("linux") and not linux_path:
-                # storage exists in SG, but no path defined for current OS.
-                # make it possible to edit the current OS path.
-                self.ui.linux_path.hide()
-                self.ui.linux_lock.hide()
-                self.ui.linux_path_edit.show()
-                self.ui.linux_path_browse.show()
-                self.ui.linux_path_edit.setText(edited_linux_path)
-                self.ui.linux_path_edit.setFocus()
-                self.ui.mac_lock.show()
-                self.ui.windows_lock.show()
-            elif sys.platform == "darwin" and not mac_path:
-                # storage exists in SG, but no path defined for current OS
-                # make it possible to edit the current OS path.
-                self.ui.mac_path.hide()
-                self.ui.mac_lock.hide()
-                self.ui.mac_path_edit.show()
-                self.ui.mac_path_browse.show()
-                self.ui.mac_path_edit.setText(edited_mac_path)
-                self.ui.mac_path_edit.setFocus()
+            # set the tooltips as well
+            self.ui.linux_path.setToolTip(linux_path)
+            self.ui.mac_path.setToolTip(mac_path)
+            self.ui.windows_path.setToolTip(windows_path)
+
+            # show lock if the path is defined, else make the path editable
+            if linux_path:
                 self.ui.linux_lock.show()
-                self.ui.windows_lock.show()
-            elif sys.platform == "win32" and not mac_path:
-                # storage exists in SG, but no path defined for current OS
-                # make it possible to edit the current OS path.
-                self.ui.windows_path.hide()
-                self.ui.windows_lock.hide()
-                self.ui.windows_path_edit.show()
-                self.ui.windows_path_browse.show()
-                self.ui.windows_path_edit.setText(edited_windows_path)
-                self.ui.windows_path_edit.setFocus()
-                self.ui.linux_lock.show()
+            else:
+                self._set_path_editable("linux")
+                if sys.platform.startswith("linux"):
+                    self.ui.linux_path_browse.show()
+                    self.ui.linux_path_edit.setFocus()
+
+            if mac_path:
                 self.ui.mac_lock.show()
+            else:
+                self._set_path_editable("mac")
+                if sys.platform == "darwin":
+                    self.ui.mac_path_browse.show()
+                    self.ui.mac_path_edit.setFocus()
+
+            if windows_path:
+                self.ui.windows_lock.show()
+            else:
+                self._set_path_editable("windows")
+                if sys.platform == "win32":
+                    self.ui.windows_path_browse.show()
+                    self.ui.windows_path_edit.setFocus()
 
         else:
             # this is a new storage that hasn't been created in SG yet.
@@ -317,13 +339,13 @@ class StorageMapWidget(QtGui.QWidget):
             self.ui.windows_path_edit.show()
 
             # show the browse button for the current os
-            if sys.platform.startswith("linux"):
+            if sys.platform.startswith("linux") and not linux_path:
                 self.ui.linux_path_edit.setFocus()
                 self.ui.linux_path_browse.show()
             elif sys.platform == "darwin" and not mac_path:
                 self.ui.mac_path_edit.setFocus()
                 self.ui.mac_path_browse.show()
-            elif sys.platform == "win32" and not mac_path:
+            elif sys.platform == "win32" and not windows_path:
                 self.ui.windows_path_edit.setFocus()
                 self.ui.windows_path_browse.show()
 
@@ -349,7 +371,8 @@ class StorageMapWidget(QtGui.QWidget):
         # this each time this is called
         storages = self._storage_model.storages
         for storage in storages:
-            storage_name = storage["code"]
+            # store lower case names so we can do case insensitive comparisons
+            storage_name = storage["code"].lower()
             storage_id = storage["id"]
             storage_by_id[storage_id] = storage
             storage_by_name[storage_name] = storage
@@ -361,12 +384,14 @@ class StorageMapWidget(QtGui.QWidget):
             self.local_storage = storage_by_id[root_sg_id]["code"]
 
         # does name match an existing storage?
-        elif self.root_name in storage_by_name:
-            self.local_storage = self.root_name
+        elif self.root_name.lower() in storage_by_name:
+            storage_key = self.root_name.lower()
+            self.local_storage = storage_by_name[storage_key]["code"]
 
         # has this name been mapped before?
-        elif self._best_guess and self._best_guess in storage_by_name:
-            self.local_storage = self._best_guess
+        elif self._best_guess and self._best_guess.lower() in storage_by_name:
+            storage_key = self._best_guess.lower()
+            self.local_storage = storage_by_name[storage_key]["code"]
 
         # fall back to requiring the user to manually select an item
         else:
@@ -472,36 +497,33 @@ class StorageMapWidget(QtGui.QWidget):
         sg = sgtk.platform.current_engine().shotgun
 
         if storage_data.get("id"):
-            # the storage exists in SG. we just want to update the current OS
-            # path as the other OS paths can't be modified.
+            # the storage exists in SG. we want to update any edited paths
 
-            current_os_key = ShotgunPath.get_shotgun_storage_key()
+            path_data = {}
 
-            # get the current os key (field name in SG) and the path to update.
-            # this will be the edited path we've been keeping track of
-            if sys.platform.startswith("linux"):
-                current_os_path = self._linux_path_edit[storage_name]
-            elif sys.platform == "darwin":
-                current_os_path = self._mac_path_edit[storage_name]
-            elif sys.platform == "win32":
-                current_os_path = self._mac_path_edit[storage_name]
-            else:
-                raise Exception("Unrecognized platform: %s" % (sys.platform,))
+            if self.ui.linux_path_edit.isVisible():
+                path_data["linux_path"] = \
+                    self._linux_path_edit.get(storage_name, "")
+
+            if self.ui.mac_path_edit.isVisible():
+                path_data["mac_path"] = \
+                    self._mac_path_edit.get(storage_name, "")
+
+            if self.ui.windows_path_edit.isVisible():
+                path_data["windows_path"] = \
+                    self._windows_path_edit.get(storage_name, "")
 
             # do the update in SG. this method should be wrapped in a try/except
             # to handle any issues here.
-            logger.debug(
-                "Updating SG local storage %s with %s: %s." %
-                (storage_name, current_os_key, current_os_path)
-            )
+            logger.debug("Updating SG local storage: %s." % (path_data,))
             update_data = sg.update(
                 "LocalStorage",
                 storage_data["id"],
-                {current_os_key: current_os_path}
+                path_data
             )
 
             # update the path in the storage data
-            storage_data[current_os_key] = update_data[current_os_key]
+            storage_data.update(update_data)
         else:
             # the storage does not exist in SG. we need to create it with the
             # edited OS paths.
@@ -532,10 +554,37 @@ class StorageMapWidget(QtGui.QWidget):
         # this will update the storage display in the UI
         self.local_storage = storage_data["code"]
 
+    def _set_path_editable(self, os_name):
+        """
+        Convenience method to enable editing for an OS path.
+        """
+
+        storage_name = self.ui.storage_select_combo.currentText()
+
+        if os_name == "linux":
+            edited_linux_path = self._linux_path_edit.get(storage_name, "")
+            self.ui.linux_path.hide()
+            self.ui.linux_lock.hide()
+            self.ui.linux_path_edit.show()
+            self.ui.linux_path_edit.setText(edited_linux_path)
+
+        elif os_name == "mac":
+            edited_mac_path = self._mac_path_edit.get(storage_name, "")
+            self.ui.mac_path.hide()
+            self.ui.mac_lock.hide()
+            self.ui.mac_path_edit.show()
+            self.ui.mac_path_edit.setText(edited_mac_path)
+
+        elif os_name == "windows":
+            edited_windows_path = self._windows_path_edit.get(storage_name, "")
+            self.ui.windows_path.hide()
+            self.ui.windows_lock.hide()
+            self.ui.windows_path_edit.show()
+            self.ui.windows_path_edit.setText(edited_windows_path)
+
     def _set_default_edit_state(self):
         """
         Convenience method to get the UI in its default state.
-        :return:
         """
 
         # hide the entire path section
@@ -564,6 +613,11 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.mac_path.setText("")
         self.ui.windows_path.setText("")
 
+        # clear the tooltips
+        self.ui.linux_path.setToolTip("")
+        self.ui.mac_path.setToolTip("")
+        self.ui.windows_path.setToolTip("")
+
         # clear the edits
         self.ui.linux_path_edit.setText("")
         self.ui.mac_path_edit.setText("")
@@ -581,6 +635,26 @@ class StorageMapWidget(QtGui.QWidget):
 
         # clear the info text
         self.ui.storage_info.setText("")
+
+    def _path_is_valid(self, path, is_current_os_path):
+        """
+        Returns a tuple. First value is True if the path is a valid storage
+        path. The second value is a string message describing the problem if the
+        first value is False (invalid storage path).
+        """
+
+        # make sure the path isn't just a separator
+        if path == os.path.sep:
+            return False, "Please provide a directory name for the storage."
+
+        if is_current_os_path:
+            # current os path must be absolute path
+            if not os.path.isabs(path):
+                self.ui.storage_info.setText(
+                    "* The current OS storage path must be absolute.")
+                return False
+
+        return True, None
 
     def paintEvent(self, event):
         """

@@ -94,6 +94,7 @@ QToolButton:pressed {
     border-radius: 2px;
     padding-top: 4px;
     padding-bottom: 4px;
+    background: #3A3A3A;
 }
 
 #mac_path {
@@ -103,6 +104,7 @@ QToolButton:pressed {
     border-radius: 2px;
     padding-top: 4px;
     padding-bottom: 4px;
+    background: #3A3A3A;
 }
 
 #windows_path {
@@ -112,6 +114,7 @@ QToolButton:pressed {
     border-radius: 2px;
     padding-top: 4px;
     padding-bottom: 4px;
+    background: #3A3A3A;
 }
 
 /* --------------------------------------------------------------------- */
