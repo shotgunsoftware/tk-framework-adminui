@@ -41,8 +41,6 @@ class Ui_CreateStorageDialog(object):
         self.storage_name_layout.setStretch(0, 5)
         self.storage_name_layout.setStretch(2, 15)
         self.verticalLayout.addLayout(self.storage_name_layout)
-        spacerItem2 = QtGui.QSpacerItem(20, 13, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        self.verticalLayout.addItem(spacerItem2)
         self.info = QtGui.QLabel(self.main_widget)
         font = QtGui.QFont()
         font.setPointSize(10)

@@ -78,7 +78,7 @@ class CreateStorageDialog(QtGui.QDialog):
         if not self.STORAGE_NAME_REGEX.match(storage_name):
             # storage name is invalid
             return self._set_valid(
-                False, "* Storage name is invalid (alphanumeric and '_' only).")
+                False, "* Storage name has invalid character.")
 
         # all good!
         return self._set_valid(True)
