@@ -9,15 +9,14 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import logging
+import os
 
+import sgtk
 from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
 from ..ui import setup_project
 from .emitting_handler import EmittingHandler
-from .storage_locations_page import StorageLocationsPage
-
-import sgtk
 
 
 class SetupProjectWizard(QtGui.QWizard):
@@ -29,7 +28,7 @@ class SetupProjectWizard(QtGui.QWizard):
     def __init__(self, project, parent=None):
         QtGui.QWizard.__init__(self, parent)
 
-        # Disable Close button. Note that on mac, need to disable minimize 
+        # Disable Close button. Note that on mac, need to disable minimize
         # button also to do this (but maximize can stay). 
         self.setWindowFlags(QtCore.Qt.Tool | 
                             QtCore.Qt.CustomizeWindowHint | 
@@ -41,9 +40,6 @@ class SetupProjectWizard(QtGui.QWizard):
 
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
-
-        # initialize storage setup pages
-        self._storage_location_page_ids = []
 
         # setup logging
         self._logger = logging.getLogger("tk-framework-adminui.setup_project")
@@ -101,6 +97,9 @@ class SetupProjectWizard(QtGui.QWizard):
         self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
         self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
 
+        # load the stylesheet
+        self._load_stylesheet()
+
     def closeEvent(self, event):
         """
         Disables Alt-F4 on windows and prevents user from cancelling mid-operation and
@@ -113,50 +112,50 @@ class SetupProjectWizard(QtGui.QWizard):
         page = self.currentPage()
         page.help_requested()
 
-    def _is_store_valid(self, store_info):
-        """ returns True if the store should be valid.  False otherwise """
-        return store_info["exists_on_disk"] and store_info["defined_in_shotgun"]
+    def validate_config_uri(self, uri):
+        """Download and validate the supplied config URI.
 
-    def set_config_uri(self, uri):
-        """ set the config uri and adjust the state of the wizard to reflect needed pages """
-        # clear the current storage pages
-        for storage_page_id in self._storage_location_page_ids:
-            self.removePage(storage_page_id)
-        self._storage_location_page_ids = []
+        This will also update the wizard to display the required storages for
+        mapping by the user.
+        """
 
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         try:
-            # validate the uri and get the required storages
+            # download and validate the uri and update the required storages.
             # let any exceptions propagate up to the calling page to be handled
             storage_info = self.core_wizard.validate_config_uri(uri)
-            for (store_name, store_info) in storage_info.iteritems():
-                if not self._is_store_valid(store_info):
-                    # storage is not available, show the page for it
-                    page = StorageLocationsPage(store_name, store_info, uri)
-                    page_id = self.addPage(page)
-                    self._storage_location_page_ids.append(page_id)
-                    page.setup_ui(page_id)
 
-                    # set the page flow if this is not the first page
-                    if len(self._storage_location_page_ids) > 1:
-                        previous_page = self.page(self._storage_location_page_ids[-2])
-                        previous_page.set_next_page(page, last_page=False)
+            # set the uri for the storage mapping page
+            self.ui.storage_map_page.set_config_uri(uri)
 
+            # add mappings for each required storage root. clear any existing
+            # roots first (possible if back button is used)
+            self.ui.storage_map_page.clear_roots()
+            for (root_name, root_info) in storage_info.iteritems():
+                self.ui.storage_map_page.add_mapping(root_name, root_info)
+
+            # a config has been chosen. we don't need to visit the other config
+            # selection pages. make the next page the storage mapping page.
             current_page = self.currentPage()
-            if self._storage_location_page_ids:
-                # have storage pages
-                # let the last one know to set the uri on exit
-                last_page = self.page(self._storage_location_page_ids[-1])
-                last_page.set_next_page(self.ui.project_name_page, last_page=True)
+            current_page.set_next_page(self.ui.storage_map_page)
 
-                # set the first storage page as the next page
-                first_page = self.page(self._storage_location_page_ids[0])
-                current_page.set_next_page(first_page)
-            else:
-                # no storage pages set the right next page
-                current_page.set_next_page(self.ui.project_name_page)
-
-                # actually set the uri
-                self.core_wizard.set_config_uri(uri)
         finally:
             QtGui.QApplication.restoreOverrideCursor()
+
+    def _load_stylesheet(self):
+        """
+        Loads in a stylesheet from disk
+        """
+        qss_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "style.qss"
+        )
+        f = None
+        try:
+            f = open(qss_file, "rt")
+            qss_data = f.read()
+            # apply to widget (and all its children)
+            self.setStyleSheet(qss_data)
+        finally:
+            if f:
+                f.close()

@@ -47,7 +47,8 @@ class DefaultConfigPage(BasePage):
         wait.show()
         QtGui.QApplication.instance().processEvents()
         try:
-            wiz.set_config_uri(uri)
+            # Download/validate the config. prep storage mapping display
+            wiz.validate_config_uri(uri)
             wiz.ui.github_errors.setText("")
         except Exception, e:
             wiz.ui.default_configs_errors.setText(str(e))

@@ -1,0 +1,158 @@
+/*
+Copyright (c) 2018 Shotgun Software Inc
+
+CONFIDENTIAL AND PROPRIETARY
+
+This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
+Source Code License included in this distribution package. See LICENSE.
+By accessing, using, copying or modifying this work you indicate your
+agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
+not expressly granted therein are reserved by Shotgun Software Inc.
+*/
+
+/* --------------------------------------------------------------------- */
+/* Global styling */
+/* --------------------------------------------------------------------- */
+
+/* Use open sans font across the app if core supports it */
+QWidget {
+    font-family: Open Sans;
+    font-style: Regular;
+}
+
+/*
+ need this to kick QT into 'style mode' for labels otherwise things are not
+ formatted correctly
+*/
+QLabel {
+    margin-top: 1px;
+}
+
+StorageMapWidget {
+    border: 1px solid #111111;
+    border-radius: 4px;
+    background-color: palette(window);
+}
+
+/* --------------------------------------------------------------------- */
+/* Frames                                                                */
+/* --------------------------------------------------------------------- */
+
+#path_frame {
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background-color: #3A3A3A;
+}
+
+/* --------------------------------------------------------------------- */
+/* Scroll Area                                                           */
+/* --------------------------------------------------------------------- */
+
+#storage_map_area_widget {
+    background-color: palette(base);
+}
+
+#storage_map_area {
+    background-color: palette(base);
+}
+
+/* --------------------------------------------------------------------- */
+/* Buttons
+/* --------------------------------------------------------------------- */
+
+QToolButton {
+    border: none;
+}
+
+QToolButton:hover {
+    border: none;
+    border-radius: 2px;
+    background-color: rgba(200, 200, 200, 18%);
+}
+
+QToolButton:pressed {
+    border: none;
+    border-radius: 2px;
+    background-color: rgba(200, 200, 200, 35%);
+}
+
+#save_storage_btn {
+    color: #FFFFFF;
+    border: 1px solid #333333;
+    border-radius: 3px;
+    background-color: #18A7E3;
+}
+
+/* --------------------------------------------------------------------- */
+/* Labels
+/* --------------------------------------------------------------------- */
+
+#linux_path {
+    font: 10pt "Courier";
+    color: rgb(160, 160, 160);
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: #3A3A3A;
+}
+
+#mac_path {
+    font: 10pt "Courier";
+    color: rgb(160, 160, 160);
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: #3A3A3A;
+}
+
+#windows_path {
+    font: 10pt "Courier";
+    color: rgb(160, 160, 160);
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background: #3A3A3A;
+}
+
+/* --------------------------------------------------------------------- */
+/* Line Edit
+/* --------------------------------------------------------------------- */
+
+#linux_path_edit {
+    font: 10pt "Courier";
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#linux_path_edit:focus {
+    border: 1px solid #18A7E3;
+}
+
+#mac_path_edit {
+    font: 10pt "Courier";
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#mac_path_edit:focus {
+    border: 1px solid #18A7E3;
+}
+
+#windows_path_edit {
+    font: 10pt "Courier";
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#windows_path_edit:focus {
+    border: 1px solid #18A7E3;
+}

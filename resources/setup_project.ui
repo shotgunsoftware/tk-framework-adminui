@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>528</height>
+    <width>686</width>
+    <height>522</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -325,8 +325,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>627</width>
-         <height>280</height>
+         <width>612</width>
+         <height>234</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -792,6 +792,9 @@ color: rgb(160, 160, 160);</string>
         <property name="scaledContents">
          <bool>true</bool>
         </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -902,6 +905,148 @@ color: rgb(160, 160, 160);</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="StorageMapPage" name="storage_map_page">
+   <property name="title">
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Define Storages&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+   </property>
+   <property name="subTitle">
+    <string>&amp;nbsp;</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_10">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>25</number>
+    </property>
+    <property name="topMargin">
+     <number>20</number>
+    </property>
+    <property name="rightMargin">
+     <number>25</number>
+    </property>
+    <property name="bottomMargin">
+     <number>20</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="storage_def_lbl">
+      <property name="text">
+       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated Shotgun Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938-Linking-to-local-files#how_to_set_up&quot;&gt;More info…&lt;/a&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="openExternalLinks">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_13">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="storage_map_area">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="StorageMapContainerWidget" name="storage_map_area_widget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>610</width>
+         <height>214</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_16">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>6</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="local_file_link_lbl">
+      <property name="styleSheet">
+       <string notr="true">font-size: 10px;
+color: rgb(160, 160, 160);</string>
+      </property>
+      <property name="text">
+       <string>Linking to local files must be enabled in your &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938&quot;&gt;Shotgun Preferences&lt;/a&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="openExternalLinks">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_15">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="storage_errors">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(252, 98, 70);</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -1554,6 +1699,18 @@ For more information on how to configure your Project and tailor it to your syst
    <class>DefaultConfigPage</class>
    <extends>QWizardPage</extends>
    <header>..setup_project.default_config_page.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StorageMapPage</class>
+   <extends>QWizardPage</extends>
+   <header>..setup_project.storage_map_page.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StorageMapContainerWidget</class>
+   <extends>QWidget</extends>
+   <header>..setup_project.storage_map_page.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
