@@ -15,7 +15,6 @@ import traceback
 import sgtk
 from sgtk.platform.qt import QtCore
 from sgtk.platform.qt import QtGui
-from sgtk.util import ShotgunPath
 
 from .create_storage_dialog import CreateStorageDialog
 from ..ui import storage_map_widget
@@ -81,6 +80,10 @@ class StorageMapWidget(QtGui.QWidget):
 
         # connect the save button
         self.ui.save_storage_btn.clicked.connect(self._on_storage_save_clicked)
+
+        # we need to disable the wheel scrolling on the storage combobox.
+        # install an event filter on it to intercept and ignore wheel events.
+        self.ui.storage_select_combo.installEventFilter(self)
 
     @property
     def best_guess(self):
@@ -670,3 +673,18 @@ class StorageMapWidget(QtGui.QWidget):
         self.style().drawPrimitive(QtGui.QStyle.PE_Widget, opt, painter, self)
 
         super(StorageMapWidget, self).paintEvent(event)
+
+    def eventFilter(self, q_object, event):
+        """
+        Handles intercepting object/widget events such as the wheel event on the
+        storage selection combo box.
+
+        :param q_object: The monitored q_object where an event occured.
+        :param event:
+        :return:
+        """
+
+        if (event.type() == QtCore.QEvent.Wheel and
+            q_object == self.ui.storage_select_combo):
+            # Ignore wheel events on the storage select combo
+            return True

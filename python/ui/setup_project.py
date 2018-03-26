@@ -11,7 +11,7 @@ from sgtk.platform.qt import QtCore, QtGui
 class Ui_Wizard(object):
     def setupUi(self, Wizard):
         Wizard.setObjectName("Wizard")
-        Wizard.resize(686, 482)
+        Wizard.resize(686, 522)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/res/shotgun_logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Wizard.setWindowIcon(icon)
@@ -340,7 +340,7 @@ class Ui_Wizard(object):
         self.storage_map_area.setWidgetResizable(True)
         self.storage_map_area.setObjectName("storage_map_area")
         self.storage_map_area_widget = StorageMapContainerWidget()
-        self.storage_map_area_widget.setGeometry(QtCore.QRect(0, 0, 610, 174))
+        self.storage_map_area_widget.setGeometry(QtCore.QRect(0, 0, 610, 214))
         self.storage_map_area_widget.setObjectName("storage_map_area_widget")
         self.storage_map_area.setWidget(self.storage_map_area_widget)
         self.verticalLayout_10.addWidget(self.storage_map_area)

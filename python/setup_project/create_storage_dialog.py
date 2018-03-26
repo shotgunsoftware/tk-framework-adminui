@@ -70,11 +70,6 @@ class CreateStorageDialog(QtGui.QDialog):
             return self._set_valid(
                 False, "* Storage name is required.")
 
-        if storage_name in self._existing_storage_names:
-            # storage name already exists in SG
-            return self._set_valid(
-                False, "* Storage name already exists.")
-
         # case insensitive check against existing storage names. we do this
         # separately from the case sensitive check in order to provide the user
         # with more info and prevent confusion when they go looking in SG for a
@@ -86,8 +81,8 @@ class CreateStorageDialog(QtGui.QDialog):
             index = lc_existing_storage_names.index(storage_name.lower())
             return self._set_valid(
                 False,
-                "* Name is invalid. '%s' exists" %
-                (self._existing_storage_names[index])
+                "* Storage name already exists: '%s'" %
+                (self._existing_storage_names[index],)
             )
 
         if not self.STORAGE_NAME_REGEX.match(storage_name):

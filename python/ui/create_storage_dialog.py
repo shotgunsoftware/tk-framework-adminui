@@ -50,6 +50,8 @@ class Ui_CreateStorageDialog(object):
         self.info.setWordWrap(True)
         self.info.setObjectName("info")
         self.verticalLayout.addWidget(self.info)
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(1, 10)
         self.verticalLayout_2.addWidget(self.main_widget)
         self.button_box = QtGui.QDialogButtonBox(CreateStorageDialog)
         self.button_box.setLayoutDirection(QtCore.Qt.LeftToRight)

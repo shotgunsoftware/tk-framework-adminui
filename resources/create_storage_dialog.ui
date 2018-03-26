@@ -25,7 +25,7 @@
    </property>
    <item>
     <widget class="QWidget" name="main_widget" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,10">
       <property name="spacing">
        <number>0</number>
       </property>
