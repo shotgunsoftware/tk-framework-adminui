@@ -15,6 +15,7 @@ import traceback
 import sgtk
 from sgtk.platform.qt import QtCore
 from sgtk.platform.qt import QtGui
+from sgtk.util import ShotgunPath
 
 from .create_storage_dialog import CreateStorageDialog
 from ..ui import storage_map_widget
@@ -64,19 +65,19 @@ class StorageMapWidget(QtGui.QWidget):
 
         # keep a handle on any edited text
         self.ui.linux_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, self._linux_path_edit))
+            lambda p: self._on_path_changed(p, "linux2"))
         self.ui.mac_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, self._mac_path_edit))
+            lambda p: self._on_path_changed(p, "darwin"))
         self.ui.windows_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, self._windows_path_edit))
+            lambda p: self._on_path_changed(p, "win32"))
 
         # connect the file browse buttons
         self.ui.linux_path_browse.clicked.connect(
-            lambda: self._browse_path(self.ui.linux_path_edit))
+            lambda: self._browse_path("linux2"))
         self.ui.mac_path_browse.clicked.connect(
-            lambda: self._browse_path(self.ui.mac_path_edit))
+            lambda: self._browse_path("darwin"))
         self.ui.windows_path_browse.clicked.connect(
-            lambda: self._browse_path(self.ui.windows_path_edit))
+            lambda: self._browse_path("win32"))
 
         # connect the save button
         self.ui.save_storage_btn.clicked.connect(self._on_storage_save_clicked)
@@ -405,8 +406,8 @@ class StorageMapWidget(QtGui.QWidget):
 
         self.ui.count_lbl.setText("%s of %s" % (num, total))
 
-    def _browse_path(self, line_edit):
-        """Browse and set the path for the supplied edit widget."""
+    def _browse_path(self, platform):
+        """Browse and set the path for the supplied os key."""
 
         # create the dialog
         folder_path = QtGui.QFileDialog.getExistingDirectory(
@@ -417,9 +418,22 @@ class StorageMapWidget(QtGui.QWidget):
                     QtGui.QFileDialog.ShowDirsOnly
         )
 
-        if folder_path:
-            # folder was browsed, set the path in the widget.
-            line_edit.setText(folder_path)
+        if not folder_path:
+            return
+
+        # create the SG path object. assigning the path to the corresponding
+        # OS property below will sanitize
+        sg_path = ShotgunPath()
+
+        if platform.startswith("linux"):
+            sg_path.linux = folder_path
+            self.ui.linux_path_edit.setText(sg_path.linux)
+        elif platform == "darwin":
+            sg_path.macosx = folder_path
+            self.ui.mac_path_edit.setText(sg_path.macosx)
+        elif platform == "win32":
+            sg_path.windows = folder_path
+            self.ui.windows_path_edit.setText(sg_path.windows)
 
     def _create_new_storage(self):
         """Prompt the user for a new storage name."""
@@ -453,15 +467,76 @@ class StorageMapWidget(QtGui.QWidget):
             # will switch away from "create" back to "choose" or a storage.
             self.guess_storage()
 
-    def _on_path_changed(self, path, edit_lookup):
+    def _on_path_changed(self, path, platform):
         """
-        Keep track of any path edits as they happen. Kepe the user informed if
+        Keep track of any path edits as they happen. Keep the user informed if
         there are any concerns about the entered text.
         """
 
-        # store the edited path in the appropriate path lookup
+        only_slashes = path.replace("/", "") == "" or path.replace("\\", "") == ""
+        trailing_slash = path.endswith("/") or path.endswith("\\")
+
         storage_name = str(self.ui.storage_select_combo.currentText())
-        edit_lookup[storage_name] = path
+        sg_path = ShotgunPath()
+
+        # store the edited path in the appropriate path lookup. sanitize first
+        # by running it through the ShotgunPath object. since sanitize removes
+        # the trailing slash, add it back in if the user typed it.
+        # if the sanitized path differs, update the edit.
+        if platform.startswith("linux"):
+            if only_slashes:
+                # SG path code doesn't like only slashes in a path
+                self._linux_path_edit[storage_name] = path
+            elif path:
+                sg_path.linux = path  # sanitize
+                sanitized_path = sg_path.linux
+                if trailing_slash:
+                    # add the trailing slash back in
+                    sanitized_path = "%s/" % (sanitized_path,)
+                if sanitized_path != path:
+                    # path changed due to sanitation. change it in the UI
+                    self.ui.linux_path_edit.setText(sanitized_path)
+                # remember the sanitized path
+                self._linux_path_edit[storage_name] = sanitized_path
+            else:
+                # no path. update the edit lookup to reflect
+                self._linux_path_edit[storage_name] = ""
+        elif platform == "darwin":
+            if only_slashes:
+                # SG path code doesn't like only slashes in a path
+                self._mac_path_edit[storage_name] = path
+            elif path:
+                sg_path.macosx = path  # sanitize
+                sanitized_path = sg_path.macosx
+                if trailing_slash:
+                    # add the trailing slash back in
+                    sanitized_path = "%s/" % (sanitized_path,)
+                if sanitized_path != path:
+                    # path changed due to sanitation. change it in the UI
+                    self.ui.mac_path_edit.setText(sanitized_path)
+                # remember the sanitized path
+                self._mac_path_edit[storage_name] = sanitized_path
+            else:
+                # no path. update the edit lookup to reflect
+                self._mac_path_edit[storage_name] = ""
+        elif platform == "win32":
+            if only_slashes:
+                # SG path code doesn't like only slashes in a path
+                self._windows_path_edit[storage_name] = path
+            elif path:
+                sg_path.windows = path  # sanitize
+                sanitized_path = sg_path.windows
+                if trailing_slash and not sanitized_path.endswith("\\"):
+                    # add the trailing slash back in
+                    sanitized_path = "%s\\" % (sanitized_path,)
+                if sanitized_path != path:
+                    # path changed due to sanitation. change it in the UI
+                    self.ui.windows_path_edit.setText(sanitized_path)
+                # remember the sanitized path
+                self._windows_path_edit[storage_name] = sanitized_path
+            else:
+                # no path. update the edit lookup to reflect
+                self._windows_path_edit[storage_name] = ""
 
         # run the validation tell the user if there are issues
         self.mapping_is_valid()
@@ -534,7 +609,8 @@ class StorageMapWidget(QtGui.QWidget):
             # push any edited text into the storage data
             storage_data["linux_path"] = self._linux_path_edit.get(
                 storage_name, "")
-            storage_data["mac_path"] = self._mac_path_edit.get(storage_name, "")
+            storage_data["mac_path"] = self._mac_path_edit.get(
+                storage_name, "")
             storage_data["windows_path"] = self._windows_path_edit.get(
                 storage_name, "")
 
@@ -653,9 +729,7 @@ class StorageMapWidget(QtGui.QWidget):
         if is_current_os_path:
             # current os path must be absolute path
             if not os.path.isabs(path):
-                self.ui.storage_info.setText(
-                    "* The current OS storage path must be absolute.")
-                return False
+                return False, "* The current OS storage path must be absolute."
 
         return True, None
 
@@ -688,3 +762,5 @@ class StorageMapWidget(QtGui.QWidget):
             q_object == self.ui.storage_select_combo):
             # Ignore wheel events on the storage select combo
             return True
+
+        return False
