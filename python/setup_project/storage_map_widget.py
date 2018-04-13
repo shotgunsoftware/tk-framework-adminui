@@ -473,10 +473,17 @@ class StorageMapWidget(QtGui.QWidget):
         there are any concerns about the entered text.
         """
 
-        only_slashes = path.replace("/", "") == "" or path.replace("\\", "") == ""
+        # does the path only contain slashes?
+        only_slashes = path.replace("/", "") == "" or \
+            path.replace("\\", "") == ""
+
+        # does it end in a slash?
         trailing_slash = path.endswith("/") or path.endswith("\\")
 
+        # the name of the storage being edited
         storage_name = str(self.ui.storage_select_combo.currentText())
+
+        # a temp SG path object used for sanitization
         sg_path = ShotgunPath()
 
         # store the edited path in the appropriate path lookup. sanitize first
