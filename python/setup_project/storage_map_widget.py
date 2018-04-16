@@ -407,7 +407,11 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.count_lbl.setText("%s of %s" % (num, total))
 
     def _browse_path(self, platform):
-        """Browse and set the path for the supplied os key."""
+        """Browse and set the path for the supplied platform.
+
+        :param platform: A string indicating the platform to associate with the
+            browsed path. Should match the strings returned by ``sys.platform``.
+        """
 
         # create the dialog
         folder_path = QtGui.QFileDialog.getExistingDirectory(
@@ -471,11 +475,13 @@ class StorageMapWidget(QtGui.QWidget):
         """
         Keep track of any path edits as they happen. Keep the user informed if
         there are any concerns about the entered text.
+
+        :param path: The path that has changed.
+        :param platform: The platform the modified path is associated with.
         """
 
         # does the path only contain slashes?
-        only_slashes = path.replace("/", "") == "" or \
-            path.replace("\\", "") == ""
+        only_slashes = path.replace("/", "").replace("\\", "") == ""
 
         # does it end in a slash?
         trailing_slash = path.endswith("/") or path.endswith("\\")
