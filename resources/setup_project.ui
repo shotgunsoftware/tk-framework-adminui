@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>686</width>
+    <width>708</width>
     <height>522</height>
    </rect>
   </property>
@@ -325,8 +325,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>612</width>
-         <height>234</height>
+         <width>634</width>
+         <height>274</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -981,7 +981,7 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>610</width>
+         <width>632</width>
          <height>214</height>
         </rect>
        </property>
@@ -1085,7 +1085,7 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>302</width>
+         <width>684</width>
          <height>189</height>
         </rect>
        </property>
@@ -1216,12 +1216,12 @@ color: rgb(160, 160, 160);</string>
   </widget>
   <widget class="ConfigLocationPage" name="config_location_page">
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select Configuration Location&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select Deployment&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
     <string>&amp;nbsp;</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout_12">
     <property name="leftMargin">
      <number>25</number>
     </property>
@@ -1234,162 +1234,207 @@ color: rgb(160, 160, 160);</string>
     <property name="bottomMargin">
      <number>20</number>
     </property>
-    <item row="2" column="3">
-     <widget class="QPushButton" name="mac_browse">
-      <property name="enabled">
-       <bool>true</bool>
+    <item>
+     <widget class="QRadioButton" name="select_distributed_config">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
       </property>
-      <property name="text">
-       <string>Browse...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2">
-     <widget class="QLineEdit" name="windows_path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="placeholderText">
-       <string>\\Path\On\Windows</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2">
-     <widget class="QLineEdit" name="linux_path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="placeholderText">
-       <string>/path/on/linux</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0" colspan="4">
-     <widget class="QLabel" name="config_location_errors">
       <property name="styleSheet">
-       <string notr="true">color: rgb(252, 98, 70);</string>
+       <string notr="true">QRadioButton {
+	font-size: 16px;
+}
+</string>
       </property>
       <property name="text">
-       <string/>
+       <string>Distributed Setup</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="distributed_config_subheader">
+      <property name="styleSheet">
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The configuration will be uploaded to Shotgun. Users will automatically download the configuration and its dependencies.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
       </property>
-     </widget>
-    </item>
-    <item row="5" column="3">
-     <widget class="QPushButton" name="linux_browse">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Browse...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="0" colspan="4">
-     <spacer name="verticalSpacer_12">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="windows_label">
-      <property name="text">
-       <string>Windows</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <property name="indent">
+       <number>20</number>
       </property>
       <property name="buddy">
-       <cstring>windows_path</cstring>
+       <cstring>select_standard</cstring>
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="4">
-     <widget class="QLabel" name="config_location_subheader">
+    <item>
+     <widget class="QRadioButton" name="select_centralized_config">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
-       <string notr="true">font-size: 14px;</string>
+       <string notr="true">QRadioButton {
+	font-size: 16px;
+}
+</string>
       </property>
       <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Specify where you want Shotgun to install your Project's pipeline configuration.  If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;</string>
+       <string>Centralized Setup</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="centralized_config_subheader">
+      <property name="styleSheet">
+       <string notr="true">font-size: 12px;
+color: rgb(160, 160, 160);</string>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your Project's pipeline configuration will to be installed in a shared location. All users need to access the configuration from this location. If you use multiple operating systems, enter the equivalent path for each.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
       </property>
-     </widget>
-    </item>
-    <item row="6" column="3">
-     <widget class="QPushButton" name="windows_browse">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Browse...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="mac_label">
-      <property name="text">
-       <string>Mac</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <property name="indent">
+       <number>20</number>
       </property>
       <property name="buddy">
-       <cstring>mac_path</cstring>
+       <cstring>select_standard</cstring>
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="linux_label">
-      <property name="text">
-       <string>Linux</string>
+    <item>
+     <widget class="QFrame" name="config_location_frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
       </property>
-      <property name="buddy">
-       <cstring>linux_path</cstring>
-      </property>
+      <layout class="QGridLayout" name="storage_grid_layout">
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="mac_path">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="placeholderText">
+          <string>/Path/On/Mac</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="windows_browse">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Browse...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="linux_path">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="placeholderText">
+          <string>/path/on/linux</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QPushButton" name="mac_browse">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Browse...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="4">
+        <widget class="QLabel" name="config_location_errors">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(252, 98, 70);</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="linux_browse">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Browse...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="linux_label">
+         <property name="text">
+          <string>Linux</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>linux_path</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="windows_path">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="placeholderText">
+          <string>\\Path\On\Windows</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="windows_label">
+         <property name="text">
+          <string>Windows</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>windows_path</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="mac_label">
+         <property name="text">
+          <string>Mac</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>mac_path</cstring>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="mac_path">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the path on disk where the configuration will be stored.&lt;/p&gt;&lt;p&gt;The current operating system's directory will be used to install the configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="placeholderText">
-       <string>/Path/On/Mac</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="4">
-     <spacer name="verticalSpacer_19">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>
@@ -1719,12 +1764,12 @@ For more information on how to configure your Project and tailor it to your syst
   <tabstop>github_url</tabstop>
   <tabstop>disk_browse_button_dir</tabstop>
   <tabstop>project_name</tabstop>
-  <tabstop>mac_path</tabstop>
-  <tabstop>mac_browse</tabstop>
-  <tabstop>linux_path</tabstop>
-  <tabstop>linux_browse</tabstop>
   <tabstop>windows_path</tabstop>
   <tabstop>windows_browse</tabstop>
+  <tabstop>linux_path</tabstop>
+  <tabstop>linux_browse</tabstop>
+  <tabstop>mac_path</tabstop>
+  <tabstop>mac_browse</tabstop>
   <tabstop>project_name_scroll_area</tabstop>
  </tabstops>
  <resources>
