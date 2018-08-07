@@ -67,7 +67,7 @@ class ConfigLocationPage(BasePage):
                 # hide the browse button on all other os'es
                 browse.hide()
 
-        # gray out path fields when distributed config mode is active
+        # hide path fields when distributed config mode is active
         self._update_path_input_state()
         ui.select_centralized_config.clicked.connect(self._update_path_input_state)
         ui.select_distributed_config.clicked.connect(self._update_path_input_state)
@@ -86,16 +86,14 @@ class ConfigLocationPage(BasePage):
 
     def _update_path_input_state(self):
         """
-        Sets the enabled/disabled state of the path input
+        Shows/hides the path input UI
         based on which radio button (centralized/distributed)
         has been checked.
         """
         if self.wizard().ui.select_centralized_config.isChecked():
-            # path input UI is enabled
-            self.wizard().ui.config_location_frame.setEnabled(True)
+            self.wizard().ui.config_location_frame.show()
         else:
-            # path input UI is greyed out
-            self.wizard().ui.config_location_frame.setEnabled(False)
+            self.wizard().ui.config_location_frame.hide()
 
     def _on_browse_pressed(self):
         config_dir = QtGui.QFileDialog.getExistingDirectory(

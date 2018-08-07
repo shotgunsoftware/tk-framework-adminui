@@ -1257,7 +1257,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The configuration will be uploaded to Shotgun. Users will automatically download the configuration and its dependencies.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The configuration will be uploaded to Shotgun. As a user starts up their content creation software, Toolkit will automatically download the configuration and all its dependencies.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
