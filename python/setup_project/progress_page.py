@@ -99,7 +99,7 @@ class ProgressPage(BasePage):
     def progress_callback(self, chapter, progress):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()
-        engine.execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
+        engine.async_execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
 
     def __progress_on_main_thread(self, chapter, progress):
         # update the progress display
