@@ -84,7 +84,7 @@ class ProgressPage(BasePage):
     def append_log_message(self, text):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()
-        engine.execute_in_main_thread(self.__append_on_main_thread, text)
+        engine.async_execute_in_main_thread(self.__append_on_main_thread, text)
 
     def __append_on_main_thread(self, text):
         # append the log message to the end of the logging area
