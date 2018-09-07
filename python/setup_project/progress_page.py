@@ -111,7 +111,7 @@ class ProgressPage(BasePage):
     def _on_run_finished(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()
-        engine.execute_in_main_thread(self._on_run_finished_main_thread)
+        engine.async_execute_in_main_thread(self._on_run_finished_main_thread)
 
     def _on_run_finished_main_thread(self):
         # thread has finished
@@ -122,7 +122,7 @@ class ProgressPage(BasePage):
     def _on_run_succeeded(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()
-        engine.execute_in_main_thread(self._on_run_succeeded_main_thread)
+        engine.async_execute_in_main_thread(self._on_run_succeeded_main_thread)
 
     def _on_run_succeeded_main_thread(self):
         # thread finished successfully
@@ -143,7 +143,7 @@ class ProgressPage(BasePage):
     def _on_run_failed(self, message):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()
-        engine.execute_in_main_thread(self._on_run_failed_main_thread, message)
+        engine.async_execute_in_main_thread(self._on_run_failed_main_thread, message)
 
     def _on_run_failed_main_thread(self, message):
         # thread failed
@@ -158,7 +158,7 @@ class ProgressPage(BasePage):
     def _on_thread_finished(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
         engine = sgtk.platform.current_engine()
-        engine.execute_in_main_thread(self._on_thread_finished_main_thread)
+        engine.async_execute_in_main_thread(self._on_thread_finished_main_thread)
 
     def _on_thread_finished_main_thread(self):
         # let the wizard know that our complete state has changed
