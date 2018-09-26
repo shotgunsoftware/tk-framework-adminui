@@ -13,6 +13,7 @@ from sgtk.platform.qt import QtCore
 
 from .base_page import BasePage
 
+LOG_TIMER_INTERVAL = 150 # milliseconds
 
 class RunSetupThread(QtCore.QThread):
     """ Simple thread to run the wizard in the background """
@@ -39,6 +40,12 @@ class ProgressPage(BasePage):
         self._thread_success = False
         self._original_next_css = None
         self._original_next_text = None
+        self._new_logs = []
+
+        self._log_timer = QtCore.QTimer(parent=self)
+        self._log_timer.timeout.connect(self._process_new_logs)
+        self._log_timer.start(LOG_TIMER_INTERVAL)
+
         self.execute_thread = None
 
     def setup_ui(self, page_id):
@@ -57,7 +64,11 @@ class ProgressPage(BasePage):
         self._original_next_css = wiz.button(wiz.NextButton).styleSheet()
 
         wiz.setButtonText(wiz.NextButton, "Running...")
-        wiz.button(wiz.NextButton).setStyleSheet("background-color: rgb(128, 128, 128);")
+
+        if QtCore.__version__.startswith("5."):
+            wiz.button(wiz.NextButton).setStyleSheet("background-color: rgb(75, 75, 75);")
+        else:
+            wiz.button(wiz.NextButton).setStyleSheet("background-color: rgb(128, 128, 128);")
 
         # setup for progress reporting
         wiz.ui.progress.setValue(0)
@@ -82,19 +93,28 @@ class ProgressPage(BasePage):
         wiz.ui.additional_details_button.hide()
 
     def append_log_message(self, text):
-        # since a thread could be calling this make sure we are doing GUI work on the main thread
-        engine = sgtk.platform.current_engine()
-        engine.async_execute_in_main_thread(self.__append_on_main_thread, text)
+        """
+        Appends the given log message to the list of logs to be added to the
+        details widget.
 
-    def __append_on_main_thread(self, text):
-        # append the log message to the end of the logging area
+        :param str text: The log message to show the user.
+        """
+        self._new_logs.append(text)
+
+    def _process_new_logs(self):
+        """
+        Triggers appending of new logs since the last call to the progress output
+        widget in the wizard. This must be called on the main thread.
+        """
         wiz = self.wizard()
-        wiz.ui.progress_output.appendHtml(text)
-        cursor = wiz.ui.progress_output.textCursor()
-        cursor.movePosition(cursor.End)
-        cursor.movePosition(cursor.StartOfLine)
-        wiz.ui.progress_output.setTextCursor(cursor)
-        wiz.ui.progress_output.ensureCursorVisible()
+
+        while self._new_logs:
+            wiz.ui.progress_output.appendHtml(self._new_logs.pop(0))
+            cursor = wiz.ui.progress_output.textCursor()
+            cursor.movePosition(cursor.End)
+            cursor.movePosition(cursor.StartOfLine)
+            wiz.ui.progress_output.setTextCursor(cursor)
+            wiz.ui.progress_output.ensureCursorVisible()
 
     def progress_callback(self, chapter, progress):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
@@ -107,6 +127,10 @@ class ProgressPage(BasePage):
             wiz = self.wizard()
             wiz.ui.message.setText(chapter)
             wiz.ui.progress.setValue(progress)
+        # Ensure that the progress bar repaints with the new value. This is also going
+        # to help make sure that the progress bar and any log messages added to the
+        # progress output widget stay in sync.
+        QtCore.QCoreApplication.processEvents()
 
     def _on_run_finished(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
@@ -163,6 +187,7 @@ class ProgressPage(BasePage):
     def _on_thread_finished_main_thread(self):
         # let the wizard know that our complete state has changed
         self.completeChanged.emit()
+        self._log_timer.stop()
 
     def isComplete(self):
         return self._thread_success
