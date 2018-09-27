@@ -8,6 +8,8 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import sys
+
 import sgtk.platform
 from sgtk.platform.qt import QtCore
 
@@ -41,9 +43,11 @@ class ProgressPage(BasePage):
         self._original_next_css = None
         self._original_next_text = None
         self._new_logs = []
+        self._chapter = None
+        self._progress = None
 
         self._log_timer = QtCore.QTimer(parent=self)
-        self._log_timer.timeout.connect(self._process_new_logs)
+        self._log_timer.timeout.connect(self._process_new_logged_info)
         self._log_timer.start(LOG_TIMER_INTERVAL)
 
         self.execute_thread = None
@@ -101,7 +105,7 @@ class ProgressPage(BasePage):
         """
         self._new_logs.append(text)
 
-    def _process_new_logs(self):
+    def _process_new_logged_info(self):
         """
         Triggers appending of new logs since the last call to the progress output
         widget in the wizard. This must be called on the main thread.
@@ -109,6 +113,14 @@ class ProgressPage(BasePage):
         wiz = self.wizard()
 
         while self._new_logs:
+            # We're going to check the progress and chapter on each iteration
+            # so we catch anything that was sent out way without it having to
+            # wait for us to get through adding all of the log messages.
+            if self._progress or self._chapter:
+                self.__progress_on_main_thread(self._chapter, self._progress)
+                self._chapter = None
+                self._progress = None
+
             wiz.ui.progress_output.appendHtml(self._new_logs.pop(0))
             cursor = wiz.ui.progress_output.textCursor()
             cursor.movePosition(cursor.End)
@@ -116,10 +128,27 @@ class ProgressPage(BasePage):
             wiz.ui.progress_output.setTextCursor(cursor)
             wiz.ui.progress_output.ensureCursorVisible()
 
+        # One last check of the progress and chapter. We've been checking it above
+        # in the loop that's adding logs, but we might not have had any of those to
+        # process this time.
+        if self._progress or self._chapter:
+            self.__progress_on_main_thread(self._chapter, self._progress)
+            self._chapter = None
+            self._progress = None
+
     def progress_callback(self, chapter, progress):
-        # since a thread could be calling this make sure we are doing GUI work on the main thread
-        engine = sgtk.platform.current_engine()
-        engine.async_execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
+        # Since a thread could be calling this make sure we are doing GUI work on the main thread.
+        # If we're on Windows, then we have to be more careful due to stabity issues there. If we
+        # set the chapter and progress attributes and the timer we have running will pick it up
+        # and set the progress from the main thread.
+        if sys.platform == "win32":
+            self._chapter = chapter
+            self._progress = progress
+        else:
+            # Since we're not on Windows, we can make use of the main thread execution logic
+            # provided by the engine.
+            engine = sgtk.platform.current_engine()
+            engine.async_execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
 
     def __progress_on_main_thread(self, chapter, progress):
         # update the progress display
@@ -187,6 +216,9 @@ class ProgressPage(BasePage):
     def _on_thread_finished_main_thread(self):
         # let the wizard know that our complete state has changed
         self.completeChanged.emit()
+
+        # Force one more timeout to clear any logs, then stop the timer.
+        self._log_timer.timeout.emit()
         self._log_timer.stop()
 
     def isComplete(self):
