@@ -142,8 +142,16 @@ class ProgressPage(BasePage):
         # so we're not going to rely on it here. Instead, we track the chapter and progress values
         # and we let the QTimer we have running find them and set them from the main thread without
         # the need for any direct cross-thread communication.
-        self._chapter = chapter
-        self._progress = progress
+        #
+        # NOTE: OSX is the exception. We don't have stability issues there related to the main thread
+        # execution, and we get MUCH better progress-bar performance/UX when we skip using the
+        # QTimer approach to keeping it updated.
+        if sys.platform == "darwin":
+            engine = sgtk.platform.current_engine()
+            engine.async_execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
+        else:
+            self._chapter = chapter
+            self._progress = progress
 
     def __progress_on_main_thread(self, chapter, progress):
         # update the progress display
