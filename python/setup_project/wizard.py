@@ -93,12 +93,28 @@ class SetupProjectWizard(QtGui.QWizard):
         self.setButtonText(self.BackButton, "Back")
         self.setButtonText(self.FinishButton, "Done")
         self.setButtonText(self.CommitButton, "Run Setup")
-        self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
-        self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
-        self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
+
+        if QtCore.__version__.startswith("5."):
+            self.button(self.NextButton).setStyleSheet("background-color: rgb(5, 100, 175);")
+            self.button(self.FinishButton).setStyleSheet("background-color: rgb(5, 100, 175);")
+            self.button(self.CommitButton).setStyleSheet("background-color: rgb(5, 100, 175);")
+        else:
+            self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
+            self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
+            self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
 
         # load the stylesheet
         self._load_stylesheet()
+
+    def shutdown(self):
+        """
+        Attempts to gracefully shut down portions of the Wizard that might cause problems
+        with crashing on close.
+        """
+        try:
+            self.ui.project_config_page.project_model.destroy()
+        except Exception:
+            pass
 
     def closeEvent(self, event):
         """
