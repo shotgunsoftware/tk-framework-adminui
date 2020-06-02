@@ -201,7 +201,7 @@ class StorageMapPage(BasePage):
         for (root_name, root_info) in self._required_roots:
 
             # create the widget and set all the values
-            map_widget = StorageMapWidget(self._storages_model, parent=self)
+            map_widget = StorageMapWidget(self._storages_model, parent=ui.storage_map_area_widget)
             map_widget.root_name = root_name
             map_widget.root_info = root_info
             map_widget.set_count(count, num_roots)
