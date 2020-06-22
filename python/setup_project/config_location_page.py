@@ -109,7 +109,7 @@ class ConfigLocationPage(BasePage):
             self.wizard().ui.linux_path.setText(default_locations["linux2"])
             self.wizard().ui.windows_path.setText(default_locations["win32"])
             self.wizard().ui.mac_path.setText(default_locations["darwin"])
-        except Exception, e:
+        except Exception as e:
             logger.warning(
                 "Could not retrieve default suggested configuration "
                 "locations based on historical projects. "
@@ -151,8 +151,8 @@ class ConfigLocationPage(BasePage):
             if not os.path.exists(current_os_path):
                 old_umask = os.umask(0)
                 try:
-                    os.makedirs(current_os_path, 0777)
-                except Exception, e:
+                    os.makedirs(current_os_path, 0o777)
+                except Exception as e:
                     # could not create the directories, report and bail
                     message = "Got the following error creating the directory:\n %s" % str(e)
                     QtGui.QMessageBox.critical(self, "Error creating directories.", message)
@@ -166,7 +166,7 @@ class ConfigLocationPage(BasePage):
                 wiz.core_wizard.validate_configuration_location(linux_path, windows_path, macosx_path)
                 wiz.core_wizard.set_configuration_location(linux_path, windows_path, macosx_path)
                 wiz.core_wizard.set_default_core()
-            except Exception, e:
+            except Exception as e:
                 wiz.ui.config_location_errors.setText(str(e))
                 return False
             finally:
@@ -178,7 +178,7 @@ class ConfigLocationPage(BasePage):
 
             try:
                 wiz.core_wizard.set_default_core()
-            except Exception, e:
+            except Exception as e:
                 wiz.ui.config_location_errors.setText(str(e))
                 return False
 

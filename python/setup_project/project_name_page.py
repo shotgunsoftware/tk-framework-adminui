@@ -72,7 +72,7 @@ class ProjectNamePage(BasePage):
             # clear state
             wiz.ui.project_name_errors.setText("")
             self.name_valid = True
-        except Exception, e:
+        except Exception as e:
             wiz.ui.project_name_errors.setText(str(e))
             self.name_valid = False
 
@@ -86,7 +86,7 @@ class ProjectNamePage(BasePage):
             wiz.core_wizard.set_project_disk_name(name)
             self.name_valid = True
             return True
-        except Exception, e:
+        except Exception as e:
             wiz.ui.project_name_errors.setText(str(e))
             self.name_valid = False
             return False

@@ -49,7 +49,7 @@ class DiskConfigPage(BasePage):
             # Download/validate the config. prep storage mapping display
             wiz.validate_config_uri(uri)
             wiz.ui.disk_errors.setText("")
-        except Exception, e:
+        except Exception as e:
             wiz.ui.disk_errors.setText(str(e))
             return False
 

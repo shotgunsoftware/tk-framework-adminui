@@ -100,7 +100,7 @@ class ProjectConfigPage(BasePage):
             wiz.validate_config_uri(config_uri)
             wiz.ui.project_errors.setText("")
             return True
-        except Exception, e:
+        except Exception as e:
             wiz.ui.project_errors.setText(str(e))
             return False
 

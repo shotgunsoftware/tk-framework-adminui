@@ -30,7 +30,7 @@ class RunSetupThread(QtCore.QThread):
         try:
             self._wizard.execute()
             self.success.emit()
-        except Exception, e:
+        except Exception as e:
             self.failure.emit(str(e))
 
 

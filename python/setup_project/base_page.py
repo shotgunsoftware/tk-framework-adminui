@@ -68,11 +68,11 @@ class BasePage(QtGui.QWizardPage):
             if self.isCommitPage():
                 wiz = self.wizard()
                 wiz.core_wizard.pre_setup_validation()
-        except TankError, e:
+        except TankError as e:
             if self._error_field:
                 self._error_field.setText(str(e))
             state = False
-        except Exception, e:
+        except Exception as e:
             if self._error_field:
                 self._error_field.setText(traceback.format_exc())
             state = False

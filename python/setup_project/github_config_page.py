@@ -50,7 +50,7 @@ class GithubConfigPage(BasePage):
             # Download/validate the config. prep storage mapping display
             wiz.validate_config_uri(uri)
             wiz.ui.github_errors.setText("")
-        except Exception, e:
+        except Exception as e:
             wiz.ui.github_errors.setText(str(e))
             return False
         finally:
