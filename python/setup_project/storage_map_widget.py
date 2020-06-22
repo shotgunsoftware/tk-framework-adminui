@@ -60,24 +60,23 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.storage_select_combo.setModel(self._storage_model)
 
         # update the display when a storage is selected in the combo box
-        self.ui.storage_select_combo.activated.connect(
-            lambda a: self.refresh_display())
+        self.ui.storage_select_combo.activated.connect(lambda a: self.refresh_display())
 
         # keep a handle on any edited text
         self.ui.linux_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, "linux2"))
+            lambda p: self._on_path_changed(p, "linux2")
+        )
         self.ui.mac_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, "darwin"))
+            lambda p: self._on_path_changed(p, "darwin")
+        )
         self.ui.windows_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, "win32"))
+            lambda p: self._on_path_changed(p, "win32")
+        )
 
         # connect the file browse buttons
-        self.ui.linux_path_browse.clicked.connect(
-            lambda: self._browse_path("linux2"))
-        self.ui.mac_path_browse.clicked.connect(
-            lambda: self._browse_path("darwin"))
-        self.ui.windows_path_browse.clicked.connect(
-            lambda: self._browse_path("win32"))
+        self.ui.linux_path_browse.clicked.connect(lambda: self._browse_path("linux2"))
+        self.ui.mac_path_browse.clicked.connect(lambda: self._browse_path("darwin"))
+        self.ui.windows_path_browse.clicked.connect(lambda: self._browse_path("win32"))
 
         # connect the save button
         self.ui.save_storage_btn.clicked.connect(self._on_storage_save_clicked)
@@ -134,7 +133,8 @@ class StorageMapWidget(QtGui.QWidget):
 
         # this will return None if not a storage item
         return self.ui.storage_select_combo.itemData(
-            current_index, self._storage_model.STORAGE_DATA_ROLE)
+            current_index, self._storage_model.STORAGE_DATA_ROLE
+        )
 
     @local_storage.setter
     def local_storage(self, storage_name):
@@ -175,31 +175,35 @@ class StorageMapWidget(QtGui.QWidget):
             edited_linux_path = self._linux_path_edit.get(storage_name)
             if edited_linux_path:
                 (is_valid, reason) = self._path_is_valid(
-                    edited_linux_path, is_current_os)
+                    edited_linux_path, is_current_os
+                )
                 if is_valid:
                     self.ui.save_storage_btn.show()
                     self.ui.storage_info.setText(
-                        "* Please save the linux path before proceeding.")
+                        "* Please save the linux path before proceeding."
+                    )
                     return False
                 else:
                     self.ui.storage_info.setText(
-                        "* Linux path is invalid: %s" % (reason,))
+                        "* Linux path is invalid: %s" % (reason,)
+                    )
                     return False
 
         if self.ui.mac_path_edit.isVisible():
             is_current_os = sys.platform == "darwin"
             edited_mac_path = self._mac_path_edit.get(storage_name)
             if edited_mac_path:
-                (is_valid, reason) = self._path_is_valid(
-                    edited_mac_path, is_current_os)
+                (is_valid, reason) = self._path_is_valid(edited_mac_path, is_current_os)
                 if is_valid:
                     self.ui.save_storage_btn.show()
                     self.ui.storage_info.setText(
-                        "* Please save the mac path before proceeding.")
+                        "* Please save the mac path before proceeding."
+                    )
                     return False
                 else:
                     self.ui.storage_info.setText(
-                        "* Mac path is invalid: %s" % (reason,))
+                        "* Mac path is invalid: %s" % (reason,)
+                    )
                     return False
 
         if self.ui.windows_path_edit.isVisible():
@@ -207,15 +211,18 @@ class StorageMapWidget(QtGui.QWidget):
             edited_windows_path = self._windows_path_edit.get(storage_name)
             if edited_windows_path:
                 (is_valid, reason) = self._path_is_valid(
-                    edited_windows_path, is_current_os)
+                    edited_windows_path, is_current_os
+                )
                 if is_valid:
                     self.ui.save_storage_btn.show()
                     self.ui.storage_info.setText(
-                        "* Please save the windows path before proceeding.")
+                        "* Please save the windows path before proceeding."
+                    )
                     return False
                 else:
                     self.ui.storage_info.setText(
-                        "* Windows path is invalid: %s" % (reason,))
+                        "* Windows path is invalid: %s" % (reason,)
+                    )
                     return False
 
         # get the stored paths once to make the code below a bit more readable
@@ -236,15 +243,15 @@ class StorageMapWidget(QtGui.QWidget):
         # no path for the current os
         if not current_os_path:
             self.ui.storage_info.setText(
-                "* A storage path is required for the current OS.")
+                "* A storage path is required for the current OS."
+            )
             return False
 
         if not local_storage.get("id"):
             # if there's no id, the storage hasn't been saved. show the save
             # button to indicate they should save
             self.ui.save_storage_btn.show()
-            self.ui.storage_info.setText(
-                "* Please save this storage to continue.")
+            self.ui.storage_info.setText("* Please save this storage to continue.")
             return False
 
         # if we're here, everything is valid!
@@ -417,9 +424,9 @@ class StorageMapWidget(QtGui.QWidget):
         folder_path = QtGui.QFileDialog.getExistingDirectory(
             parent=self,
             caption="Choose Storage Root Folder",
-            options=QtGui.QFileDialog.DontResolveSymlinks |
-                    QtGui.QFileDialog.DontUseNativeDialog |
-                    QtGui.QFileDialog.ShowDirsOnly
+            options=QtGui.QFileDialog.DontResolveSymlinks
+            | QtGui.QFileDialog.DontUseNativeDialog
+            | QtGui.QFileDialog.ShowDirsOnly,
         )
 
         if not folder_path:
@@ -447,10 +454,7 @@ class StorageMapWidget(QtGui.QWidget):
         existing_storage_names = [storage["code"] for storage in all_storages]
 
         # propt the user for a new storage name
-        create_dialog = CreateStorageDialog(
-            existing_storage_names,
-            parent=self
-        )
+        create_dialog = CreateStorageDialog(existing_storage_names, parent=self)
 
         if create_dialog.exec_() == QtGui.QDialog.Accepted:
             # user entered a valid storage name. create the skeleton data and
@@ -593,25 +597,20 @@ class StorageMapWidget(QtGui.QWidget):
             path_data = {}
 
             if self.ui.linux_path_edit.isVisible():
-                path_data["linux_path"] = \
-                    self._linux_path_edit.get(storage_name, "")
+                path_data["linux_path"] = self._linux_path_edit.get(storage_name, "")
 
             if self.ui.mac_path_edit.isVisible():
-                path_data["mac_path"] = \
-                    self._mac_path_edit.get(storage_name, "")
+                path_data["mac_path"] = self._mac_path_edit.get(storage_name, "")
 
             if self.ui.windows_path_edit.isVisible():
-                path_data["windows_path"] = \
-                    self._windows_path_edit.get(storage_name, "")
+                path_data["windows_path"] = self._windows_path_edit.get(
+                    storage_name, ""
+                )
 
             # do the update in SG. this method should be wrapped in a try/except
             # to handle any issues here.
             logger.debug("Updating SG local storage: %s." % (path_data,))
-            update_data = sg.update(
-                "LocalStorage",
-                storage_data["id"],
-                path_data
-            )
+            update_data = sg.update("LocalStorage", storage_data["id"], path_data)
 
             # update the path in the storage data
             storage_data.update(update_data)
@@ -620,12 +619,9 @@ class StorageMapWidget(QtGui.QWidget):
             # edited OS paths.
 
             # push any edited text into the storage data
-            storage_data["linux_path"] = self._linux_path_edit.get(
-                storage_name, "")
-            storage_data["mac_path"] = self._mac_path_edit.get(
-                storage_name, "")
-            storage_data["windows_path"] = self._windows_path_edit.get(
-                storage_name, "")
+            storage_data["linux_path"] = self._linux_path_edit.get(storage_name, "")
+            storage_data["mac_path"] = self._mac_path_edit.get(storage_name, "")
+            storage_data["windows_path"] = self._windows_path_edit.get(storage_name, "")
 
             # delete the id field as it will be populated for us by SG. if we
             # don't delete it, we get errors.
@@ -634,9 +630,7 @@ class StorageMapWidget(QtGui.QWidget):
             # no storage exists in SG. create a new one
             logger.debug("Creating SG local storage: %s" % (storage_data,))
             storage_data = sg.create(
-                "LocalStorage",
-                storage_data,
-                return_fields=storage_data.keys()
+                "LocalStorage", storage_data, return_fields=storage_data.keys()
             )
 
         # update the storage in the model with the new data
@@ -771,8 +765,10 @@ class StorageMapWidget(QtGui.QWidget):
         :return:
         """
 
-        if (event.type() == QtCore.QEvent.Wheel and
-            q_object == self.ui.storage_select_combo):
+        if (
+            event.type() == QtCore.QEvent.Wheel
+            and q_object == self.ui.storage_select_combo
+        ):
             # Ignore wheel events on the storage select combo
             return True
 

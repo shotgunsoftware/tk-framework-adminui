@@ -17,6 +17,7 @@ from .base_page import BasePage
 
 class DiskConfigPage(BasePage):
     """ Page to base a configuration on a disk location. """
+
     _HELP_URL = BasePage._HELP_URL + "#Browsing%20for%20a%20configuration%20template"
 
     def setup_ui(self, page_id):
@@ -28,16 +29,20 @@ class DiskConfigPage(BasePage):
 
     def _on_browse_pressed(self):
         config_dir = QtGui.QFileDialog.getExistingDirectory(
-            self, "Choose pipeline configuration directory", None,
-            QtGui.QFileDialog.ShowDirsOnly |
-            QtGui.QFileDialog.DontConfirmOverwrite |
-            QtGui.QFileDialog.ReadOnly)
+            self,
+            "Choose pipeline configuration directory",
+            None,
+            QtGui.QFileDialog.ShowDirsOnly
+            | QtGui.QFileDialog.DontConfirmOverwrite
+            | QtGui.QFileDialog.ReadOnly,
+        )
         self.setField("disk_path", config_dir)
 
     def _on_browse_zip_pressed(self):
         config_zip = QtGui.QFileDialog.getOpenFileName(
-            self, "Choose pipeline configuration zip", None, "*.zip")
-        # Unlike getExistingDirectory(), getOpenFileName() always returns a path with / separators. 
+            self, "Choose pipeline configuration zip", None, "*.zip"
+        )
+        # Unlike getExistingDirectory(), getOpenFileName() always returns a path with / separators.
         # So we need to convert them for Windows since core expects the path to be a native one.
         zip_path = str(config_zip[0])
         self.setField("disk_path", zip_path.replace("/", os.path.sep))

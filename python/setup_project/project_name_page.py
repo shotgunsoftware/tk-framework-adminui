@@ -18,6 +18,7 @@ from .base_page import BasePage
 
 class ProjectNamePage(BasePage):
     """ Page to name a project. """
+
     _HELP_URL = BasePage._HELP_URL + "#Choosing%20a%20project%20folder%20name"
 
     def __init__(self, parent=None):
@@ -105,13 +106,15 @@ class ProjectNamePage(BasePage):
             # return a key that sorts the os'es properly
             (_, label, os_current) = element
             return (not os_current, label)
+
         os_info.sort(key=os_key)
 
         wiz = self.wizard()
         for storage in project_paths_dict:
             # each storage gets a group showing what paths will be created for that storage
             group = QtGui.QGroupBox(" %s " % storage.title())
-            group.setStyleSheet("""
+            group.setStyleSheet(
+                """
                 QGroupBox {
                     border: 1px solid rgb(217, 217, 217);
                     border-radius: 3px;
@@ -125,21 +128,26 @@ class ProjectNamePage(BasePage):
                     padding: 0 3px 0 3px;
                     color: rgb(55, 168, 225);
                 }
-            """)
+            """
+            )
             group_layout = QtGui.QGridLayout(group)
             row = 0
             for (key, label, _) in os_info:
                 path = project_paths_dict[storage].get(key)
                 if path:
-                    group_layout.addWidget(QtGui.QLabel("<big>%s</big>" % label), row, 0, 1, 1)
+                    group_layout.addWidget(
+                        QtGui.QLabel("<big>%s</big>" % label), row, 0, 1, 1
+                    )
                     path_widget = QtGui.QLabel()
-                    self._storage_path_widgets.setdefault(storage, {})[key] = path_widget
+                    self._storage_path_widgets.setdefault(storage, {})[
+                        key
+                    ] = path_widget
                     group_layout.addWidget(path_widget, row, 1, 1, 1)
                     row += 1
             group_layout.setColumnStretch(1, 1)
             group_layout.setHorizontalSpacing(15)
             wiz.ui.project_contents_layout.addWidget(group)
-            
+
             # Keep added widgets in order to remove them in case back button is used.
             self._widget_groups.append(group)
 

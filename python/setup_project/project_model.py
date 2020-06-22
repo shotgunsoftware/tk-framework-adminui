@@ -12,12 +12,15 @@ import sgtk
 from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
-shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
+shotgun_model = sgtk.platform.import_framework(
+    "tk-framework-shotgunutils", "shotgun_model"
+)
 ShotgunModel = shotgun_model.ShotgunModel
 
 
 class ProjectModel(ShotgunModel):
     """ Simple Project model to pull down Toolkit projects and their thumbnails """
+
     DISPLAY_NAME_ROLE = QtCore.Qt.UserRole + 101
     PROJECT_ID_ROLE = QtCore.Qt.UserRole + 102
 
@@ -25,8 +28,9 @@ class ProjectModel(ShotgunModel):
         ShotgunModel.__init__(self, parent, download_thumbs=True)
 
         # load the missing project thumbnail
-        self._missing_thumbnail_project = \
-            QtGui.QPixmap(":/tk-framework-adminui/setup_project/missing_thumbnail_project.png")
+        self._missing_thumbnail_project = QtGui.QPixmap(
+            ":/tk-framework-adminui/setup_project/missing_thumbnail_project.png"
+        )
 
         # and load the data from Shotgun
         filters = [

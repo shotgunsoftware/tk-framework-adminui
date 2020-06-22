@@ -19,13 +19,18 @@ from ..ui import resources_rc
 
 class GithubConfigPage(BasePage):
     """ Page to base a configuration on a github repo. """
-    _HELP_URL = BasePage._HELP_URL + "#Using%20a%20configuration%20template%20from%20git"
+
+    _HELP_URL = (
+        BasePage._HELP_URL + "#Using%20a%20configuration%20template%20from%20git"
+    )
 
     def initializePage(self):
         # pick a random octocat
         cats = []
         dir_iter = QtCore.QDirIterator(
-            ":tk-framework-adminui/setup_project/octocats", QtCore.QDirIterator.Subdirectories)
+            ":tk-framework-adminui/setup_project/octocats",
+            QtCore.QDirIterator.Subdirectories,
+        )
 
         cat = dir_iter.next()
         while cat:

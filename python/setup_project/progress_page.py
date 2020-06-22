@@ -15,10 +15,12 @@ from sgtk.platform.qt import QtCore
 
 from .base_page import BasePage
 
-LOG_TIMER_INTERVAL = 150 # milliseconds
+LOG_TIMER_INTERVAL = 150  # milliseconds
+
 
 class RunSetupThread(QtCore.QThread):
     """ Simple thread to run the wizard in the background """
+
     success = QtCore.Signal()
     failure = QtCore.Signal(str)
 
@@ -36,6 +38,7 @@ class RunSetupThread(QtCore.QThread):
 
 class ProgressPage(BasePage):
     """ Page to show the progress bar during configuration setup. """
+
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
 
@@ -57,7 +60,9 @@ class ProgressPage(BasePage):
 
         wiz = self.wizard()
         wiz.ui.progress_output.hide()
-        wiz.ui.additional_details_button.pressed.connect(self.additional_details_pressed)
+        wiz.ui.additional_details_button.pressed.connect(
+            self.additional_details_pressed
+        )
 
     def initializePage(self):
         # disable the cancel and back buttons
@@ -70,9 +75,13 @@ class ProgressPage(BasePage):
         wiz.setButtonText(wiz.NextButton, "Running...")
 
         if QtCore.__version__.startswith("5."):
-            wiz.button(wiz.NextButton).setStyleSheet("background-color: rgb(75, 75, 75);")
+            wiz.button(wiz.NextButton).setStyleSheet(
+                "background-color: rgb(75, 75, 75);"
+            )
         else:
-            wiz.button(wiz.NextButton).setStyleSheet("background-color: rgb(128, 128, 128);")
+            wiz.button(wiz.NextButton).setStyleSheet(
+                "background-color: rgb(128, 128, 128);"
+            )
 
         # setup for progress reporting
         wiz.ui.progress.setValue(0)
@@ -86,7 +95,9 @@ class ProgressPage(BasePage):
         self.execute_thread.start()
 
         # can no longer cancel or hit back
-        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.NextButton, wiz.FinishButton])
+        wiz.setButtonLayout(
+            [wiz.HelpButton, wiz.Stretch, wiz.NextButton, wiz.FinishButton]
+        )
 
     def additional_details_pressed(self):
         # handle the additional details toggle being pressed
@@ -148,7 +159,9 @@ class ProgressPage(BasePage):
         # QTimer approach to keeping it updated.
         if sys.platform == "darwin":
             engine = sgtk.platform.current_engine()
-            engine.async_execute_in_main_thread(self.__progress_on_main_thread, chapter, progress)
+            engine.async_execute_in_main_thread(
+                self.__progress_on_main_thread, chapter, progress
+            )
         else:
             self._chapter = chapter
             self._progress = progress
