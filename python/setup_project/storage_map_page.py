@@ -23,10 +23,7 @@ from .storage_map_widget import StorageMapWidget
 logger = sgtk.platform.get_logger(__name__)
 
 # use sg utils settings to remember previous storage mappings
-settings = sgtk.platform.import_framework(
-    "tk-framework-shotgunutils",
-    "settings"
-)
+settings = sgtk.platform.import_framework("tk-framework-shotgunutils", "settings")
 
 
 class StorageMapContainerWidget(QtGui.QWidget):
@@ -76,12 +73,9 @@ class StorageModel(QtGui.QStandardItemModel):
             "LocalStorage",
             filters=[],
             fields=["code", "id", "linux_path", "mac_path", "windows_path"],
-            order=[{"field_name": "code", "direction":"asc"}]
+            order=[{"field_name": "code", "direction": "asc"}],
         )
-        logger.debug(
-            "Found %s LocalStorages: %s" %
-            (len(storages), storages)
-        )
+        logger.debug("Found %s LocalStorages: %s" % (len(storages), storages))
 
         # add the "choose" item
         choose_item = QtGui.QStandardItem(self.CHOOSE_STORAGE_ITEM_TEXT)
@@ -169,7 +163,8 @@ class StorageMapPage(BasePage):
         logger.debug("Querying historical storage mappings...")
         self._settings = settings.UserSettings(sgtk.platform.current_bundle())
         self._historical_mappings = self._settings.retrieve(
-            self.HISTORICAL_MAPPING_KEY, {})
+            self.HISTORICAL_MAPPING_KEY, {}
+        )
         logger.debug("Historical mappings: %s" % (self._historical_mappings,))
 
     def setup_ui(self, page_id, error_field=None):
@@ -201,7 +196,9 @@ class StorageMapPage(BasePage):
         for (root_name, root_info) in self._required_roots:
 
             # create the widget and set all the values
-            map_widget = StorageMapWidget(self._storages_model, parent=ui.storage_map_area_widget)
+            map_widget = StorageMapWidget(
+                self._storages_model, parent=ui.storage_map_area_widget
+            )
             map_widget.root_name = root_name
             map_widget.root_info = root_info
             map_widget.set_count(count, num_roots)
@@ -235,10 +232,7 @@ class StorageMapPage(BasePage):
 
         This should be called before the page is initialized.
         """
-        logger.debug(
-            "Adding root '%s' to be mapped: %s" %
-            (root_name, root_info)
-        )
+        logger.debug("Adding root '%s' to be mapped: %s" % (root_name, root_info))
         self._required_roots.append((root_name, root_info))
 
     def clear_roots(self):
@@ -311,10 +305,7 @@ class StorageMapPage(BasePage):
         # see if each of the mappings is valid
         for map_widget in self._map_widgets:
 
-            logger.debug(
-                "Checking mapping for root: %s" %
-                (map_widget.root_name,)
-            )
+            logger.debug("Checking mapping for root: %s" % (map_widget.root_name,))
 
             if not map_widget.mapping_is_valid():
                 # something is wrong with this widget's mapping
@@ -334,8 +325,8 @@ class StorageMapPage(BasePage):
             root_names = [w.root_name for w in invalid_widgets]
             logger.debug("Invalid mappings for roots: %s" % (root_names))
             ui.storage_errors.setText(
-                "The mappings for these roots are invalid: <b>%s</b>" %
-                (", ".join(root_names),)
+                "The mappings for these roots are invalid: <b>%s</b>"
+                % (", ".join(root_names),)
             )
             if first_invalid_widget:
                 ui.storage_map_area.ensureWidgetVisible(first_invalid_widget)
@@ -351,8 +342,8 @@ class StorageMapPage(BasePage):
                 folder = storage[current_os_key]
 
                 logger.debug(
-                    "Ensuring folder on disk for storage '%s': %s" %
-                    (storage["code"], folder)
+                    "Ensuring folder on disk for storage '%s': %s"
+                    % (storage["code"], folder)
                 )
 
                 # try to create the missing path for the current OS. this will
@@ -370,8 +361,8 @@ class StorageMapPage(BasePage):
                 ui.storage_errors.setText(
                     "Unable to create folders on disk for these storages: %s."
                     "Please check to make sure you have permission to create "
-                    "these folders. See the tk-desktop log for more info." %
-                    (", ".join(failed_to_create),)
+                    "these folders. See the tk-desktop log for more info."
+                    % (", ".join(failed_to_create),)
                 )
 
         # ---- now we've mapped the roots, and they're all valid, we need to
@@ -390,24 +381,18 @@ class StorageMapPage(BasePage):
             updated_storage_data["shotgun_storage_id"] = storage_data["id"]
             updated_storage_data["linux_path"] = str(storage_data["linux_path"])
             updated_storage_data["mac_path"] = str(storage_data["mac_path"])
-            updated_storage_data["windows_path"] = str(
-                storage_data["windows_path"])
+            updated_storage_data["windows_path"] = str(storage_data["windows_path"])
 
             # now update the core wizard's root info
             wiz.core_wizard.update_storage_root(
-                self._uri,
-                root_name,
-                updated_storage_data
+                self._uri, root_name, updated_storage_data
             )
 
             # store the fact that we've mapped this root name with this
             # storage name. we can use this information to make better
             # guesses next time this user is mapping storages.
             self._historical_mappings[root_name] = storage_data["code"]
-            self._settings.store(
-                self.HISTORICAL_MAPPING_KEY,
-                self._historical_mappings
-            )
+            self._settings.store(self.HISTORICAL_MAPPING_KEY, self._historical_mappings)
 
         logger.debug("Storage mappings are valid.")
 
@@ -415,10 +400,7 @@ class StorageMapPage(BasePage):
         try:
             wiz.core_wizard.set_config_uri(self._uri)
         except Exception as e:
-            error = (
-                "Unknown error when setting the configuration uri:\n%s" %
-                str(e)
-            )
+            error = "Unknown error when setting the configuration uri:\n%s" % str(e)
             logger.error(error)
             logger.error(traceback.print_exc())
             ui.storage_errors.setText(error)

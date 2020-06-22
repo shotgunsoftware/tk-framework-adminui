@@ -46,4 +46,3 @@ build_ui storage_map_widget
 # build resources
 echo "building resources..."
 build_res resources
-

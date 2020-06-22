@@ -13,8 +13,10 @@ from sgtk import TankError
 
 import traceback
 
+
 class BasePage(QtGui.QWizardPage):
     """ Base page for all Shotgun pages to inherit from. """
+
     # by default return the general setting up your project page
     _HELP_URL = "https://support.shotgunsoftware.com/entries/95442748"
 
@@ -26,10 +28,10 @@ class BasePage(QtGui.QWizardPage):
         self._error_field = None
 
     def setup_ui(self, page_id, error_field=None):
-        """ 
-        Setup page UI after the Wizard's UI has been setup from the uic. 
+        """
+        Setup page UI after the Wizard's UI has been setup from the uic.
         :param page_id: Page id for current page.
-        :param error_field: QLabel object to use to display error messages. 
+        :param error_field: QLabel object to use to display error messages.
                             These messages may be one-liners as well as full call stacks.
         """
         self._page_id = page_id
@@ -58,21 +60,21 @@ class BasePage(QtGui.QWizardPage):
         """
         Validate the current page.
 
-        The idea of having this in BasePage is that whatever the last page is 
+        The idea of having this in BasePage is that whatever the last page is
         will be the one calling pre_setup_validation.
         """
         state = True
 
         try:
-            # Validate 
+            # Validate
             if self.isCommitPage():
                 wiz = self.wizard()
                 wiz.core_wizard.pre_setup_validation()
-        except TankError, e:
+        except TankError as e:
             if self._error_field:
                 self._error_field.setText(str(e))
             state = False
-        except Exception, e:
+        except Exception as e:
             if self._error_field:
                 self._error_field.setText(traceback.format_exc())
             state = False

@@ -15,13 +15,14 @@ from sgtk.platform.qt import QtCore
 
 class EmittingHandler(logging.Handler):
     """ Class to map logging messages to Qt signals """
+
     COLOR_MAP = {
         # colors from the Tomorrow Night Eighties theme
-        logging.CRITICAL: '#f2777a',
-        logging.ERROR: '#f2777a',
-        logging.WARNING: '#ffcc66',
-        logging.INFO: '#cccccc',
-        logging.DEBUG: '#999999'
+        logging.CRITICAL: "#f2777a",
+        logging.ERROR: "#f2777a",
+        logging.WARNING: "#ffcc66",
+        logging.INFO: "#cccccc",
+        logging.DEBUG: "#999999",
     }
 
     # Dummy type to hold the log_message signal.
@@ -45,7 +46,7 @@ class EmittingHandler(logging.Handler):
         message = self.__formatter.format(record)
         if record.levelno in self.COLOR_MAP:
             color = self.COLOR_MAP[record.levelno]
-            message = "<font color=\"%s\">%s</font>" % (color, message)
+            message = '<font color="%s">%s</font>' % (color, message)
         message = "<pre>%s</pre>" % message
 
         # Update widget (possibly in a different thread than the current one)

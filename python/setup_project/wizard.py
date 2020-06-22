@@ -25,18 +25,23 @@ class SetupProjectWizard(QtGui.QWizard):
 
     This wraps the setup_project core command.
     """
+
     def __init__(self, project, parent=None):
         QtGui.QWizard.__init__(self, parent)
 
         # Disable Close button. Note that on mac, need to disable minimize
-        # button also to do this (but maximize can stay). 
-        self.setWindowFlags(QtCore.Qt.Tool | 
-                            QtCore.Qt.CustomizeWindowHint | 
-                            QtCore.Qt.WindowTitleHint | 
-                            QtCore.Qt.WindowMaximizeButtonHint)
+        # button also to do this (but maximize can stay).
+        self.setWindowFlags(
+            QtCore.Qt.Tool
+            | QtCore.Qt.CustomizeWindowHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowMaximizeButtonHint
+        )
 
         # Set stylesheet modification for this wizard
-        self.setStyleSheet("QLineEdit:Disabled {background-color: rgb(60, 60, 60); color: rgb(128, 128, 128);}")
+        self.setStyleSheet(
+            "QLineEdit:Disabled {background-color: rgb(60, 60, 60); color: rgb(128, 128, 128);}"
+        )
 
         # setup the command wizard from core
         wizard_factory = sgtk.get_command("setup_project_factory")
@@ -67,8 +72,12 @@ class SetupProjectWizard(QtGui.QWizard):
         self.ui.disk_config_page.registerField("disk_path*", self.ui.path)
         self.ui.project_name_page.registerField("project_name*", self.ui.project_name)
         self.ui.config_location_page.registerField("config_path_mac", self.ui.mac_path)
-        self.ui.config_location_page.registerField("config_path_win", self.ui.windows_path)
-        self.ui.config_location_page.registerField("config_path_linux", self.ui.linux_path)
+        self.ui.config_location_page.registerField(
+            "config_path_win", self.ui.windows_path
+        )
+        self.ui.config_location_page.registerField(
+            "config_path_linux", self.ui.linux_path
+        )
 
         # Let each page set itself up
         for page_id in self.pageIds():
@@ -95,13 +104,25 @@ class SetupProjectWizard(QtGui.QWizard):
         self.setButtonText(self.CommitButton, "Run Setup")
 
         if QtCore.__version__.startswith("5."):
-            self.button(self.NextButton).setStyleSheet("background-color: rgb(5, 100, 175);")
-            self.button(self.FinishButton).setStyleSheet("background-color: rgb(5, 100, 175);")
-            self.button(self.CommitButton).setStyleSheet("background-color: rgb(5, 100, 175);")
+            self.button(self.NextButton).setStyleSheet(
+                "background-color: rgb(5, 100, 175);"
+            )
+            self.button(self.FinishButton).setStyleSheet(
+                "background-color: rgb(5, 100, 175);"
+            )
+            self.button(self.CommitButton).setStyleSheet(
+                "background-color: rgb(5, 100, 175);"
+            )
         else:
-            self.button(self.NextButton).setStyleSheet("background-color: rgb(16, 148,223);")
-            self.button(self.FinishButton).setStyleSheet("background-color: rgb(16, 148,223);")
-            self.button(self.CommitButton).setStyleSheet("background-color: rgb(16, 148,223);")
+            self.button(self.NextButton).setStyleSheet(
+                "background-color: rgb(16, 148,223);"
+            )
+            self.button(self.FinishButton).setStyleSheet(
+                "background-color: rgb(16, 148,223);"
+            )
+            self.button(self.CommitButton).setStyleSheet(
+                "background-color: rgb(16, 148,223);"
+            )
 
         # load the stylesheet
         self._load_stylesheet()
@@ -162,10 +183,7 @@ class SetupProjectWizard(QtGui.QWizard):
         """
         Loads in a stylesheet from disk
         """
-        qss_file = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "style.qss"
-        )
+        qss_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "style.qss")
         f = None
         try:
             f = open(qss_file, "rt")

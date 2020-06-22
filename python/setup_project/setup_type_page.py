@@ -15,6 +15,7 @@ from .base_page import BasePage
 
 class SetupTypePage(BasePage):
     """ Page to choose what configuration type to use. """
+
     STANDARD_ID = 0
     PROJECT_ID = 1
     GITHUB_ID = 2
@@ -33,7 +34,9 @@ class SetupTypePage(BasePage):
         # Setup buttongroup by hand since in PySide it breaks the ui compilation
         wiz = self.wizard()
         self._config_type_button_group = QtGui.QButtonGroup(self)
-        self._config_type_button_group.addButton(wiz.ui.select_standard, self.STANDARD_ID)
+        self._config_type_button_group.addButton(
+            wiz.ui.select_standard, self.STANDARD_ID
+        )
         self._config_type_button_group.addButton(wiz.ui.select_project, self.PROJECT_ID)
         self._config_type_button_group.addButton(wiz.ui.select_github, self.GITHUB_ID)
         self._config_type_button_group.addButton(wiz.ui.select_disk, self.DISK_ID)

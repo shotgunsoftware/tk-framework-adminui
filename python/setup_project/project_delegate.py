@@ -20,6 +20,7 @@ views = sgtk.platform.import_framework("tk-framework-qtwidgets", "views")
 
 class ProjectWidget(QtGui.QFrame):
     """ Simple widget that shows a project's thumbnail and name. """
+
     MARGIN = 5
     ICON_SIZE = QtCore.QSize(32, 32)
 
@@ -65,10 +66,16 @@ class ProjectWidget(QtGui.QFrame):
             p = QtGui.QPalette()
             highlight_col = p.color(QtGui.QPalette.Active, QtGui.QPalette.Highlight)
 
-            transp_highlight_str = "rgba(%s, %s, %s, 25%%)" % \
-                (highlight_col.red(), highlight_col.green(), highlight_col.blue())
-            highlight_str = "rgb(%s, %s, %s)" % \
-                (highlight_col.red(), highlight_col.green(), highlight_col.blue())
+            transp_highlight_str = "rgba(%s, %s, %s, 25%%)" % (
+                highlight_col.red(),
+                highlight_col.green(),
+                highlight_col.blue(),
+            )
+            highlight_str = "rgb(%s, %s, %s)" % (
+                highlight_col.red(),
+                highlight_col.green(),
+                highlight_col.blue(),
+            )
 
             # make a border around the cell
             self.setStyleSheet(
@@ -78,18 +85,22 @@ class ProjectWidget(QtGui.QFrame):
                     border-style: solid;
                     background-color: %s;
                    }
-                """ % (highlight_str, transp_highlight_str))
+                """
+                % (highlight_str, transp_highlight_str)
+            )
         else:
             self.setStyleSheet(
                 """#frame {
                       border-width: 2px;
                       border-color: transparent;
                       border-style: solid;
-                }""")
+                }"""
+            )
 
 
 class ProjectDelegate(views.EditSelectedWidgetDelegate):
     """ Wrapper around the ProjectWidget for delegate use """
+
     def __init__(self, view):
         views.EditSelectedWidgetDelegate.__init__(self, view)
 
@@ -97,7 +108,7 @@ class ProjectDelegate(views.EditSelectedWidgetDelegate):
         return ProjectWidget(parent)
 
     def _on_before_paint(self, widget, model_index, style_options):
-        if (style_options.state & QtGui.QStyle.State_Selected):
+        if style_options.state & QtGui.QStyle.State_Selected:
             widget.set_selected(True)
         else:
             widget.set_selected(False)
@@ -112,4 +123,6 @@ class ProjectDelegate(views.EditSelectedWidgetDelegate):
         self._on_before_paint(widget, model_index, style_options)
 
     def sizeHint(self, style_options, model_index):
-        return QtCore.QSize(175, 2*ProjectWidget.MARGIN + ProjectWidget.ICON_SIZE.height())
+        return QtCore.QSize(
+            175, 2 * ProjectWidget.MARGIN + ProjectWidget.ICON_SIZE.height()
+        )

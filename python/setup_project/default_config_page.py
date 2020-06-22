@@ -16,6 +16,7 @@ from .wait_screen import WaitScreen
 
 class DefaultConfigPage(BasePage):
     """ Page to choose which default configuration to use. """
+
     _HELP_URL = BasePage._HELP_URL + "#Default%20configuration%20templates"
 
     DEFAULT_ID = 0
@@ -35,8 +36,12 @@ class DefaultConfigPage(BasePage):
         # Setup buttongroup by hand since in PySide it breaks the ui compilation
         wiz = self.wizard()
         self._config_button_group = QtGui.QButtonGroup(self)
-        self._config_button_group.addButton(wiz.ui.select_default_config, self.DEFAULT_ID)
-        self._config_button_group.addButton(wiz.ui.select_legacy_default_config, self.LEGACY_DEFAULT_ID)
+        self._config_button_group.addButton(
+            wiz.ui.select_default_config, self.DEFAULT_ID
+        )
+        self._config_button_group.addButton(
+            wiz.ui.select_legacy_default_config, self.LEGACY_DEFAULT_ID
+        )
 
     def validatePage(self):
         selected_id = self._config_button_group.checkedId()
@@ -50,7 +55,7 @@ class DefaultConfigPage(BasePage):
             # Download/validate the config. prep storage mapping display
             wiz.validate_config_uri(uri)
             wiz.ui.github_errors.setText("")
-        except Exception, e:
+        except Exception as e:
             wiz.ui.default_configs_errors.setText(str(e))
             return False
         finally:

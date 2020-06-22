@@ -25,7 +25,11 @@ from .base_page import BasePage
 
 class ProjectConfigPage(BasePage):
     """ Page to base a configuration on that of another project's. """
-    _HELP_URL = BasePage._HELP_URL + "#Basing%20your%20new%20project%20on%20an%20existing%20project"
+
+    _HELP_URL = (
+        BasePage._HELP_URL
+        + "#Basing%20your%20new%20project%20on%20an%20existing%20project"
+    )
 
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
@@ -65,7 +69,8 @@ class ProjectConfigPage(BasePage):
                 ]
                 fields = ["code", "mac_path", "windows_path", "linux_path"]
                 configuration = sg.find_one(
-                    constants.PIPELINE_CONFIGURATION_ENTITY, filters, fields=fields)
+                    constants.PIPELINE_CONFIGURATION_ENTITY, filters, fields=fields
+                )
 
                 if configuration is not None:
                     if sys.platform == "win32":
@@ -78,7 +83,9 @@ class ProjectConfigPage(BasePage):
                 wiz = self.wizard()
                 if not self._project_config_path:
                     project_name = indexes[0].data(ProjectModel.DISPLAY_NAME_ROLE)
-                    wiz.ui.project_errors.setText("Could not find configuration for '%s'" % project_name)
+                    wiz.ui.project_errors.setText(
+                        "Could not find configuration for '%s'" % project_name
+                    )
                 else:
                     wiz.ui.project_errors.setText("")
         finally:
@@ -100,7 +107,7 @@ class ProjectConfigPage(BasePage):
             wiz.validate_config_uri(config_uri)
             wiz.ui.project_errors.setText("")
             return True
-        except Exception, e:
+        except Exception as e:
             wiz.ui.project_errors.setText(str(e))
             return False
 

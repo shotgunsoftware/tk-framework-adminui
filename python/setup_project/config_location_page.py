@@ -19,8 +19,10 @@ from .base_page import BasePage
 
 logger = sgtk.platform.get_logger(__name__)
 
+
 class ConfigLocationPage(BasePage):
     """ Page to specify the location for the configuration. """
+
     _HELP_URL = BasePage._HELP_URL + "#Selecting%20a%20configuration%20location"
 
     def __init__(self, parent=None):
@@ -35,9 +37,19 @@ class ConfigLocationPage(BasePage):
         # update the layout of the os specific widgets
         ui = wiz.ui
         os_widgets = [
-            (ui.linux_label, ui.linux_path, ui.linux_browse, sys.platform.startswith("linux")),
+            (
+                ui.linux_label,
+                ui.linux_path,
+                ui.linux_browse,
+                sys.platform.startswith("linux"),
+            ),
             (ui.mac_label, ui.mac_path, ui.mac_browse, sys.platform == "darwin"),
-            (ui.windows_label, ui.windows_path, ui.windows_browse, sys.platform == "win32"),
+            (
+                ui.windows_label,
+                ui.windows_path,
+                ui.windows_browse,
+                sys.platform == "win32",
+            ),
         ]
 
         # current os first, then alphabetically
@@ -45,6 +57,7 @@ class ConfigLocationPage(BasePage):
             # return a key that sorts the os'es properly
             (label, _, _, os_current) = element
             return (not os_current, label.text())
+
         os_widgets.sort(key=os_key)
 
         # remove the widgets from the layout
@@ -56,11 +69,11 @@ class ConfigLocationPage(BasePage):
         # add them back in
         offset = 0
         for (row, (label, path, browse, os_current)) in enumerate(os_widgets):
-            ui.storage_grid_layout.addWidget(label, row+offset, 0, 1, 1)
-            ui.storage_grid_layout.addWidget(path, row+offset, 2, 1, 1)
+            ui.storage_grid_layout.addWidget(label, row + offset, 0, 1, 1)
+            ui.storage_grid_layout.addWidget(path, row + offset, 2, 1, 1)
             if os_current:
                 # current os gets browse setup and we track the path widget
-                ui.storage_grid_layout.addWidget(browse, row+offset, 3, 1, 1)
+                ui.storage_grid_layout.addWidget(browse, row + offset, 3, 1, 1)
                 browse.pressed.connect(self._on_browse_pressed)
                 self._path_widget = path
             else:
@@ -97,19 +110,24 @@ class ConfigLocationPage(BasePage):
 
     def _on_browse_pressed(self):
         config_dir = QtGui.QFileDialog.getExistingDirectory(
-            self, "Choose configuration", None,
-            QtGui.QFileDialog.ShowDirsOnly | QtGui.QFileDialog.DontConfirmOverwrite)
+            self,
+            "Choose configuration",
+            None,
+            QtGui.QFileDialog.ShowDirsOnly | QtGui.QFileDialog.DontConfirmOverwrite,
+        )
         self._path_widget.setText(config_dir)
 
     def initializePage(self):
         # setup the default locations
         # this must be done in initializePage since the answers depend on previous field values
         try:
-            default_locations = self.wizard().core_wizard.get_default_configuration_location()
+            default_locations = (
+                self.wizard().core_wizard.get_default_configuration_location()
+            )
             self.wizard().ui.linux_path.setText(default_locations["linux2"])
             self.wizard().ui.windows_path.setText(default_locations["win32"])
             self.wizard().ui.mac_path.setText(default_locations["darwin"])
-        except Exception, e:
+        except Exception as e:
             logger.warning(
                 "Could not retrieve default suggested configuration "
                 "locations based on historical projects. "
@@ -151,11 +169,15 @@ class ConfigLocationPage(BasePage):
             if not os.path.exists(current_os_path):
                 old_umask = os.umask(0)
                 try:
-                    os.makedirs(current_os_path, 0777)
-                except Exception, e:
+                    os.makedirs(current_os_path, 0o777)
+                except Exception as e:
                     # could not create the directories, report and bail
-                    message = "Got the following error creating the directory:\n %s" % str(e)
-                    QtGui.QMessageBox.critical(self, "Error creating directories.", message)
+                    message = (
+                        "Got the following error creating the directory:\n %s" % str(e)
+                    )
+                    QtGui.QMessageBox.critical(
+                        self, "Error creating directories.", message
+                    )
                     return False
                 finally:
                     os.umask(old_umask)
@@ -163,10 +185,14 @@ class ConfigLocationPage(BasePage):
             # pass the paths to the wizard and make sure they are ok
             try:
                 QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-                wiz.core_wizard.validate_configuration_location(linux_path, windows_path, macosx_path)
-                wiz.core_wizard.set_configuration_location(linux_path, windows_path, macosx_path)
+                wiz.core_wizard.validate_configuration_location(
+                    linux_path, windows_path, macosx_path
+                )
+                wiz.core_wizard.set_configuration_location(
+                    linux_path, windows_path, macosx_path
+                )
                 wiz.core_wizard.set_default_core()
-            except Exception, e:
+            except Exception as e:
                 wiz.ui.config_location_errors.setText(str(e))
                 return False
             finally:
@@ -178,13 +204,13 @@ class ConfigLocationPage(BasePage):
 
             try:
                 wiz.core_wizard.set_default_core()
-            except Exception, e:
+            except Exception as e:
                 wiz.ui.config_location_errors.setText(str(e))
                 return False
 
         # Previous validation code should be run first as it setup necessary variables in core_wizard for
         # pre-commit validation.
-        if not BasePage.validatePage(self): 
+        if not BasePage.validatePage(self):
             return False
 
         return True
