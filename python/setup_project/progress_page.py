@@ -157,7 +157,7 @@ class ProgressPage(BasePage):
         # NOTE: OSX is the exception. We don't have stability issues there related to the main thread
         # execution, and we get MUCH better progress-bar performance/UX when we skip using the
         # QTimer approach to keeping it updated.
-        if sys.platform == "darwin":
+        if sgtk.util.is_macos():
             engine = sgtk.platform.current_engine()
             engine.async_execute_in_main_thread(
                 self.__progress_on_main_thread, chapter, progress

@@ -630,7 +630,7 @@ class StorageMapWidget(QtGui.QWidget):
             # no storage exists in SG. create a new one
             logger.debug("Creating SG local storage: %s" % (storage_data,))
             storage_data = sg.create(
-                "LocalStorage", storage_data, return_fields=storage_data.keys()
+                "LocalStorage", storage_data, return_fields=list(storage_data.keys())
             )
 
         # update the storage in the model with the new data
