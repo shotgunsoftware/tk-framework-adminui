@@ -18,7 +18,7 @@ class BasePage(QtGui.QWizardPage):
     """ Base page for all Shotgun pages to inherit from. """
 
     # by default return the general setting up your project page
-    _HELP_URL = "https://support.shotgunsoftware.com/entries/95442748"
+    _HELP_URL = "https://support.shotgunsoftware.com/hc/en-us/articles/115000067493#Taking%20over%20a%20Pipeline%20Configuration"
 
     def __init__(self, parent=None):
         """ Constructor """

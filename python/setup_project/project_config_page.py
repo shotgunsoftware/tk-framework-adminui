@@ -75,7 +75,7 @@ class ProjectConfigPage(BasePage):
                 if configuration is not None:
                     self._project_config_path = ShotgunPath.from_shotgun_dict(
                         configuration
-                    ).current_os_path
+                    ).current_os
 
                 wiz = self.wizard()
                 if not self._project_config_path:
