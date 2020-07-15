@@ -74,7 +74,7 @@ class BasePage(QtGui.QWizardPage):
             if self._error_field:
                 self._error_field.setText(str(e))
             state = False
-        except Exception as e:
+        except Exception:
             if self._error_field:
                 self._error_field.setText(traceback.format_exc())
             state = False

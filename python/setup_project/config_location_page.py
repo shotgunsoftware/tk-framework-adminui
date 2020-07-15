@@ -37,18 +37,13 @@ class ConfigLocationPage(BasePage):
         # update the layout of the os specific widgets
         ui = wiz.ui
         os_widgets = [
-            (
-                ui.linux_label,
-                ui.linux_path,
-                ui.linux_browse,
-                sys.platform.startswith("linux"),
-            ),
-            (ui.mac_label, ui.mac_path, ui.mac_browse, sys.platform == "darwin"),
+            (ui.linux_label, ui.linux_path, ui.linux_browse, sgtk.util.is_linux(),),
+            (ui.mac_label, ui.mac_path, ui.mac_browse, sgtk.util.is_macos()),
             (
                 ui.windows_label,
                 ui.windows_path,
                 ui.windows_browse,
-                sys.platform == "win32",
+                sgtk.util.is_windows(),
             ),
         ]
 
@@ -153,11 +148,11 @@ class ConfigLocationPage(BasePage):
             linux_path = self.field("config_path_linux")
             windows_path = self.field("config_path_win")
 
-            if sys.platform == "darwin":
+            if sgtk.util.is_macos():
                 current_os_path = macosx_path
-            elif sys.platform == "win32":
+            elif sgtk.util.is_windows():
                 current_os_path = windows_path
-            elif sys.platform.startswith("linux2"):
+            elif sgtk.util.is_linux():
                 current_os_path = linux_path
 
             # check if the path for the current os passes basic validation

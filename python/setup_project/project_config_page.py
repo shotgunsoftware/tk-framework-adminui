@@ -14,7 +14,7 @@ import sys
 from sgtk.platform.qt import QtGui
 from sgtk.platform.qt import QtCore
 
-from sgtk.util import shotgun
+from sgtk.util import shotgun, ShotgunPath
 from sgtk.platform import constants
 
 from .project_model import ProjectModel
@@ -73,12 +73,9 @@ class ProjectConfigPage(BasePage):
                 )
 
                 if configuration is not None:
-                    if sys.platform == "win32":
-                        self._project_config_path = configuration.get("windows_path")
-                    elif sys.platform == "darwin":
-                        self._project_config_path = configuration.get("mac_path")
-                    elif sys.platform.startswith("linux"):
-                        self._project_config_path = configuration.get("linux_path")
+                    self._project_config_path = ShotgunPath.from_shotgun_dict(
+                        configuration
+                    ).current_os
 
                 wiz = self.wizard()
                 if not self._project_config_path:

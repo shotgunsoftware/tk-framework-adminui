@@ -36,13 +36,15 @@ class DiskConfigPage(BasePage):
             | QtGui.QFileDialog.DontConfirmOverwrite
             | QtGui.QFileDialog.ReadOnly,
         )
-        self.setField("disk_path", config_dir)
+        # getExistingDirectory() will return a path with / separators on PySide2.
+        # So we need to convert them for Windows since core expects the path to be a native one.
+        self.setField("disk_path", config_dir.replace("/", os.path.sep))
 
     def _on_browse_zip_pressed(self):
         config_zip = QtGui.QFileDialog.getOpenFileName(
             self, "Choose pipeline configuration zip", None, "*.zip"
         )
-        # Unlike getExistingDirectory(), getOpenFileName() always returns a path with / separators.
+        # getOpenFileName() always returns a path with / separators.
         # So we need to convert them for Windows since core expects the path to be a native one.
         zip_path = str(config_zip[0])
         self.setField("disk_path", zip_path.replace("/", os.path.sep))

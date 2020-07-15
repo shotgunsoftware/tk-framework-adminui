@@ -168,7 +168,7 @@ class SetupProjectWizard(QtGui.QWizard):
             # add mappings for each required storage root. clear any existing
             # roots first (possible if back button is used)
             self.ui.storage_map_page.clear_roots()
-            for (root_name, root_info) in storage_info.iteritems():
+            for (root_name, root_info) in storage_info.items():
                 self.ui.storage_map_page.add_mapping(root_name, root_info)
 
             # a config has been chosen. we don't need to visit the other config

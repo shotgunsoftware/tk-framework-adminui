@@ -13,6 +13,10 @@ from sgtk.platform.qt import QtGui
 from .base_page import BasePage
 from .wait_screen import WaitScreen
 
+from sgtk.platform import get_logger
+
+logger = get_logger(__file__)
+
 
 class DefaultConfigPage(BasePage):
     """ Page to choose which default configuration to use. """
@@ -56,6 +60,7 @@ class DefaultConfigPage(BasePage):
             wiz.validate_config_uri(uri)
             wiz.ui.github_errors.setText("")
         except Exception as e:
+            logger.exception("Unexpected error while validating config:")
             wiz.ui.default_configs_errors.setText(str(e))
             return False
         finally:

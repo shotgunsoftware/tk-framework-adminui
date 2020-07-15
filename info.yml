@@ -25,5 +25,5 @@ requires_shotgun_version:
 requires_core_version: "v0.18.156"
 
 frameworks:
-    - {"name": "tk-framework-shotgunutils", "version": "v4.x.x"}
+    - {"name": "tk-framework-shotgunutils", "version": "v5.x.x"}
     - {"name": "tk-framework-qtwidgets", "version": "v2.x.x"}
