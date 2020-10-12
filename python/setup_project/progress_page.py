@@ -65,6 +65,16 @@ class ProgressPage(BasePage):
         )
 
     def initializePage(self):
+        import sys
+
+        sys.path.append(
+            "/Applications/PyCharm.app/Contents/debug-eggs/pydevd-pycharm.egg"
+        )
+        import pydevd_pycharm
+
+        pydevd_pycharm.settrace(
+            "localhost", port=1234, stdoutToServer=True, stderrToServer=True
+        )
         # disable the cancel and back buttons
         wiz = self.wizard()
         wiz.button(wiz.NextButton).setEnabled(False)
@@ -221,8 +231,9 @@ class ProgressPage(BasePage):
         # show the failure icon and message
         wiz = self.wizard()
         wiz.button(wiz.CancelButton).setVisible(True)
-        wiz.setButtonText(wiz.NextButton, "Quit")
         wiz.ui.complete_errors.setText(message)
+
+        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.CancelButton])
 
     def _on_thread_finished(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
