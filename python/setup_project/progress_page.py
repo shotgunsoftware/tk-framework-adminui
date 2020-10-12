@@ -65,16 +65,6 @@ class ProgressPage(BasePage):
         )
 
     def initializePage(self):
-        import sys
-
-        sys.path.append(
-            "/Applications/PyCharm.app/Contents/debug-eggs/pydevd-pycharm.egg"
-        )
-        import pydevd_pycharm
-
-        pydevd_pycharm.settrace(
-            "localhost", port=1234, stdoutToServer=True, stderrToServer=True
-        )
         # disable the cancel and back buttons
         wiz = self.wizard()
         wiz.button(wiz.NextButton).setEnabled(False)
