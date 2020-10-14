@@ -221,8 +221,9 @@ class ProgressPage(BasePage):
         # show the failure icon and message
         wiz = self.wizard()
         wiz.button(wiz.CancelButton).setVisible(True)
-        wiz.setButtonText(wiz.NextButton, "Quit")
         wiz.ui.complete_errors.setText(message)
+
+        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.CancelButton])
 
     def _on_thread_finished(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
