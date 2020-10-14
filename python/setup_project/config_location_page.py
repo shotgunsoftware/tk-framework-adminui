@@ -110,7 +110,7 @@ class ConfigLocationPage(BasePage):
             None,
             QtGui.QFileDialog.ShowDirsOnly | QtGui.QFileDialog.DontConfirmOverwrite,
         )
-        self._path_widget.setText(config_dir)
+        self._path_widget.setText(os.path.normpath(config_dir))
 
     def initializePage(self):
         # setup the default locations
