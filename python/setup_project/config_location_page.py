@@ -87,9 +87,9 @@ class ConfigLocationPage(BasePage):
             # site does not have an uploaded configuration field
             ui.select_distributed_config.setEnabled(False)
             ui.select_distributed_config.setToolTip(
-                "Your Shotgun site is missing a <pre>PipelineConfiguration.uploaded_config</pre> "
+                "Your ShotGrid site is missing a <pre>PipelineConfiguration.uploaded_config</pre> "
                 "field, required for distributed configs to work correctly. Please update to "
-                "a more recent version of Shotgun."
+                "a more recent version of ShotGrid."
             )
 
     def _update_path_input_state(self):

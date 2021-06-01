@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shotgun Set Up Project Wizard</string>
+   <string>ShotGrid Set Up Project Wizard</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -93,7 +93,7 @@
 </string>
       </property>
       <property name="text">
-       <string>Shotgun Default</string>
+       <string>ShotGrid Default</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -281,7 +281,7 @@ color: rgb(160, 160, 160);</string>
   </widget>
   <widget class="DefaultConfigPage" name="default_configs_page">
    <property name="title">
-    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a Shotgun Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
+    <string>&lt;p&gt;&lt;/p&gt;&lt;font size=18&gt;&amp;nbsp;Select a ShotGrid Configuration&lt;/font&gt;&lt;p&gt;&lt;/p&gt;</string>
    </property>
    <property name="subTitle">
     <string>&amp;nbsp;</string>
@@ -305,7 +305,7 @@ color: rgb(160, 160, 160);</string>
        <string notr="true">font-size: 14px;</string>
       </property>
       <property name="text">
-       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Choose the Shotgun default that best matches your workflow and structure.&lt;/p&gt;</string>
+       <string>&lt;p style=&quot;line-height: 130%&quot;&gt;Choose the ShotGrid default that best matches your workflow and structure.&lt;/p&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -939,7 +939,7 @@ color: rgb(160, 160, 160);</string>
     <item>
      <widget class="QLabel" name="storage_def_lbl">
       <property name="text">
-       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated Shotgun Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938-Linking-to-local-files#how_to_set_up&quot;&gt;More info…&lt;/a&gt;</string>
+       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated ShotGrid Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938-Linking-to-local-files#how_to_set_up&quot;&gt;More info…&lt;/a&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -1011,7 +1011,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
-       <string>Linking to local files must be enabled in your &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938&quot;&gt;Shotgun Preferences&lt;/a&gt;</string>
+       <string>Linking to local files must be enabled in your &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938&quot;&gt;ShotGrid Preferences&lt;/a&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1257,7 +1257,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The configuration will be uploaded to Shotgun. As a user starts up their content creation software, Toolkit will automatically download the configuration and all its dependencies.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The configuration will be uploaded to ShotGrid. As a user starts up their content creation software, Toolkit will automatically download the configuration and all its dependencies.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
