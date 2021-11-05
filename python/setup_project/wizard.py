@@ -17,6 +17,10 @@ from sgtk.platform.qt import QtCore
 
 from ..ui import setup_project
 from .emitting_handler import EmittingHandler
+from .wait_screen import WaitScreen
+from sgtk.platform import get_logger
+
+logger = get_logger(__file__)
 
 
 class SetupProjectWizard(QtGui.QWizard):
@@ -86,7 +90,7 @@ class SetupProjectWizard(QtGui.QWizard):
                 self.page(page_id).setup_ui(page_id)
 
         # Setup Page Order
-        self.ui.setup_type_page.set_default_configs_page(self.ui.default_configs_page)
+        self.ui.setup_type_page.set_storage_map_page(self.ui.storage_map_page)
         self.ui.setup_type_page.set_project_page(self.ui.project_config_page)
         self.ui.setup_type_page.set_github_page(self.ui.github_config_page)
         self.ui.setup_type_page.set_disk_page(self.ui.disk_config_page)
@@ -148,6 +152,22 @@ class SetupProjectWizard(QtGui.QWizard):
         # forward help request to current page
         page = self.currentPage()
         page.help_requested()
+
+    def set_config_default(self):
+        # Set the default project config
+        uri = "tk-config-default2"
+        wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
+        wait.show()
+        QtGui.QApplication.instance().processEvents()
+        try:
+            # Download/validate the config. prep storage mapping display
+            self.validate_config_uri(uri)
+            self.ui.github_errors.setText("")
+        except Exception as e:
+            logger.exception("Unexpected error while validating config:")
+            return False
+        finally:
+            wait.hide()
 
     def validate_config_uri(self, uri):
         """Download and validate the supplied config URI.
