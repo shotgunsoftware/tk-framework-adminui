@@ -26,7 +26,7 @@ class SetupTypePage(BasePage):
         self._disk_page_id = None
         self._github_page_id = None
         self._project_page_id = None
-        self._default_configs_page_id = None
+        self._storage_map_page_id = None
 
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
@@ -43,6 +43,7 @@ class SetupTypePage(BasePage):
 
     def set_project_page(self, page):
         """ Set the page to switch to if project is selected. """
+
         self._project_page_id = page.page_id()
 
     def set_github_page(self, page):
@@ -53,20 +54,26 @@ class SetupTypePage(BasePage):
         """ Set the page to switch to if disk location is selected. """
         self._disk_page_id = page.page_id()
 
-    def set_default_configs_page(self, page):
+    def set_storage_map_page(self, page):
         """ Set the page to switch to if default config is selected. """
-        self._default_configs_page_id = page.page_id()
+        self._storage_map_page_id = page.page_id()
+
+
 
     def nextId(self):
         # return the appropriate id for the current selection
         selection = self._config_type_button_group.checkedId()
-        if (selection == 0) and self._default_configs_page_id is not None:
-            return self._default_configs_page_id
+
+        if (selection == 0) and self._storage_map_page_id is not None:
+            wiz = self.wizard()
+            wiz.set_config_default()   # Function to validate the uri
+            return self._storage_map_page_id
         if (selection == 1) and self._project_page_id is not None:
             return self._project_page_id
         elif (selection == 2) and self._github_page_id is not None:
             return self._github_page_id
         elif (selection == 3) and self._disk_page_id is not None:
             return self._disk_page_id
+
 
         return BasePage.nextId(self)
