@@ -58,15 +58,13 @@ class SetupTypePage(BasePage):
         """ Set the page to switch to if default config is selected. """
         self._storage_map_page_id = page.page_id()
 
-
-
     def nextId(self):
         # return the appropriate id for the current selection
         selection = self._config_type_button_group.checkedId()
 
         if (selection == 0) and self._storage_map_page_id is not None:
             wiz = self.wizard()
-            wiz.set_config_default()   # Function to validate the uri
+            wiz.set_config_default()  # Function to validate the uri
             return self._storage_map_page_id
         if (selection == 1) and self._project_page_id is not None:
             return self._project_page_id
@@ -74,6 +72,5 @@ class SetupTypePage(BasePage):
             return self._github_page_id
         elif (selection == 3) and self._disk_page_id is not None:
             return self._disk_page_id
-
 
         return BasePage.nextId(self)
