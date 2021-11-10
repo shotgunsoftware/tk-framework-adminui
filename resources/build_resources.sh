@@ -11,7 +11,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 # The path to where the PySide binaries are installed
-PYTHON_BASE="/Applications/Shotgun.app/Contents/Resources/Python"
+PYTHON_BASE="/Applications/Shotgun.app/Contents/Resources/Python/bin"
 
 # Remove any problematic profiles from pngs.
 for f in *.png; do mogrify $f; done
@@ -28,13 +28,11 @@ function build_qt {
 }
 
 function build_ui {
-    # build_qt "pyside-uic --from-imports" "$1.ui" "$1"
-    build_qt "${PYTHON_BASE}/bin/python ${PYTHON_BASE}/bin/pyside-uic --from-imports" "$1.ui" "../ui/$1"
+    build_qt "pyside-uic --from-imports" "$1.ui" "$1"
 }
 
 function build_res {
-    # build_qt "pyside-rcc -py3" "$1.qrc" "$1_rc"
-    build_qt "${PYTHON_BASE}/bin/pyside-rcc -py3" "$1.qrc" "../ui/$1_rc"
+    build_qt "pyside-rcc -py3" "$1.qrc" "$1_rc"
 }
 
 # build main UIs:

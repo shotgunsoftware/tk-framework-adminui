@@ -27,7 +27,6 @@ class SetupTypePage(BasePage):
         self._github_page_id = None
         self._project_page_id = None
         self._storage_map_page_id = None
-        self._cont = 0
 
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
@@ -64,6 +63,8 @@ class SetupTypePage(BasePage):
         selection = self._config_type_button_group.checkedId()
 
         if selection == 0 and self._storage_map_page_id is not None:
+            wiz = self.wizard()
+            wiz.set_config_default()  # Function to validate the uri
             return self._storage_map_page_id
         if selection == 1 and self._project_page_id is not None:
             return self._project_page_id

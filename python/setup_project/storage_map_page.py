@@ -184,10 +184,6 @@ class StorageMapPage(BasePage):
         wiz = self.wizard()
         ui = wiz.ui
 
-        # Call to validate uri if config-default2 was selected
-        if self._uri == None:
-            wiz.set_config_default()
-
         # we'll add the storage mapping widgets to the area widget's layout
         layout = ui.storage_map_area_widget.layout()
 
