@@ -21,7 +21,6 @@ class SetupTypePage(BasePage):
     GITHUB_ID = 2
     DISK_ID = 3
 
-
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)
         self._disk_page_id = None
