@@ -17,10 +17,6 @@ from sgtk.platform.qt import QtCore
 
 from ..ui import setup_project
 from .emitting_handler import EmittingHandler
-from .wait_screen import WaitScreen
-from sgtk.platform import get_logger
-
-logger = get_logger(__file__)
 
 
 class SetupProjectWizard(QtGui.QWizard):
@@ -153,22 +149,6 @@ class SetupProjectWizard(QtGui.QWizard):
         page = self.currentPage()
         page.help_requested()
 
-    def set_config_default(self):
-        # Set the default project config
-        uri = "tk-config-default2"
-        wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
-        wait.show()
-        QtGui.QApplication.instance().processEvents()
-        try:
-            # Download/validate the config. prep storage mapping display
-            self.validate_config_uri(uri)
-            self.ui.github_errors.setText("")
-        except Exception as e:
-            logger.exception("Unexpected error while validating config:")
-            return False
-        finally:
-            wait.hide()
-
     def validate_config_uri(self, uri):
         """Download and validate the supplied config URI.
 
@@ -192,12 +172,9 @@ class SetupProjectWizard(QtGui.QWizard):
                 self.ui.storage_map_page.add_mapping(root_name, root_info)
 
             # a config has been chosen. we don't need to visit the other config
+            # selection pages. make the next page the storage mapping page.
             current_page = self.currentPage()
-
-            # if the default config was selected you are in the storage mapping page.
-            if current_page.page_id() != self.ui.storage_map_page.page_id():
-                # Make the next page the storage mapping page.
-                current_page.set_next_page(self.ui.storage_map_page)
+            current_page.set_next_page(self.ui.storage_map_page)
 
         finally:
             QtGui.QApplication.restoreOverrideCursor()
