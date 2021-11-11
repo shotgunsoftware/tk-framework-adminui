@@ -86,7 +86,7 @@ class SetupProjectWizard(QtGui.QWizard):
                 self.page(page_id).setup_ui(page_id)
 
         # Setup Page Order
-        self.ui.setup_type_page.set_default_configs_page(self.ui.default_configs_page)
+        self.ui.setup_type_page.set_storage_map_page(self.ui.storage_map_page)
         self.ui.setup_type_page.set_project_page(self.ui.project_config_page)
         self.ui.setup_type_page.set_github_page(self.ui.github_config_page)
         self.ui.setup_type_page.set_disk_page(self.ui.disk_config_page)

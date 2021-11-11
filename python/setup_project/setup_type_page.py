@@ -11,6 +11,10 @@
 from sgtk.platform.qt import QtGui
 
 from .base_page import BasePage
+from .wait_screen import WaitScreen
+from sgtk.platform import get_logger
+
+logger = get_logger(__file__)
 
 
 class SetupTypePage(BasePage):
@@ -26,7 +30,7 @@ class SetupTypePage(BasePage):
         self._disk_page_id = None
         self._github_page_id = None
         self._project_page_id = None
-        self._default_configs_page_id = None
+        self._storage_map_page_id = None
 
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
@@ -53,20 +57,41 @@ class SetupTypePage(BasePage):
         """ Set the page to switch to if disk location is selected. """
         self._disk_page_id = page.page_id()
 
-    def set_default_configs_page(self, page):
+    def set_storage_map_page(self, page):
         """ Set the page to switch to if default config is selected. """
-        self._default_configs_page_id = page.page_id()
+        self._storage_map_page_id = page.page_id()
 
     def nextId(self):
         # return the appropriate id for the current selection
         selection = self._config_type_button_group.checkedId()
-        if (selection == 0) and self._default_configs_page_id is not None:
-            return self._default_configs_page_id
-        if (selection == 1) and self._project_page_id is not None:
+        if selection == 0 and self._storage_map_page_id is not None:
+            return self._storage_map_page_id
+        if selection == 1 and self._project_page_id is not None:
             return self._project_page_id
-        elif (selection == 2) and self._github_page_id is not None:
+        elif selection == 2 and self._github_page_id is not None:
             return self._github_page_id
-        elif (selection == 3) and self._disk_page_id is not None:
+        elif selection == 3 and self._disk_page_id is not None:
             return self._disk_page_id
 
         return BasePage.nextId(self)
+
+    def validatePage(self):
+        # If the default config has been selected set tk-config-default2
+        selected_id = self._config_type_button_group.checkedId()
+        if selected_id == 0:
+            uri = "tk-config-default2"
+            wiz = self.wizard()
+            wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
+            wait.show()
+            QtGui.QApplication.instance().processEvents()
+            try:
+                # Download/validate the config. prep storage mapping display
+                wiz.validate_config_uri(uri)
+                wiz.ui.github_errors.setText("")
+            except Exception as e:
+                logger.exception("Unexpected error while validating config:")
+                return False
+            finally:
+                wait.hide()
+
+        return True
