@@ -11,7 +11,10 @@
 from sgtk.platform.qt import QtGui
 
 from .base_page import BasePage
+from .wait_screen import WaitScreen
+from sgtk.platform import get_logger
 
+logger = get_logger(__file__)
 
 class SetupTypePage(BasePage):
     """ Page to choose what configuration type to use. """
@@ -44,7 +47,6 @@ class SetupTypePage(BasePage):
 
     def set_project_page(self, page):
         """ Set the page to switch to if project is selected. """
-
         self._project_page_id = page.page_id()
 
     def set_github_page(self, page):
@@ -62,7 +64,6 @@ class SetupTypePage(BasePage):
     def nextId(self):
         # return the appropriate id for the current selection
         selection = self._config_type_button_group.checkedId()
-
         if selection == 0 and self._storage_map_page_id is not None:
             return self._storage_map_page_id
         if selection == 1 and self._project_page_id is not None:
@@ -73,3 +74,24 @@ class SetupTypePage(BasePage):
             return self._disk_page_id
 
         return BasePage.nextId(self)
+
+    def validatePage(self):
+        # If the default config has been selected set tk-config-default2
+        selected_id = self._config_type_button_group.checkedId()
+        if selected_id == 0:
+            uri = "tk-config-default2"
+            wiz = self.wizard()
+            wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
+            wait.show()
+            QtGui.QApplication.instance().processEvents()
+            try:
+                # Download/validate the config. prep storage mapping display
+                wiz.validate_config_uri(uri)
+                wiz.ui.github_errors.setText("")
+            except Exception as e:
+                logger.exception("Unexpected error while validating config:")
+                return False
+            finally:
+                wait.hide()
+
+        return True
