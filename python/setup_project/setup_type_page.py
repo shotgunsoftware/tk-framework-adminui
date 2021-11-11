@@ -32,7 +32,6 @@ class SetupTypePage(BasePage):
         self._project_page_id = None
         self._storage_map_page_id = None
 
-
     def setup_ui(self, page_id):
         BasePage.setup_ui(self, page_id)
 
