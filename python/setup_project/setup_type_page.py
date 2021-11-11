@@ -16,6 +16,7 @@ from sgtk.platform import get_logger
 
 logger = get_logger(__file__)
 
+
 class SetupTypePage(BasePage):
     """ Page to choose what configuration type to use. """
 
