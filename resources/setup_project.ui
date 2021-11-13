@@ -780,7 +780,7 @@ color: rgb(160, 160, 160);</string>
     <item>
      <widget class="QLabel" name="storage_def_lbl">
       <property name="text">
-       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated ShotGrid Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938-Linking-to-local-files#how_to_set_up&quot;&gt;More info…&lt;/a&gt;</string>
+       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated ShotGrid Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Administrator_ar_data_management_ar_linking_local_files_html_to_set_up&quot;&gt;More info…&lt;/a&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -852,7 +852,7 @@ color: rgb(160, 160, 160);</string>
 color: rgb(160, 160, 160);</string>
       </property>
       <property name="text">
-       <string>Linking to local files must be enabled in your &lt;a href=&quot;https://support.shotgunsoftware.com/hc/en-us/articles/219030938&quot;&gt;ShotGrid Preferences&lt;/a&gt;</string>
+       <string>Linking to local files must be enabled in your &lt;a href=&quot;https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Administrator_ar_data_management_ar_linking_local_files_html&quot;&gt;ShotGrid Preferences&lt;/a&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1460,7 +1460,7 @@ color: rgb(141, 143, 143);</string>
       <property name="text">
        <string>Toolkit is now ready to use in your Project!&lt;br/&gt;
 &lt;br/&gt;
-For more information on how to configure your Project and tailor it to your system, &lt;a href=&quot;https://support.shotgunsoftware.com/entries/95443887#Welcome%20to%20Toolkit&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;click here to check out our documentation&lt;/a&gt;.</string>
+For more information on how to configure your Project and tailor it to your system, &lt;a href=&quot;https://developer.shotgridsoftware.com/1b9c259a/?title=Launch+App#Welcome%20to%20Toolkit&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;click here to check out our documentation&lt;/a&gt;.</string>
       </property>
       <property name="textFormat">
        <enum>Qt::RichText</enum>
