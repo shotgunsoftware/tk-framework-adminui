@@ -18,7 +18,9 @@ class BasePage(QtGui.QWizardPage):
     """ Base page for all ShotGrid pages to inherit from. """
 
     # by default return the general setting up your project page
-    _HELP_URL = "https://developer.shotgridsoftware.com/e95205a8/?title=An+Overview+of+Toolkit"
+    _HELP_URL = (
+        "https://developer.shotgridsoftware.com/e95205a8/?title=An+Overview+of+Toolkit"
+    )
 
     def __init__(self, parent=None):
         """ Constructor """
