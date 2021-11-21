@@ -88,7 +88,7 @@
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
-	font-size: 16px;
+    font-size: 16px;
 }
 </string>
       </property>
@@ -140,7 +140,7 @@ color: rgb(160, 160, 160);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
-	font-size: 16px;
+    font-size: 16px;
 }
 </string>
       </property>
@@ -189,7 +189,7 @@ color: rgb(160, 160, 160);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
-	font-size: 16px;
+    font-size: 16px;
 }
 </string>
       </property>
@@ -238,7 +238,7 @@ color: rgb(160, 160, 160);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
-	font-size: 16px;
+    font-size: 16px;
 }
 </string>
       </property>
@@ -1082,7 +1082,7 @@ color: rgb(160, 160, 160);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
-	font-size: 16px;
+    font-size: 16px;
 }
 </string>
       </property>
@@ -1118,7 +1118,7 @@ color: rgb(160, 160, 160);</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QRadioButton {
-	font-size: 16px;
+    font-size: 16px;
 }
 </string>
       </property>
@@ -1460,7 +1460,7 @@ color: rgb(141, 143, 143);</string>
       <property name="text">
        <string>Toolkit is now ready to use in your Project!&lt;br/&gt;
 &lt;br/&gt;
-For more information on how to configure your Project and tailor it to your system, &lt;a href=&quot;https://developer.shotgridsoftware.com/1b9c259a/?title=Launch+App#Welcome%20to%20Toolkit&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;click here to check out our documentation&lt;/a&gt;.</string>
+For more information on how to configure your Project and tailor it to your system, &lt;a href=&quot;https://developer.shotgridsoftware.com/5d83a936/?title=Configuration+Setup&quot; style=&quot;color: rgb(203, 205, 205);&quot;&gt;click here to check out our documentation&lt;/a&gt;.</string>
       </property>
       <property name="textFormat">
        <enum>Qt::RichText</enum>
