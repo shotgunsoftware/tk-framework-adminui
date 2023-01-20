@@ -11,7 +11,6 @@
 import re
 
 from sgtk.platform.qt import QtGui
-from sgtk.platform.qt import QtCore
 
 from ..ui import create_storage_dialog
 
@@ -33,7 +32,6 @@ class CreateStorageDialog(QtGui.QDialog):
         """
 
         super(CreateStorageDialog, self).__init__(parent)
-        self.setWindowFlags(QtCore.Qt.Popup)
 
         self._existing_storage_names = existing_storage_names
         self._new_storage_name = None
