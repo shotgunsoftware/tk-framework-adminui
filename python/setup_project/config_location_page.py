@@ -21,7 +21,7 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class ConfigLocationPage(BasePage):
-    """ Page to specify the location for the configuration. """
+    """Page to specify the location for the configuration."""
 
     _HELP_URL = BasePage._HELP_URL + "#Selecting%20a%20configuration%20location"
 
@@ -37,7 +37,12 @@ class ConfigLocationPage(BasePage):
         # update the layout of the os specific widgets
         ui = wiz.ui
         os_widgets = [
-            (ui.linux_label, ui.linux_path, ui.linux_browse, sgtk.util.is_linux(),),
+            (
+                ui.linux_label,
+                ui.linux_path,
+                ui.linux_browse,
+                sgtk.util.is_linux(),
+            ),
             (ui.mac_label, ui.mac_path, ui.mac_browse, sgtk.util.is_macos()),
             (
                 ui.windows_label,
@@ -56,14 +61,14 @@ class ConfigLocationPage(BasePage):
         os_widgets.sort(key=os_key)
 
         # remove the widgets from the layout
-        for (label, path, browse, _) in os_widgets:
+        for label, path, browse, _ in os_widgets:
             ui.storage_grid_layout.removeWidget(label)
             ui.storage_grid_layout.removeWidget(path)
             ui.storage_grid_layout.removeWidget(browse)
 
         # add them back in
         offset = 0
-        for (row, (label, path, browse, os_current)) in enumerate(os_widgets):
+        for row, (label, path, browse, os_current) in enumerate(os_widgets):
             ui.storage_grid_layout.addWidget(label, row + offset, 0, 1, 1)
             ui.storage_grid_layout.addWidget(path, row + offset, 2, 1, 1)
             if os_current:
@@ -139,7 +144,6 @@ class ConfigLocationPage(BasePage):
         wiz.ui.config_location_errors.setText("")
 
         if self.wizard().ui.select_centralized_config.isChecked():
-
             # specify that we want to run in centralized mode
             self.wizard().core_wizard.set_use_centralized_mode()
 

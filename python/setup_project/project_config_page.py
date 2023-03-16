@@ -24,7 +24,7 @@ from .base_page import BasePage
 
 
 class ProjectConfigPage(BasePage):
-    """ Page to base a configuration on that of another project's. """
+    """Page to base a configuration on that of another project's."""
 
     _HELP_URL = (
         BasePage._HELP_URL
@@ -50,7 +50,7 @@ class ProjectConfigPage(BasePage):
         selection.selectionChanged.connect(self._on_selection_changed)
 
     def _on_selection_changed(self, selected, deselected):
-        """ Get the path to the config for the project that was just selected. """
+        """Get the path to the config for the project that was just selected."""
         # turn on wait cursor
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 

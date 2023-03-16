@@ -19,7 +19,7 @@ LOG_TIMER_INTERVAL = 150  # milliseconds
 
 
 class RunSetupThread(QtCore.QThread):
-    """ Simple thread to run the wizard in the background """
+    """Simple thread to run the wizard in the background"""
 
     success = QtCore.Signal()
     failure = QtCore.Signal(str)
@@ -37,7 +37,7 @@ class RunSetupThread(QtCore.QThread):
 
 
 class ProgressPage(BasePage):
-    """ Page to show the progress bar during configuration setup. """
+    """Page to show the progress bar during configuration setup."""
 
     def __init__(self, parent=None):
         BasePage.__init__(self, parent)

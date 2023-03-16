@@ -15,7 +15,7 @@ import traceback
 
 
 class BasePage(QtGui.QWizardPage):
-    """ Base page for all ShotGrid pages to inherit from. """
+    """Base page for all ShotGrid pages to inherit from."""
 
     # by default return the general setting up your project page
     _HELP_URL = (
@@ -23,7 +23,7 @@ class BasePage(QtGui.QWizardPage):
     )
 
     def __init__(self, parent=None):
-        """ Constructor """
+        """Constructor"""
         QtGui.QWizardPage.__init__(self, parent)
         self._page_id = None
         self._next_page_id = None
@@ -40,15 +40,15 @@ class BasePage(QtGui.QWizardPage):
         self._error_field = error_field
 
     def page_id(self):
-        """ Return the cached id of this page """
+        """Return the cached id of this page"""
         return self._page_id
 
     def set_next_page(self, page):
-        """ Override which page comes next """
+        """Override which page comes next"""
         self._next_page_id = page.page_id()
 
     def nextId(self):
-        """ Enhanced logic for non-linear wizards """
+        """Enhanced logic for non-linear wizards"""
         if self._next_page_id is None:
             return QtGui.QWizardPage.nextId(self)
 

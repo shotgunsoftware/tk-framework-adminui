@@ -19,7 +19,7 @@ views = sgtk.platform.import_framework("tk-framework-qtwidgets", "views")
 
 
 class ProjectWidget(QtGui.QFrame):
-    """ Simple widget that shows a project's thumbnail and name. """
+    """Simple widget that shows a project's thumbnail and name."""
 
     MARGIN = 5
     ICON_SIZE = QtCore.QSize(32, 32)
@@ -61,7 +61,7 @@ class ProjectWidget(QtGui.QFrame):
         self.setToolTip(label)
 
     def set_selected(self, selected):
-        """ Update the styling to reflect if the widget is selected or not """
+        """Update the styling to reflect if the widget is selected or not"""
         if selected:
             p = QtGui.QPalette()
             highlight_col = p.color(QtGui.QPalette.Active, QtGui.QPalette.Highlight)
@@ -99,7 +99,7 @@ class ProjectWidget(QtGui.QFrame):
 
 
 class ProjectDelegate(views.EditSelectedWidgetDelegate):
-    """ Wrapper around the ProjectWidget for delegate use """
+    """Wrapper around the ProjectWidget for delegate use"""
 
     def __init__(self, view):
         views.EditSelectedWidgetDelegate.__init__(self, view)

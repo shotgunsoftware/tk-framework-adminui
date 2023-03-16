@@ -18,7 +18,7 @@ logger = get_logger(__file__)
 
 
 class SetupTypePage(BasePage):
-    """ Page to choose what configuration type to use. """
+    """Page to choose what configuration type to use."""
 
     STANDARD_ID = 0
     PROJECT_ID = 1
@@ -46,19 +46,19 @@ class SetupTypePage(BasePage):
         self._config_type_button_group.addButton(wiz.ui.select_disk, self.DISK_ID)
 
     def set_project_page(self, page):
-        """ Set the page to switch to if project is selected. """
+        """Set the page to switch to if project is selected."""
         self._project_page_id = page.page_id()
 
     def set_github_page(self, page):
-        """ Set the page to switch to if github url is selected. """
+        """Set the page to switch to if github url is selected."""
         self._github_page_id = page.page_id()
 
     def set_disk_page(self, page):
-        """ Set the page to switch to if disk location is selected. """
+        """Set the page to switch to if disk location is selected."""
         self._disk_page_id = page.page_id()
 
     def set_storage_map_page(self, page):
-        """ Set the page to switch to if default config is selected. """
+        """Set the page to switch to if default config is selected."""
         self._storage_map_page_id = page.page_id()
 
     def nextId(self):

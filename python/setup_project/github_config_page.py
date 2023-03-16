@@ -18,7 +18,7 @@ from ..ui import resources_rc
 
 
 class GithubConfigPage(BasePage):
-    """ Page to base a configuration on a github repo. """
+    """Page to base a configuration on a github repo."""
 
     _HELP_URL = (
         BasePage._HELP_URL + "#Using%20a%20configuration%20template%20from%20git"

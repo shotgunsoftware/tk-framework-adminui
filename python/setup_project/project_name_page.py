@@ -17,7 +17,7 @@ from .base_page import BasePage
 
 
 class ProjectNamePage(BasePage):
-    """ Page to name a project. """
+    """Page to name a project."""
 
     _HELP_URL = BasePage._HELP_URL + "#Choosing%20a%20project%20folder%20name"
 
@@ -46,7 +46,7 @@ class ProjectNamePage(BasePage):
         self.setField("project_name", name)
 
     def on_name_changed(self, name):
-        """ react to the name changing.  Update the paths that will be used. """
+        """react to the name changing.  Update the paths that will be used."""
         wiz = self.wizard()
         name = self.field("project_name")
         try:
@@ -132,7 +132,7 @@ class ProjectNamePage(BasePage):
             )
             group_layout = QtGui.QGridLayout(group)
             row = 0
-            for (key, label, _) in os_info:
+            for key, label, _ in os_info:
                 path = project_paths_dict[storage].get(key)
                 if path:
                     group_layout.addWidget(
