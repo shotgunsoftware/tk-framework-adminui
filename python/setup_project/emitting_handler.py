@@ -14,7 +14,7 @@ from sgtk.platform.qt import QtCore
 
 
 class EmittingHandler(logging.Handler):
-    """ Class to map logging messages to Qt signals """
+    """Class to map logging messages to Qt signals"""
 
     COLOR_MAP = {
         # colors from the Tomorrow Night Eighties theme
@@ -38,7 +38,7 @@ class EmittingHandler(logging.Handler):
         self.__signals = self.LogSignaller()
 
     def connect(self, slot):
-        """ Connect the message logging to the given slot """
+        """Connect the message logging to the given slot"""
         self.__signals.log_message.connect(slot)
 
     def emit(self, record):

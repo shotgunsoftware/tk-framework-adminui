@@ -193,8 +193,7 @@ class StorageMapPage(BasePage):
         count = 1
 
         # iterate over each required root and create a mapping widget
-        for (root_name, root_info) in self._required_roots:
-
+        for root_name, root_info in self._required_roots:
             # create the widget and set all the values
             map_widget = StorageMapWidget(
                 self._storages_model, parent=ui.storage_map_area_widget
@@ -304,7 +303,6 @@ class StorageMapPage(BasePage):
 
         # see if each of the mappings is valid
         for map_widget in self._map_widgets:
-
             logger.debug("Checking mapping for root: %s" % (map_widget.root_name,))
 
             if not map_widget.mapping_is_valid():
@@ -333,11 +331,9 @@ class StorageMapPage(BasePage):
             return False
 
         if not_on_disk_widgets:
-
             # try to create the folders for current OS if they don't exist
             failed_to_create = []
             for widget in not_on_disk_widgets:
-
                 storage = widget.local_storage
                 folder = storage[current_os_key]
 
@@ -369,7 +365,6 @@ class StorageMapPage(BasePage):
         #      update the root information on the core wizard
 
         for map_widget in self._map_widgets:
-
             root_name = map_widget.root_name
             root_info = map_widget.root_info
             storage_data = map_widget.local_storage

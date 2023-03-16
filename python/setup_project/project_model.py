@@ -19,7 +19,7 @@ ShotgunModel = shotgun_model.ShotgunModel
 
 
 class ProjectModel(ShotgunModel):
-    """ Simple Project model to pull down Toolkit projects and their thumbnails """
+    """Simple Project model to pull down Toolkit projects and their thumbnails"""
 
     DISPLAY_NAME_ROLE = QtCore.Qt.UserRole + 101
     PROJECT_ID_ROLE = QtCore.Qt.UserRole + 102
