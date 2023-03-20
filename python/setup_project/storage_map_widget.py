@@ -453,7 +453,7 @@ class StorageMapWidget(QtGui.QWidget):
         all_storages = self._storage_model.storages
         existing_storage_names = [storage["code"] for storage in all_storages]
 
-        # propt the user for a new storage name
+        # prompt the user for a new storage name
         create_dialog = CreateStorageDialog(existing_storage_names, parent=self)
 
         if create_dialog.exec_() == QtGui.QDialog.Accepted:
