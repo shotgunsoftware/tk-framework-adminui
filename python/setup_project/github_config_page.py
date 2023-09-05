@@ -24,24 +24,6 @@ class GithubConfigPage(BasePage):
         BasePage._HELP_URL + "#Using%20a%20configuration%20template%20from%20git"
     )
 
-    def initializePage(self):
-        # pick a random octocat
-        cats = []
-        dir_iter = QtCore.QDirIterator(
-            ":tk-framework-adminui/setup_project/octocats",
-            QtCore.QDirIterator.Subdirectories,
-        )
-
-        cat = dir_iter.next()
-        while cat:
-            cats.append(cat)
-            cat = dir_iter.next()
-
-        if cats:
-            selected = random.choice(cats)
-            wiz = self.wizard()
-            wiz.ui.octocat.setPixmap(selected)
-
     def validatePage(self):
         wiz = self.wizard()
         uri = self.field("github_url")
