@@ -758,7 +758,7 @@ color: rgb(160, 160, 160);</string>
     <item>
      <widget class="QLabel" name="storage_def_lbl">
       <property name="text">
-       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated ShotGrid Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Administrator_ar_data_management_ar_linking_local_files_html_to_set_up&quot;&gt;More info…&lt;/a&gt;</string>
+       <string>This configuration requires one or more filesystem roots where files will be stored. For each filesystem root required by this configuration on the left, specify an associated ShotGrid Local Storage on the right that defines the paths for the operating systems you use. &lt;a href=&quot;https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Administrator_ar_data_management_ar_linking_local_files_html&quot;&gt;More info…&lt;/a&gt;</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -800,8 +800,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>636</width>
-         <height>186</height>
+         <width>763</width>
+         <height>232</height>
         </rect>
        </property>
       </widget>
@@ -904,8 +904,8 @@ color: rgb(160, 160, 160);</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>690</width>
-         <height>196</height>
+         <width>815</width>
+         <height>189</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="project_contents_layout">
