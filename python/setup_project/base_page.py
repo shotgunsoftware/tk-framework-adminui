@@ -15,7 +15,7 @@ import traceback
 
 
 class BasePage(QtGui.QWizardPage):
-    """Base page for all ShotGrid pages to inherit from."""
+    """Base page for all Flow Production Tracking pages to inherit from."""
 
     # by default return the general setting up your project page
     _HELP_URL = (
