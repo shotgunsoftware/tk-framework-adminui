@@ -24,7 +24,7 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class StorageMapWidget(QtGui.QWidget):
-    """Allows mapping config storage roots to a SG local storage"""
+    """Allows mapping config storage roots to a PTR local storage"""
 
     # emitted when a storage was saved or updated (indicating it was changed in
     # some way). useful for to alert other map widgets that may be displaying
@@ -35,7 +35,7 @@ class StorageMapWidget(QtGui.QWidget):
         """
         Initialize the widget.
 
-        :param storage_model: The SG model for available local storages.
+        :param storage_model: The PTR model for available local storages.
         :param parent: The parent object for this widget
         """
 
@@ -87,17 +87,17 @@ class StorageMapWidget(QtGui.QWidget):
 
     @property
     def best_guess(self):
-        """The name of the best guess SG storage to associate with this root."""
+        """The name of the best guess PTR storage to associate with this root."""
         return self._best_guess
 
     @best_guess.setter
     def best_guess(self, storage_name):
-        """Set the 'best guess' SG storage name to associate with this root."""
+        """Set the 'best guess' PTR storage name to associate with this root."""
         self._best_guess = storage_name
 
     @property
     def root_name(self):
-        """The root name being mapped to a SG local storage"""
+        """The root name being mapped to a PTR local storage"""
         return self._root_name
 
     @root_name.setter
@@ -125,7 +125,7 @@ class StorageMapWidget(QtGui.QWidget):
     def local_storage(self):
         """
         Returns the local storage chosen by the user or None if no storage
-        has been selected. This will be a standard SG LocalStorage dict.
+        has been selected. This will be a standard PTR LocalStorage dict.
 
         Will return ``None`` if no local storage selected.
         """
@@ -150,7 +150,7 @@ class StorageMapWidget(QtGui.QWidget):
             self.refresh_display()
 
     def mapping_is_valid(self):
-        """Checks that the mapped storage is valid and saved in SG."""
+        """Checks that the mapped storage is valid and saved in PTR."""
 
         # ensure a local storage is set
         local_storage = self.local_storage
@@ -299,7 +299,7 @@ class StorageMapWidget(QtGui.QWidget):
         self.ui.windows_path_lbl.show()
 
         if storage_data.get("id"):
-            # this storage exists in SG
+            # this storage exists in PTR
 
             # show the path display widgets
             self.ui.linux_path.show()
@@ -342,7 +342,7 @@ class StorageMapWidget(QtGui.QWidget):
                     self.ui.windows_path_edit.setFocus()
 
         else:
-            # this is a new storage that hasn't been created in SG yet.
+            # this is a new storage that hasn't been created in PTR yet.
 
             # show the path edit widgets
             self.ui.linux_path_edit.show()
@@ -432,7 +432,7 @@ class StorageMapWidget(QtGui.QWidget):
         if not folder_path:
             return
 
-        # create the SG path object. assigning the path to the corresponding
+        # create the PTR path object. assigning the path to the corresponding
         # OS property below will sanitize
         sg_path = ShotgunPath()
 
@@ -459,7 +459,7 @@ class StorageMapWidget(QtGui.QWidget):
         if create_dialog.exec_() == QtGui.QDialog.Accepted:
             # user entered a valid storage name. create the skeleton data and
             # add it to the storage model. the user will still have to "Save"
-            # the info to SG when they're finished editing the path(s).
+            # the info to PTR when they're finished editing the path(s).
             new_storage_name = create_dialog.new_storage_name
             new_storage = {
                 "id": None,
@@ -493,7 +493,7 @@ class StorageMapWidget(QtGui.QWidget):
         # the name of the storage being edited
         storage_name = str(self.ui.storage_select_combo.currentText())
 
-        # a temp SG path object used for sanitization
+        # a temp PTR path object used for sanitization
         sg_path = ShotgunPath()
 
         # store the edited path in the appropriate path lookup. sanitize first
@@ -502,7 +502,7 @@ class StorageMapWidget(QtGui.QWidget):
         # if the sanitized path differs, update the edit.
         if platform.startswith("linux"):
             if only_slashes:
-                # SG path code doesn't like only slashes in a path
+                # PTR path code doesn't like only slashes in a path
                 self._linux_path_edit[storage_name] = path
             elif path:
                 sg_path.linux = path  # sanitize
@@ -520,7 +520,7 @@ class StorageMapWidget(QtGui.QWidget):
                 self._linux_path_edit[storage_name] = ""
         elif platform == "darwin":
             if only_slashes:
-                # SG path code doesn't like only slashes in a path
+                # PTR path code doesn't like only slashes in a path
                 self._mac_path_edit[storage_name] = path
             elif path:
                 sg_path.macosx = path  # sanitize
@@ -538,7 +538,7 @@ class StorageMapWidget(QtGui.QWidget):
                 self._mac_path_edit[storage_name] = ""
         elif platform == "win32":
             if only_slashes:
-                # SG path code doesn't like only slashes in a path
+                # PTR path code doesn't like only slashes in a path
                 self._windows_path_edit[storage_name] = path
             elif path:
                 sg_path.windows = path  # sanitize
@@ -562,7 +562,7 @@ class StorageMapWidget(QtGui.QWidget):
         """
         The user has clicked the save button.
 
-        They want to create a new storage in SG (if no id is defined for the
+        They want to create a new storage in PTR (if no id is defined for the
         storage) or they want to update an existing storage with a path for
         the current os.
         """
@@ -588,11 +588,11 @@ class StorageMapWidget(QtGui.QWidget):
         storage_data = self.local_storage
         storage_name = storage_data["code"]
 
-        # a SG connect we can use to save/update
+        # a PTR connect we can use to save/update
         sg = sgtk.platform.current_engine().shotgun
 
         if storage_data.get("id"):
-            # the storage exists in SG. we want to update any edited paths
+            # the storage exists in PTR. we want to update any edited paths
 
             path_data = {}
 
@@ -607,15 +607,15 @@ class StorageMapWidget(QtGui.QWidget):
                     storage_name, ""
                 )
 
-            # do the update in SG. this method should be wrapped in a try/except
+            # do the update in PTR. this method should be wrapped in a try/except
             # to handle any issues here.
-            logger.debug("Updating SG local storage: %s." % (path_data,))
+            logger.debug("Updating PTR local storage: %s." % (path_data,))
             update_data = sg.update("LocalStorage", storage_data["id"], path_data)
 
             # update the path in the storage data
             storage_data.update(update_data)
         else:
-            # the storage does not exist in SG. we need to create it with the
+            # the storage does not exist in PTR. we need to create it with the
             # edited OS paths.
 
             # push any edited text into the storage data
@@ -623,12 +623,12 @@ class StorageMapWidget(QtGui.QWidget):
             storage_data["mac_path"] = self._mac_path_edit.get(storage_name, "")
             storage_data["windows_path"] = self._windows_path_edit.get(storage_name, "")
 
-            # delete the id field as it will be populated for us by SG. if we
+            # delete the id field as it will be populated for us by PTR. if we
             # don't delete it, we get errors.
             del storage_data["id"]
 
-            # no storage exists in SG. create a new one
-            logger.debug("Creating SG local storage: %s" % (storage_data,))
+            # no storage exists in PTR. create a new one
+            logger.debug("Creating PTR local storage: %s" % (storage_data,))
             storage_data = sg.create(
                 "LocalStorage", storage_data, return_fields=list(storage_data.keys())
             )
