@@ -108,7 +108,7 @@ color: rgb(160, 160, 160);</string>
      <item>
       <widget class="QLabel" name="storage_lbl">
        <property name="toolTip">
-        <string>&lt;p&gt;These are the storage paths defined by your ShotGrid site.&lt;/p&gt;</string>
+        <string>&lt;p&gt;These are the storage paths defined by your Flow Production Tracking site.&lt;/p&gt;</string>
        </property>
        <property name="text">
         <string>Storage:</string>
@@ -121,7 +121,7 @@ color: rgb(160, 160, 160);</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>&lt;p&gt;These are the storage paths defined by your ShotGrid site.&lt;/p&gt;</string>
+        <string>&lt;p&gt;These are the storage paths defined by your Flow Production Tracking site.&lt;/p&gt;</string>
        </property>
        <property name="autoFillBackground">
         <bool>true</bool>
@@ -354,7 +354,7 @@ color: rgb(120, 120, 120);</string>
              </size>
             </property>
             <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to ShotGrid. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Flow Production Tracking. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -432,7 +432,7 @@ color: rgb(120, 120, 120);</string>
              </size>
             </property>
             <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to ShotGrid. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Flow Production Tracking. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>
@@ -510,7 +510,7 @@ color: rgb(120, 120, 120);</string>
              </size>
             </property>
             <property name="toolTip">
-             <string>&lt;p&gt;This path is locked since it has been saved to ShotGrid. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
+             <string>&lt;p&gt;This path is locked since it has been saved to Flow Production Tracking. Visit Site Preferences &gt; File Management to modify this path. WARNING: changing this path could break existing projects.&lt;/p&gt;</string>
             </property>
             <property name="text">
              <string/>

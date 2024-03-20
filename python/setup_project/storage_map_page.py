@@ -49,7 +49,7 @@ class StorageModel(QtGui.QStandardItemModel):
     """
     A simple modle to store all available storages.
 
-    Some storages may exists in SG, others may be created/edited/saved via the
+    Some storages may exists in PTR, others may be created/edited/saved via the
     storage map widgets. The model is shared by all map widgets to keep them
     in sync as storages are created/updated.
     """
@@ -66,8 +66,8 @@ class StorageModel(QtGui.QStandardItemModel):
 
         super(StorageModel, self).__init__(parent)
 
-        # query all existing SG storages to include in the model
-        logger.debug("Querying all SG LocalStorage entries...")
+        # query all existing PTR storages to include in the model
+        logger.debug("Querying all PTR LocalStorage entries...")
         sg_connection = sgtk.platform.current_engine().shotgun
         storages = sg_connection.find(
             "LocalStorage",
@@ -108,7 +108,7 @@ class StorageModel(QtGui.QStandardItemModel):
     def add_storage(self, storage):
         """Add a new item to the model for the supplied storage dictionary.
 
-        :param dict storage: A standard SG LocalStorage entity dict.
+        :param dict storage: A standard PTR LocalStorage entity dict.
         """
 
         logger.debug("Adding storage to the model: %s" % (storage,))
@@ -135,7 +135,7 @@ class StorageModel(QtGui.QStandardItemModel):
 
 class StorageMapPage(BasePage):
     """
-    Map the required roots for the selected config with SG local storages
+    Map the required roots for the selected config with PTR local storages
 
     A list of mapping widgets is displayed, one for each root required by the
     configuration. The user must create a valid mapping for each required root
@@ -157,7 +157,7 @@ class StorageMapPage(BasePage):
         self._map_widgets = []
         self._required_roots = []
 
-        # retrieve a historical mapping of root names to SG storages. these will
+        # retrieve a historical mapping of root names to PTR storages. these will
         # be used to make a best guess if it's not obvious what the mappings
         # should be.
         logger.debug("Querying historical storage mappings...")
@@ -343,7 +343,7 @@ class StorageMapPage(BasePage):
                 )
 
                 # try to create the missing path for the current OS. this will
-                # help ensure the storage specified in SG is valid and the
+                # help ensure the storage specified in PTR is valid and the
                 # project data can be written to this root.
                 try:
                     ensure_folder_exists(folder)
