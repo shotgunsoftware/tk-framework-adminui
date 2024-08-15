@@ -11,7 +11,7 @@
 import sys
 
 import sgtk.platform
-from sgtk.platform.qt import QtCore
+from sgtk.platform.qt import QtCore, QtGui
 
 from .base_page import BasePage
 
@@ -134,8 +134,8 @@ class ProgressPage(BasePage):
 
             wiz.ui.progress_output.appendHtml(self._new_logs.pop(0))
             cursor = wiz.ui.progress_output.textCursor()
-            cursor.movePosition(cursor.End)
-            cursor.movePosition(cursor.StartOfLine)
+            cursor.movePosition(QtGui.QTextCursor.End)
+            cursor.movePosition(QtGui.QTextCursor.StartOfLine)
             wiz.ui.progress_output.setTextCursor(cursor)
             wiz.ui.progress_output.ensureCursorVisible()
 
