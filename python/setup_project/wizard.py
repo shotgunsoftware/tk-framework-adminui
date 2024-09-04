@@ -98,10 +98,10 @@ class SetupProjectWizard(QtGui.QWizard):
         self.ui.summary_page.setFinalPage(True)
 
         # Override button formatting
-        self.setButtonText(self.NextButton, "Continue")
-        self.setButtonText(self.BackButton, "Back")
-        self.setButtonText(self.FinishButton, "Done")
-        self.setButtonText(self.CommitButton, "Run Setup")
+        self.setButtonText(QtGui.QWizard.NextButton, "Continue")
+        self.setButtonText(QtGui.QWizard.BackButton, "Back")
+        self.setButtonText(QtGui.QWizard.FinishButton, "Done")
+        self.setButtonText(QtGui.QWizard.CommitButton, "Run Setup")
 
         if QtCore.__version__.startswith("5."):
             self.button(self.NextButton).setStyleSheet(
