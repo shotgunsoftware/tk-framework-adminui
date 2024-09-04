@@ -103,26 +103,15 @@ class SetupProjectWizard(QtGui.QWizard):
         self.setButtonText(QtGui.QWizard.FinishButton, "Done")
         self.setButtonText(QtGui.QWizard.CommitButton, "Run Setup")
 
-        if QtCore.__version__.startswith("5."):
-            self.button(self.NextButton).setStyleSheet(
-                "background-color: rgb(5, 100, 175);"
-            )
-            self.button(self.FinishButton).setStyleSheet(
-                "background-color: rgb(5, 100, 175);"
-            )
-            self.button(self.CommitButton).setStyleSheet(
-                "background-color: rgb(5, 100, 175);"
-            )
-        else:
-            self.button(self.NextButton).setStyleSheet(
-                "background-color: rgb(16, 148,223);"
-            )
-            self.button(self.FinishButton).setStyleSheet(
-                "background-color: rgb(16, 148,223);"
-            )
-            self.button(self.CommitButton).setStyleSheet(
-                "background-color: rgb(16, 148,223);"
-            )
+        self.button(QtGui.QWizard.NextButton).setStyleSheet(
+            "background-color: rgb(5, 100, 175);"
+        )
+        self.button(QtGui.QWizard.FinishButton).setStyleSheet(
+            "background-color: rgb(5, 100, 175);"
+        )
+        self.button(QtGui.QWizard.CommitButton).setStyleSheet(
+            "background-color: rgb(5, 100, 175);"
+        )
 
         # load the stylesheet
         self._load_stylesheet()

@@ -67,19 +67,19 @@ class ProgressPage(BasePage):
     def initializePage(self):
         # disable the cancel and back buttons
         wiz = self.wizard()
-        wiz.button(wiz.NextButton).setEnabled(False)
+        wiz.button(QtGui.QWizard.NextButton).setEnabled(False)
 
-        self._original_next_text = wiz.buttonText(wiz.NextButton)
-        self._original_next_css = wiz.button(wiz.NextButton).styleSheet()
+        self._original_next_text = wiz.buttonText(QtGui.QWizard.NextButton)
+        self._original_next_css = wiz.button(QtGui.QWizard.NextButton).styleSheet()
 
-        wiz.setButtonText(wiz.NextButton, "Running...")
+        wiz.setButtonText(QtGui.QWizard.NextButton, "Running...")
 
         if QtCore.__version__.startswith("5."):
-            wiz.button(wiz.NextButton).setStyleSheet(
+            wiz.button(QtGui.QWizard.NextButton).setStyleSheet(
                 "background-color: rgb(75, 75, 75);"
             )
         else:
-            wiz.button(wiz.NextButton).setStyleSheet(
+            wiz.button(QtGui.QWizard.NextButton).setStyleSheet(
                 "background-color: rgb(128, 128, 128);"
             )
 
@@ -96,7 +96,7 @@ class ProgressPage(BasePage):
 
         # can no longer cancel or hit back
         wiz.setButtonLayout(
-            [wiz.HelpButton, wiz.Stretch, wiz.NextButton, wiz.FinishButton]
+            [QtGui.QWizard.HelpButton, QtGui.QWizard.Stretch, QtGui.QWizard.NextButton, QtGui.QWizard.FinishButton]
         )
 
     def additional_details_pressed(self):
@@ -186,7 +186,7 @@ class ProgressPage(BasePage):
         # thread has finished
         # clean up the page state
         wiz = self.wizard()
-        wiz.button(wiz.NextButton).setEnabled(True)
+        wiz.button(QtGui.QWizard.NextButton).setEnabled(True)
 
     def _on_run_succeeded(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
@@ -202,8 +202,8 @@ class ProgressPage(BasePage):
         wiz = self.wizard()
         wiz.ui.progress.setValue(100)
         wiz.ui.message.setText("Set up finished")
-        wiz.setButtonText(wiz.NextButton, self._original_next_text)
-        wiz.button(wiz.NextButton).setStyleSheet(self._original_next_css)
+        wiz.setButtonText(QtGui.QWizard.NextButton, self._original_next_text)
+        wiz.button(QtGui.QWizard.NextButton).setStyleSheet(self._original_next_css)
 
         if wiz.ui.progress_output.isHidden():
             # auto advance if details are not shown
@@ -220,7 +220,7 @@ class ProgressPage(BasePage):
 
         # show the failure icon and message
         wiz = self.wizard()
-        wiz.button(wiz.CancelButton).setVisible(True)
+        wiz.button(QtGui.QWizard.CancelButton).setVisible(True)
         wiz.ui.complete_errors.setText(message)
 
         wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.CancelButton])
