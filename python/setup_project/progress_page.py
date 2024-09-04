@@ -96,7 +96,12 @@ class ProgressPage(BasePage):
 
         # can no longer cancel or hit back
         wiz.setButtonLayout(
-            [QtGui.QWizard.HelpButton, QtGui.QWizard.Stretch, QtGui.QWizard.NextButton, QtGui.QWizard.FinishButton]
+            [
+                QtGui.QWizard.HelpButton,
+                QtGui.QWizard.Stretch,
+                QtGui.QWizard.NextButton,
+                QtGui.QWizard.FinishButton,
+            ]
         )
 
     def additional_details_pressed(self):
