@@ -30,7 +30,7 @@ class ProjectWidget(QtGui.QFrame):
         # initialize the UI
         # simple frame with a thumbnail and a label
         self.setObjectName("frame")
-        self.setFrameStyle(self.NoFrame)
+        self.setFrameStyle(QtGui.QFrame.NoFrame)
         self.setContentsMargins(self.MARGIN, self.MARGIN, self.MARGIN, self.MARGIN)
 
         self.label = QtGui.QLabel(self)
