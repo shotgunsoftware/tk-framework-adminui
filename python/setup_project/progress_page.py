@@ -154,7 +154,7 @@ class ProgressPage(BasePage):
 
     def progress_callback(self, chapter, progress):
         # Since a thread could be calling this make sure we are doing GUI work on the main thread.
-        # On Windows and CentOS, we have stability issues related to the async main thread executor,
+        # On Windows and CentOS TODO is it still true? what about Rocky?, we have stability issues related to the async main thread executor,
         # so we're not going to rely on it here. Instead, we track the chapter and progress values
         # and we let the QTimer we have running find them and set them from the main thread without
         # the need for any direct cross-thread communication.
