@@ -154,22 +154,10 @@ class ProgressPage(BasePage):
 
     def progress_callback(self, chapter, progress):
         # Since a thread could be calling this make sure we are doing GUI work on the main thread.
-        # On Windows and CentOS TODO is it still true? what about Rocky?, we have stability issues related to the async main thread executor,
-        # so we're not going to rely on it here. Instead, we track the chapter and progress values
-        # and we let the QTimer we have running find them and set them from the main thread without
-        # the need for any direct cross-thread communication.
-        #
-        # NOTE: OSX is the exception. We don't have stability issues there related to the main thread
-        # execution, and we get MUCH better progress-bar performance/UX when we skip using the
-        # QTimer approach to keeping it updated.
-        if sgtk.util.is_macos():
-            engine = sgtk.platform.current_engine()
-            engine.async_execute_in_main_thread(
-                self.__progress_on_main_thread, chapter, progress
-            )
-        else:
-            self._chapter = chapter
-            self._progress = progress
+        engine = sgtk.platform.current_engine()
+        engine.async_execute_in_main_thread(
+            self.__progress_on_main_thread, chapter, progress
+        )
 
     def __progress_on_main_thread(self, chapter, progress):
         # update the progress display
