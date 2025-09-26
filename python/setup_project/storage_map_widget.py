@@ -64,7 +64,7 @@ class StorageMapWidget(QtGui.QWidget):
 
         # keep a handle on any edited text
         self.ui.linux_path_edit.textChanged.connect(
-            lambda p: self._on_path_changed(p, "linux2")
+            lambda p: self._on_path_changed(p, "linux")
         )
         self.ui.mac_path_edit.textChanged.connect(
             lambda p: self._on_path_changed(p, "darwin")
@@ -74,7 +74,7 @@ class StorageMapWidget(QtGui.QWidget):
         )
 
         # connect the file browse buttons
-        self.ui.linux_path_browse.clicked.connect(lambda: self._browse_path("linux2"))
+        self.ui.linux_path_browse.clicked.connect(lambda: self._browse_path("linux"))
         self.ui.mac_path_browse.clicked.connect(lambda: self._browse_path("darwin"))
         self.ui.windows_path_browse.clicked.connect(lambda: self._browse_path("win32"))
 

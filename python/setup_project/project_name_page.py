@@ -62,7 +62,7 @@ class ProjectNamePage(BasePage):
 
             # fill out path widgets
             for storage in project_paths_dict:
-                for key in ["linux2", "darwin", "win32"]:
+                for key in ["linux", "darwin", "win32"]:
                     path = project_paths_dict[storage].get(key)
                     widget = self._storage_path_widgets[storage].get(key)
                     if path and widget:
@@ -97,7 +97,7 @@ class ProjectNamePage(BasePage):
         os_info = [
             # (dict key, label, current os)
             ("darwin", "Mac", sys.platform == "darwin"),
-            ("linux2", "Linux", sys.platform.startswith("linux")),
+            ("linux", "Linux", sys.platform.startswith("linux")),
             ("win32", "Windows", sys.platform == "win32"),
         ]
 
