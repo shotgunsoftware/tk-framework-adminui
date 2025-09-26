@@ -59,7 +59,9 @@ class ProjectNamePage(BasePage):
             # Retro compatibility with tk-core >= v0.22.6
             for storage in project_paths_dict:
                 if "linux2" not in project_paths_dict[storage]:
-                       project_paths_dict[storage]["linux2"] = project_paths_dict[storage]["linux"]
+                    project_paths_dict[storage]["linux2"] = project_paths_dict[storage][
+                        "linux"
+                    ]
 
             # create path widgets if needed
             if not self._storage_path_widgets:
