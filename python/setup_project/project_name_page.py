@@ -56,6 +56,13 @@ class ProjectNamePage(BasePage):
             # update where the project folders will be for the given name
             project_paths_dict = wiz.core_wizard.preview_project_paths(name)
 
+            # Retro compatibility with tk-core >= v0.22.6
+            for storage in project_paths_dict:
+                if "linux2" not in project_paths_dict[storage]:
+                    project_paths_dict[storage]["linux2"] = project_paths_dict[storage][
+                        "linux"
+                    ]
+
             # create path widgets if needed
             if not self._storage_path_widgets:
                 self._setup_storage_widgets(project_paths_dict)
