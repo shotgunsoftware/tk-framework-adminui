@@ -124,13 +124,7 @@ class ConfigLocationPage(BasePage):
             default_locations = (
                 self.wizard().core_wizard.get_default_configuration_location()
             )
-            self.wizard().ui.linux_path.setText(
-                # Retro compatibility with tk-core < v0.22.6
-                # TODO: Remove this once we no longer support tk-core < v0.22.6
-                default_locations["linux2"]
-                if "linux2" in default_locations
-                else default_locations["linux"]
-            )
+            self.wizard().ui.linux_path.setText("linux")
             self.wizard().ui.windows_path.setText(default_locations["win32"])
             self.wizard().ui.mac_path.setText(default_locations["darwin"])
         except Exception as e:
