@@ -124,7 +124,7 @@ class ConfigLocationPage(BasePage):
             default_locations = (
                 self.wizard().core_wizard.get_default_configuration_location()
             )
-            self.wizard().ui.linux_path.setText("linux")
+            self.wizard().ui.linux_path.setText(default_locations["linux"])
             self.wizard().ui.windows_path.setText(default_locations["win32"])
             self.wizard().ui.mac_path.setText(default_locations["darwin"])
         except Exception as e:
