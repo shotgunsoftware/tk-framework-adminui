@@ -753,7 +753,7 @@ class Ui_Wizard(object):
 #endif // QT_CONFIG(tooltip)
         self.github_url.setText("")
         self.github_url.setPlaceholderText(QCoreApplication.translate("Wizard", u"Git URL", None))
-        self.label.setText(QCoreApplication.translate("Wizard", u"<html><head/><body><p>Your url needs to end with .git, for example:<br/><br/><span style=\" font-family:'Courier New,courier'; font-size:12pt;\">https://github.com/shotgunsoftware/tk-config-default2.git<br/>git@github.com:shotgunsoftware/tk-config-default2.git</span></p></body></html>", None))
+        self.label.setText(QCoreApplication.translate("Wizard", u"<html><head/><body><p>Supports URLs ending with .git or containing _git, for example:<br/><br/><span style=\" font-family:'Courier New,courier'; font-size:12pt;\">https://github.com/shotgunsoftware/tk-config-default2.git<br/>git@github.com:shotgunsoftware/tk-config-default2.git<br/>https://team@dev.azure.com/team/project/_git/tk-config-default2</span></p></body></html>", None))
         self.github_errors.setText("")
         self.disk_config_page.setTitle(QCoreApplication.translate("Wizard", u"<p></p><font size=18>&nbsp;Browse for a Configuration</font><p></p>", None))
         self.disk_config_page.setSubTitle(QCoreApplication.translate("Wizard", u"&nbsp;", None))
