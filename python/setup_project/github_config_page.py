@@ -11,6 +11,7 @@
 import random
 
 from sgtk.platform.qt import QtCore
+from sgtk.commands import util
 
 from .base_page import BasePage
 from .wait_screen import WaitScreen
@@ -27,8 +28,10 @@ class GithubConfigPage(BasePage):
     def validatePage(self):
         wiz = self.wizard()
         uri = self.field("github_url")
-        if not uri.endswith(".git"):
-            wiz.ui.github_errors.setText("Error, the url does not end in '.git'")
+        if not util.is_git_repo_uri(uri):
+            wiz.ui.github_errors.setText(
+                "Error, the url does not end in '.git' or contains '_git'."
+            )
             return False
 
         wait = WaitScreen("Downloading Config,", "hold on...", parent=self)
