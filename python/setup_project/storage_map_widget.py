@@ -174,9 +174,7 @@ class StorageMapWidget(QtGui.QWidget):
             is_current_os = sys.platform.startswith("linux")
             edited_linux_path = self._linux_path_edit.get(storage_name)
             if edited_linux_path:
-                (is_valid, reason) = self._path_is_valid(
-                    edited_linux_path, is_current_os
-                )
+                is_valid, reason = self._path_is_valid(edited_linux_path, is_current_os)
                 if is_valid:
                     self.ui.save_storage_btn.show()
                     self.ui.storage_info.setText(
@@ -193,7 +191,7 @@ class StorageMapWidget(QtGui.QWidget):
             is_current_os = sys.platform == "darwin"
             edited_mac_path = self._mac_path_edit.get(storage_name)
             if edited_mac_path:
-                (is_valid, reason) = self._path_is_valid(edited_mac_path, is_current_os)
+                is_valid, reason = self._path_is_valid(edited_mac_path, is_current_os)
                 if is_valid:
                     self.ui.save_storage_btn.show()
                     self.ui.storage_info.setText(
@@ -210,7 +208,7 @@ class StorageMapWidget(QtGui.QWidget):
             is_current_os = sys.platform == "win32"
             edited_windows_path = self._windows_path_edit.get(storage_name)
             if edited_windows_path:
-                (is_valid, reason) = self._path_is_valid(
+                is_valid, reason = self._path_is_valid(
                     edited_windows_path, is_current_os
                 )
                 if is_valid:

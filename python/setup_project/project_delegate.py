@@ -78,24 +78,19 @@ class ProjectWidget(QtGui.QFrame):
             )
 
             # make a border around the cell
-            self.setStyleSheet(
-                """#frame {
+            self.setStyleSheet("""#frame {
                     border-width: 2px;
                     border-color: %s;
                     border-style: solid;
                     background-color: %s;
                    }
-                """
-                % (highlight_str, transp_highlight_str)
-            )
+                """ % (highlight_str, transp_highlight_str))
         else:
-            self.setStyleSheet(
-                """#frame {
+            self.setStyleSheet("""#frame {
                       border-width: 2px;
                       border-color: transparent;
                       border-style: solid;
-                }"""
-            )
+                }""")
 
 
 class ProjectDelegate(views.EditSelectedWidgetDelegate):

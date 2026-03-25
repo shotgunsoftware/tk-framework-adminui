@@ -104,7 +104,7 @@ class ProjectNamePage(BasePage):
         # current os first, then alphabetically
         def os_key(element):
             # return a key that sorts the os'es properly
-            (_, label, os_current) = element
+            _, label, os_current = element
             return (not os_current, label)
 
         os_info.sort(key=os_key)
@@ -113,8 +113,7 @@ class ProjectNamePage(BasePage):
         for storage in project_paths_dict:
             # each storage gets a group showing what paths will be created for that storage
             group = QtGui.QGroupBox(" %s " % storage.title())
-            group.setStyleSheet(
-                """
+            group.setStyleSheet("""
                 QGroupBox {
                     border: 1px solid rgb(217, 217, 217);
                     border-radius: 3px;
@@ -128,8 +127,7 @@ class ProjectNamePage(BasePage):
                     padding: 0 3px 0 3px;
                     color: rgb(55, 168, 225);
                 }
-            """
-            )
+            """)
             group_layout = QtGui.QGridLayout(group)
             row = 0
             for key, label, _ in os_info:

@@ -55,7 +55,7 @@ class ConfigLocationPage(BasePage):
         # current os first, then alphabetically
         def os_key(element):
             # return a key that sorts the os'es properly
-            (label, _, _, os_current) = element
+            label, _, _, os_current = element
             return (not os_current, label.text())
 
         os_widgets.sort(key=os_key)
