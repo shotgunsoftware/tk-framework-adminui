@@ -39,7 +39,7 @@ class StorageMapWidget(QtGui.QWidget):
         :param parent: The parent object for this widget
         """
 
-        super(StorageMapWidget, self).__init__(parent)
+        super().__init__(parent)
 
         # internal state values
         self._storage_model = storage_model
@@ -751,7 +751,7 @@ class StorageMapWidget(QtGui.QWidget):
         painter = QtGui.QPainter(self)
         self.style().drawPrimitive(QtGui.QStyle.PE_Widget, opt, painter, self)
 
-        super(StorageMapWidget, self).paintEvent(event)
+        super().paintEvent(event)
 
     def eventFilter(self, q_object, event):
         """

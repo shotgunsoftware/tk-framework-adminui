@@ -36,7 +36,7 @@ class StorageMapContainerWidget(QtGui.QWidget):
     """
 
     def __init__(self, parent=None):
-        super(StorageMapContainerWidget, self).__init__(parent)
+        super().__init__(parent)
 
         layout = QtGui.QVBoxLayout()
         layout.setSpacing(6)
@@ -64,7 +64,7 @@ class StorageModel(QtGui.QStandardItemModel):
     def __init__(self, parent):
         """Initialize the model."""
 
-        super(StorageModel, self).__init__(parent)
+        super().__init__(parent)
 
         # query all existing PTR storages to include in the model
         logger.debug("Querying all PTR LocalStorage entries...")
@@ -150,7 +150,7 @@ class StorageMapPage(BasePage):
     def __init__(self, parent=None):
         """Initialize the storage map page."""
 
-        super(StorageMapPage, self).__init__(parent)
+        super().__init__(parent)
 
         # internal data stored for the page
         self._uri = None
@@ -170,7 +170,7 @@ class StorageMapPage(BasePage):
     def setup_ui(self, page_id, error_field=None):
         """Set up the UI for this page."""
 
-        super(StorageMapPage, self).setup_ui(page_id, error_field=error_field)
+        super().setup_ui(page_id, error_field=error_field)
 
         # create one storage model to be shard by all widgets.
         self._storages_model = StorageModel(self)

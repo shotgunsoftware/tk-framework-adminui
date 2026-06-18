@@ -32,7 +32,7 @@ class CreateStorageDialog(QtGui.QDialog):
         :param parent: The dialog parent
         """
 
-        super(CreateStorageDialog, self).__init__(parent)
+        super().__init__(parent)
         self.setWindowFlags(QtCore.Qt.Popup)
         # In order to set a parent window after
         # a flags reset.
@@ -118,4 +118,4 @@ class CreateStorageDialog(QtGui.QDialog):
     def accept(self):
         """Store the new storage name for access by the calling code."""
         self._new_storage_name = str(self.ui.storage_name.text())
-        super(CreateStorageDialog, self).accept()
+        super().accept()
