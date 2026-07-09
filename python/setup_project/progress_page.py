@@ -216,7 +216,13 @@ class ProgressPage(BasePage):
         wiz.button(QtGui.QWizard.CancelButton).setVisible(True)
         wiz.ui.complete_errors.setText(message)
 
-        wiz.setButtonLayout([wiz.HelpButton, wiz.Stretch, wiz.CancelButton])
+        wiz.setButtonLayout(
+            [
+                QtGui.QWizard.HelpButton,
+                QtGui.QWizard.Stretch,
+                QtGui.QWizard.CancelButton,
+            ]
+        )
 
     def _on_thread_finished(self):
         # since a thread could be calling this make sure we are doing GUI work on the main thread
